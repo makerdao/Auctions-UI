@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import useMaker from '../hooks/useMaker';
 import * as _ from 'lodash';
+import BigNumber from 'bignumber.js';
 import { Text, jsx, Flex, Heading, Box, Spinner, Button } from 'theme-ui';
 import AccountManager from '../components/FlopAccountManager';
 import GuttedLayout from '../components/GuttedLayout';
@@ -36,10 +37,15 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
+    if (maker) {
+      fetchFlopStepSize(maker);
+    }
+  }, [maker]);
+
+  useEffect(() => {
     if (web3Connected) {
       if (!auctions) {
         fetchAuctions(maker);
-        fetchFlopStepSize(maker);
       }
     }
   }, [web3Connected]);
@@ -118,7 +124,14 @@ const Index = () => {
 
           <IntroInfoCard
             title={'How do debt auctions work?'}
-            text={<IntroMDX />}
+            text={
+              <IntroMDX
+                step={new BigNumber(stepSize)
+                  .minus(1)
+                  .multipliedBy(100)
+                  .toString()}
+              />
+            }
             forceExpanded={!TOCAccepted}
             action={
               TOCAccepted ? null : (

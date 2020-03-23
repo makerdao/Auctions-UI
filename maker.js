@@ -44,6 +44,7 @@ export async function instantiateMaker(network) {
   }
 
   maker = await Maker.create('browser', config);
+  await maker.authenticate();
 
   window.maker = maker; // for debugging
   return maker;

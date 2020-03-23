@@ -27,7 +27,6 @@ export default () => {
   async function connectBrowserWallet() {
     try {
       if (maker) {
-        await maker.authenticate();
         const { networkName } = maker.service('web3');
         if (network === 'mainnet' && networkName !== 'mainnet')
           window.alert(
