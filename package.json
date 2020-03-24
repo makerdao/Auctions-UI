@@ -1,7 +1,7 @@
 {
-  "name": "auction-helper",
+  "name": "auctions-ui",
   "license": "MIT",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "dev": "next dev",
     "dev-ipfs": "IPFS=true next dev",
