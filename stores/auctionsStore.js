@@ -4,14 +4,17 @@ import { AUCTION_DATA_FETCHER } from '../constants';
 
 const initialPageState = { pageStart: 0, pageEnd: 10, pageStep: 10 };
 
-const transformEvents = async (auctions, service) => {
+const transformEvents = async (auctions, service, type, ilk) => {
   const groupedEvents = _.groupBy(auctions, auction => auction.auctionId);
   let auctionsData = {};
-  console.log('fetched events')
+  console.log('fetched events');
   await Promise.all(
     Object.keys(groupedEvents).map(async id => {
       try {
-        const { end, tic } = await service.getFlopDuration(id);
+        const { end, tic } =
+          type === 'flip'
+            ? await service.getFlipDuration(id, ilk)
+            : await service.getFlopDuration(id);
         auctionsData[id.toString()] = {
           auctionId: id,
           end,
@@ -261,6 +264,22 @@ const [useAuctionsStore, updateState] = create((set, get) => ({
       const updatedState = Object.assign({}, currentState, transformedAuctions);
       set({ auctions: updatedState });
     }, 500);
+  },
+
+  fetchAllFlip: async (maker, ilk) => {
+    const service = maker.service(AUCTION_DATA_FETCHER);
+
+    // AuctionIDs will clash unless we filter by ilk
+    const auctions = (await service.fetchFlipAuctions()).filter(
+      x => x.ilk === ilk
+    );
+    const transformedAuctions = await transformEvents(
+      auctions,
+      service,
+      'flip',
+      ilk
+    );
+    set({ auctions: transformedAuctions });
   },
 
   fetchFlopStepSize: async maker => {

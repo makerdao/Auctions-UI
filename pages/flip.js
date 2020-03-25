@@ -16,13 +16,11 @@ import useAllowances from '../hooks/useAllowances';
 import ReactGA from 'react-ga';
 import useSystemStore from '../stores/systemStore';
 
-
 const Index = () => {
-
   const { maker, web3Connected } = useMaker();
   const auctions = useAuctionsStore(state => state.auctions);
-  const fetchAuctions = useAuctionsStore(state => state.fetchAll);
-  const fetchAuctionsSet = useAuctionsStore(state => state.fetchSet);
+  const fetchAuctions = useAuctionsStore(state => state.fetchAllFlip);
+  // const fetchAuctionsSet = useAuctionsStore(state => state.fetchSet);
   const fetchFlopStepSize = useAuctionsStore(state => state.fetchFlopStepSize);
   const stepSize = useAuctionsStore(state => state.flopStepSize);
   const [TOCAccepted, setTOCAccepted] = useState(false);
@@ -30,7 +28,7 @@ const Index = () => {
   const [{ isSyncing, lastSynced }, sync] = useState({});
   const featureFlags = useSystemStore(state => state.featureFlags);
   const hasFlipFlag = featureFlags.includes('flip-ui');
-
+  const selectedIlk = 'ETH-A'; //TODO add a UI filter
 
   useEffect(() => {
     if (window !== undefined) {
@@ -41,7 +39,7 @@ const Index = () => {
   useEffect(() => {
     if (web3Connected) {
       if (!auctions) {
-        fetchAuctions(maker);
+        fetchAuctions(maker, selectedIlk);
         fetchFlopStepSize(maker);
       }
     }
@@ -55,7 +53,6 @@ const Index = () => {
       });
     }
   }, [auctions]);
-
 
   if (!hasFlipFlag)
     return (
@@ -153,12 +150,11 @@ const Index = () => {
             // <AuctionsLayout auctions={auctions} type="flip" />
 
             <AuctionsLayout
-            allowances={allowances}
-            stepSize={stepSize}
-            auctions={auctions}
-            type="flip"
-          />
-
+              allowances={allowances}
+              stepSize={stepSize}
+              auctions={auctions}
+              type="flip"
+            />
           )}
         </>
       )}

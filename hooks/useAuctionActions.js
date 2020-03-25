@@ -5,11 +5,22 @@ const useAuctionActions = () => {
   const { maker, web3Connected } = useMaker();
 
   //ETH tend
-  async function callTend(auctionId, lotSize, bidAmount) {
+  function callEthTend(auctionId, lotSize, bidAmount) {
     try {
-      const tend = await maker
+      return maker
         .service(AUCTION_DATA_FETCHER)
         .flipEthTend(auctionId, lotSize, bidAmount.toNumber());
+    } catch (err) {
+      window.alert(err);
+    }
+  }
+
+  //BAT tend
+  function callBatTend(auctionId, lotSize, bidAmount) {
+    try {
+      return maker
+        .service(AUCTION_DATA_FETCHER)
+        .flipBatTend(auctionId, lotSize, bidAmount.toNumber());
     } catch (err) {
       window.alert(err);
     }
@@ -44,7 +55,7 @@ const useAuctionActions = () => {
     }
   }
 
-  return { callTend, callFlopDent, callFlopDeal, callEthDent };
+  return { callEthTend, callFlopDent, callFlopDeal, callEthDent, callBatTend };
 };
 
 export default useAuctionActions;

@@ -123,11 +123,24 @@ export default class ValidatorService extends PublicService {
     return lotSize;
   }
 
+  @tracksTransactions
   async flipEthTend(id, size, amount) {
     const lotSizeInWei = this.get('web3')._web3.utils.toWei(size.toString());
     const bidAmountRad = toRad(amount);
 
-    const tend = await this._flipEthAdapter().tend(
+    return this._flipEthAdapter().tend(
+      id,
+      lotSizeInWei,
+      bidAmountRad.toFixed()
+    );
+  }
+
+  @tracksTransactions
+  async flipBatTend(id, size, amount) {
+    const lotSizeInWei = this.get('web3')._web3.utils.toWei(size.toString());
+    const bidAmountRad = toRad(amount);
+
+    return this._flipBatAdapter().tend(
       id,
       lotSizeInWei,
       bidAmountRad.toFixed()
@@ -184,9 +197,12 @@ export default class ValidatorService extends PublicService {
     } catch (err) {}
   }
 
-  async getFlipDuration(id) {
+  async getFlipDuration(id, ilk) {
     try {
-      const flip = await this._flipEthAdapter().bids(id);
+      const flip =
+        ilk === 'ETH-A'
+          ? await this._flipEthAdapter().bids(id)
+          : await this._flipBatAdapter().bids(id);
       return {
         end: new BigNumber(flip.end).times(1000),
         tic: flip.tic ? new BigNumber(flip.tic).times(1000) : new BigNumber(0)
