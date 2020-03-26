@@ -15,8 +15,8 @@ import {
 } from 'theme-ui';
 import CollapseToggle from './CollapseToggle';
 
-const IntroInfoCard = ({ title, text, action, forceExpanded }) => {
-  const [collapsed, setCollapsed] = useState(false);
+const IntroInfoCard = ({ title, text, action, forceExpanded, collapsed:isCollapsed }) => {
+  const [collapsed, setCollapsed] = useState(isCollapsed || false);
   return (
     <Box
       sx={{
@@ -48,7 +48,7 @@ const IntroInfoCard = ({ title, text, action, forceExpanded }) => {
       </Flex>
       {collapsed ? null : (
         <>
-          <Box px="6" pb="4">
+          <Box px="6" pb="3">
             {text}
           </Box>
           {action}
