@@ -60,6 +60,26 @@ export default class ValidatorService extends PublicService {
     });
   }
 
+  async fetchFlipAuctionsByIds(ids) {
+    let currentTime = new Date().getTime();
+    const queryDate = new Date(currentTime - this.backInTime);
+
+    const variables = {
+      sources: [this.flipEthAddress, this.flipBatAddress],
+      auctionIds: ids,
+      fromDate: queryDate
+    };
+
+    const response = await this.getQueryResponse(
+      this._cacheAPI,
+      gqlQueries.specificAuctionEvents,
+      'setAuctionsEvents',
+      variables
+    );
+
+    return response.allLeveragedEvents.nodes;
+  }
+
   async fetchFlopAuctions(shouldSync = false) {
     let currentTime = new Date().getTime();
     const timePassed = currentTime - this.flopAuctionsLastSynced;
@@ -191,8 +211,8 @@ export default class ValidatorService extends PublicService {
     try {
       const bid =
         type === 'flip'
-          ? this._flipIlkAdapter(ilk).bids(id)
-          : this._flop().bids(id);
+          ? await this._flipIlkAdapter(ilk).bids(id)
+          : await this._flop().bids(id);
       return {
         end: new BigNumber(bid.end).times(1000),
         tic: bid.tic ? new BigNumber(bid.tic).times(1000) : new BigNumber(0)

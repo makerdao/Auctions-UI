@@ -18,7 +18,7 @@ import useSystemStore from '../stores/systemStore';
 
 const Index = () => {
   const { maker, web3Connected } = useMaker();
-  const auctions = useAuctionsStore(state => state.auctions);
+  const auctions = useAuctionsStore(state => state.flipAuctions);
   const fetchAuctions = useAuctionsStore(state => state.fetchAllFlip);
   // const fetchAuctionsSet = useAuctionsStore(state => state.fetchSet);
   const fetchFlopStepSize = useAuctionsStore(state => state.fetchFlopStepSize);
@@ -154,6 +154,7 @@ const Index = () => {
               stepSize={stepSize}
               auctions={auctions}
               type="flip"
+              ilk={selectedIlk}
             />
           )}
         </>

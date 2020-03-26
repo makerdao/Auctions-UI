@@ -146,14 +146,16 @@ const selectors = {
     return pageEnd - (auctions || []).length < 0;
   },
 
-  filteredAuctions: () => state => {
+  filteredAuctions: type => state => {
     const {
       filterByIdValue,
-      auctions,
+      auctions: flopAuctions,
+      flipAuctions,
       sortBy,
       filterByBidderValue,
       filterByNotCompleted
     } = state;
+    const auctions = type === 'flip' ? flipAuctions : flopAuctions;
     if (!auctions) return null;
     let ids = sorters[sortBy](auctions);
 
@@ -177,6 +179,7 @@ const selectors = {
 
 const [useAuctionsStore, updateState] = create((set, get) => ({
   auctions: null,
+  flipAuctions: null,
   flopStepSize: 0,
   pageStart: 0,
   pageEnd: 10,
@@ -276,7 +279,27 @@ const [useAuctionsStore, updateState] = create((set, get) => ({
       'flip',
       ilk
     );
-    set({ auctions: transformedAuctions });
+    set({ flipAuctions: transformedAuctions });
+  },
+
+  fetchFlipSet: async (ids, ilk) => {
+    setTimeout(async () => {
+      console.log('fetching set: ', ids);
+      const service = maker.service(AUCTION_DATA_FETCHER);
+      const auctions = (await service.fetchFlipAuctionsByIds(ids)).filter(
+        x => x.ilk === ilk
+      );
+      const transformedAuctions = await transformEvents(
+        auctions,
+        service,
+        'flip',
+        ilk
+      );
+
+      const currentState = get().flipAuctions || {};
+      const updatedState = Object.assign({}, currentState, transformedAuctions);
+      set({ flipAuctions: updatedState });
+    }, 500);
   },
 
   fetchFlopStepSize: async maker => {
