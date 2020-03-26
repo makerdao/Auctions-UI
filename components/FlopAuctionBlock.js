@@ -5,7 +5,7 @@ import useMaker from '../hooks/useMaker';
 import { Text, jsx, Grid, Box, Flex, Link as SLink } from 'theme-ui';
 import BigNumber from 'bignumber.js';
 import Moment from 'react-moment';
-import { etherscanLink } from '../utils';
+import { etherscanLink, formatAddress } from '../utils';
 import MiniFormLayout from './MiniFormLayout';
 import useAuctionActions from '../hooks/useAuctionActions';
 import useBalances from '../hooks/useBalances';
@@ -61,7 +61,7 @@ const AuctionEvent = ({
     [
       'Sender',
       <a href={etherscanLink(sender, network)} target="_blank">
-        <SLink> {sender.slice(0, 7) + '...' + sender.slice(-4)}</SLink>
+        <SLink> {formatAddress(sender)}</SLink>
       </a>,
       {
         fontWeight: maker.currentAddress() === sender ? 500 : 400
@@ -70,7 +70,7 @@ const AuctionEvent = ({
     [
       'Tx',
       <a href={etherscanLink(tx, network)} target="_blank">
-        <SLink> {tx.slice(0, 7) + '...' + tx.slice(-4)}</SLink>
+        <SLink> {formatAddress(tx)}</SLink>
       </a>
     ]
   ];
@@ -209,14 +209,18 @@ const byTimestamp = (prev, next) => {
   return 0;
 };
 
-const checkUserBidStatus = (lastEvent, userAddress) => {
-  const { type , fromAddress } = lastEvent;
+// Logic like this works on the assumption that
+// all events for a given auction will be present
+// and they will be sorted in descending order by timestamp
+const checkUserBidStatus = (events, userAddress) => {
+  const { type , fromAddress } = events[0];
   if (type !== 'Kick' && type !== 'Deal' && userAddress === fromAddress) {
     return TOP_BIDDER;
   }
 
-  if (type === 'Deal' && userAddress === fromAddress) {
-    return WINNER;
+  if (type === 'Deal') {
+    const { fromAddress: bidderAddress } = events[1];
+    if( bidderAddress.toLowerCase() === userAddress.toLowerCase() ) return WINNER;
   }
 
   return null;
@@ -231,14 +235,12 @@ export default ({ events, id: auctionId, end, tic, stepSize, allowances }) => {
   const fetchAuctionsSet = useAuctionsStore(state => state.fetchSet);
   const sortedEvents = events.sort(byTimestamp); // DEAL , [...DENT] , KICK ->
 
-  const lastEvent = sortedEvents[0];
-  const userAddress= maker.currentAddress();
-
-  const chickenDinner = checkUserBidStatus(lastEvent, userAddress);
-
-  const { bid: latestBid, lot: latestLot } = sortedEvents.find(
+  const winnerSummary = {};
+  const { bid: latestBid, lot: latestLot, fromAddress: latestBidder, hash: latestHash } = sortedEvents.find(
     event => event.type != 'Deal'
   );
+
+  const chickenDinner = checkUserBidStatus(sortedEvents, maker.currentAddress());  
 
   const [justBidded, setJustBidded] = useState(false);
 
@@ -255,6 +257,8 @@ export default ({ events, id: auctionId, end, tic, stepSize, allowances }) => {
   // if the auction has been dealt, it must be over
   if (sortedEvents[0].type === 'Deal') {
     auctionStatus = COMPLETED;
+    winnerSummary.address = latestBidder;
+    winnerSummary.tx = latestHash;
     // if `tic` is greater than 0, then a bid has been submitted. in this case...
     //  1. if the current time is later than `end`, the auction has finished, it just hasn't been dealt yet
     //  2. if `tic` is less than the current time, the auction can also be dealt
@@ -337,6 +341,7 @@ export default ({ events, id: auctionId, end, tic, stepSize, allowances }) => {
       pill={
         chickenDinner && UserBidStatusPills[chickenDinner]
       }
+      winnerSummary={winnerSummary}
       hasDent={hasDent}
       end={end}
       tic={tic}
