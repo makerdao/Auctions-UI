@@ -187,25 +187,15 @@ export default class ValidatorService extends PublicService {
     } catch (err) {}
   }
 
-  async getFlopDuration(id) {
+  async getAuctionDuration(id, type, ilk) {
     try {
-      const flop = await this._flop().bids(id);
+      const bid =
+        type === 'flip'
+          ? this._flipIlkAdapter(ilk).bids(id)
+          : this._flop().bids(id);
       return {
-        end: new BigNumber(flop.end).times(1000),
-        tic: flop.tic ? new BigNumber(flop.tic).times(1000) : new BigNumber(0)
-      };
-    } catch (err) {}
-  }
-
-  async getFlipDuration(id, ilk) {
-    try {
-      const flip =
-        ilk === 'ETH-A'
-          ? await this._flipEthAdapter().bids(id)
-          : await this._flipBatAdapter().bids(id);
-      return {
-        end: new BigNumber(flip.end).times(1000),
-        tic: flip.tic ? new BigNumber(flip.tic).times(1000) : new BigNumber(0)
+        end: new BigNumber(bid.end).times(1000),
+        tic: bid.tic ? new BigNumber(bid.tic).times(1000) : new BigNumber(0)
       };
     } catch (err) {}
   }
@@ -239,6 +229,13 @@ export default class ValidatorService extends PublicService {
 
   get joinDaiAdapterAddress() {
     return this._joinDaiAdapter().address;
+  }
+
+  _flipIlkAdapter(ilk) {
+    return {
+      'ETH-A': this._flipEthAdapter(),
+      'BAT-A': this._flipBatAdapter()
+    }[ilk];
   }
 
   _flipEthAdapter() {

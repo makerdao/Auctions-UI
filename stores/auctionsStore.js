@@ -11,10 +11,7 @@ const transformEvents = async (auctions, service, type, ilk) => {
   await Promise.all(
     Object.keys(groupedEvents).map(async id => {
       try {
-        const { end, tic } =
-          type === 'flip'
-            ? await service.getFlipDuration(id, ilk)
-            : await service.getFlopDuration(id);
+        const { end, tic } = await service.getAuctionDuration(id, type, ilk);
         auctionsData[id.toString()] = {
           auctionId: id,
           end,
