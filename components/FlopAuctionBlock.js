@@ -15,12 +15,27 @@ import {
   IN_PROGRESS,
   COMPLETED,
   CAN_BE_DEALT,
-  CAN_BE_RESTARTED
+  CAN_BE_RESTARTED,
+  WINNER,
+  TOP_BIDDER
 } from '../constants';
 import useAuctionsStore, { selectors } from '../stores/auctionsStore';
 import InfoPill from './InfoPill';
 import { TX_SUCCESS, AUCTION_DATA_FETCHER } from '../constants';
 import ReactGA from 'react-ga';
+
+const UserBidStatusPills = {
+  [TOP_BIDDER]: (
+    <InfoPill bg="yellow" color="orange">
+      Current Winning Bidder
+    </InfoPill>
+  ),
+  [WINNER]: (
+    <InfoPill bg='lightCyan' color='primaryActive'>
+      You have won this auction
+    </InfoPill>
+  )
+}
 
 const AuctionEvent = ({
   type,
@@ -194,6 +209,19 @@ const byTimestamp = (prev, next) => {
   return 0;
 };
 
+const checkUserBidStatus = (lastEvent, userAddress) => {
+  const { type , fromAddress } = lastEvent;
+  if (type !== 'Kick' && type !== 'Deal' && userAddress === fromAddress) {
+    return TOP_BIDDER;
+  }
+
+  if (type === 'Deal' && userAddress === fromAddress) {
+    return WINNER;
+  }
+
+  return null;
+}
+
 export default ({ events, id: auctionId, end, tic, stepSize, allowances }) => {
   const { maker } = useMaker();
   const [currentLotBidAmount, setCurrentLotBidAmount] = useState(BigNumber(0));
@@ -202,9 +230,11 @@ export default ({ events, id: auctionId, end, tic, stepSize, allowances }) => {
   const { callFlopDent, callFlopDeal } = useAuctionActions();
   const fetchAuctionsSet = useAuctionsStore(state => state.fetchSet);
   const sortedEvents = events.sort(byTimestamp); // DEAL , [...DENT] , KICK ->
-  const chickenDinner =
-    sortedEvents[0].type !== 'Kick' &&
-    maker.currentAddress() === sortedEvents[0].fromAddress;
+
+  const lastEvent = sortedEvents[0];
+  const userAddress= maker.currentAddress();
+
+  const chickenDinner = checkUserBidStatus(lastEvent, userAddress);
 
   const { bid: latestBid, lot: latestLot } = sortedEvents.find(
     event => event.type != 'Deal'
@@ -305,11 +335,7 @@ export default ({ events, id: auctionId, end, tic, stepSize, allowances }) => {
       auctionStatus={auctionStatus}
       auctionId={auctionId}
       pill={
-        !chickenDinner ? null : (
-          <InfoPill bg="yellow" color="orange">
-            Current Winning Bidder
-          </InfoPill>
-        )
+        chickenDinner && UserBidStatusPills[chickenDinner]
       }
       hasDent={hasDent}
       end={end}
