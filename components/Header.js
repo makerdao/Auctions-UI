@@ -17,7 +17,8 @@ export default () => {
   const featureFlags = useSystemStore(state => state.featureFlags);
   const hasFlag = true;
   const hasFlipFlag = featureFlags.includes('flip-ui');
-  
+  const hasSubNav = pathname.includes('/flip/');
+
   useEffect(() => {
     if (window) {
       setShow(window.location.search.includes('show-test-ui'));
@@ -89,10 +90,10 @@ export default () => {
           }}
         >
           {!hasFlipFlag ? null : (
-            <Link href="/flip">
+            <Link href="/flip/eth">
               <NavLink
                 sx={{
-                  fontWeight: pathname === '/flip' ? 'bold' : 'normal',
+                  fontWeight: pathname === '/flip/eth' ? 'bold' : 'normal',
                   cursor: 'default',
                   p: 2,
                   px: [4, 6]
@@ -174,6 +175,44 @@ export default () => {
         </>
 }
       </Flex>
+      {!hasSubNav ? null : <Flex>
+        <Flex
+          as="nav"
+          sx={{
+            ml: [0, 'auto'],
+            mr: [null, 6]
+          }}
+        >
+          
+            <Link href="/flip/eth">
+              <NavLink
+                sx={{
+                  fontWeight: pathname === '/flip/eth' ? 500 : 'normal',
+                  cursor: 'default',
+                  p: 2,
+                  px: [4, 6]
+                }}
+              >
+                ETH Collateral
+              </NavLink>
+            </Link>
+          
+            <Link href="/flip/bat">
+              <NavLink
+                sx={{
+                  fontWeight: pathname === '/flip/bat' ? 500 : 'normal',
+                  cursor: 'default',
+                  p: 2,
+                  px: [4, 6]
+                }}
+              >
+                BAT Collateral
+              </NavLink>
+            </Link>
+
+        </Flex>
+
+        </Flex>}
     </GuttedLayout>
   );
 };
