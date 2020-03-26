@@ -1,7 +1,8 @@
 /** @jsx jsx */
 
-import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { Heading, jsx, Grid, Box, Flex, Text } from 'theme-ui';
+import React, { useState, useEffect } from 'react';
+import { Heading, jsx, Grid, Box, Flex, Text, Link } from 'theme-ui';
+import useMaker from '../hooks/useMaker';
 
 import EventsList from './AuctionEventsList';
 import CollapseToggle from './CollapseToggle';
@@ -13,6 +14,7 @@ import {
   CAN_BE_RESTARTED,
   ZERO
 } from '../constants';
+import { formatAddress, etherscanLink } from '../utils';
 
 export default ({
   latestEvent,
@@ -25,13 +27,15 @@ export default ({
   forceExpanded,
   hasDent,
   pill,
-  orderSummary
+  orderSummary,
+  winnerSummary
 }) => {
   const [timer, setTimer] = useState({
     end: undefined,
     tic: undefined
   });
   const [collapsed, setCollapsed] = useState(false);
+  const { network } = useMaker();
   const auctionStatusHeadings = {
     [COMPLETED]: 'Auction completed',
     [IN_PROGRESS]: (
@@ -212,7 +216,10 @@ export default ({
             {auctionStatus === COMPLETED ? (
               <Box variant="styles.statusBox.warning">
                 {' '}
-                {auctionStatusHeadings[COMPLETED]}.{' '}
+                {auctionStatusHeadings[COMPLETED]}. The winner is{' '}
+                <a href={etherscanLink(winnerSummary.address, network)} target="_blank" rel="noopener noreferrer">
+                  <Link>{`${formatAddress(winnerSummary.address)}`}</Link>
+                </a>
               </Box>
             ) : (
               <Grid columns={1}>

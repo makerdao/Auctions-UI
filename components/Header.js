@@ -9,6 +9,7 @@ import Logo from './Logo';
 import { useRouter } from 'next/router';
 import ReactGA from 'react-ga';
 import useSystemStore from '../stores/systemStore';
+import { formatAddress } from '../utils';
 
 export default () => {
   const { maker, network, web3Connected, setWeb3Connected } = useMaker();
@@ -56,9 +57,6 @@ export default () => {
   };
 
   // autoConnect();
-
-  const formatAccountAddress = address =>
-    address.slice(0, 7) + '...' + address.slice(-4);
 
   return (
     <GuttedLayout>
@@ -168,7 +166,7 @@ export default () => {
                 </span>
                 <Text>Metamask</Text>
               </Flex>
-              <Text>{formatAccountAddress(maker.currentAddress())}</Text>
+              <Text>{formatAddress(maker.currentAddress())}</Text>
             </Flex>
           )}
         </Flex>
