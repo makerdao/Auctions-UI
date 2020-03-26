@@ -59,3 +59,7 @@ export const getBlockNumber = async rpcUrl => {
   if (!result) throw new Error('Failed to fetch block number');
   return parseInt(result, 16);
 };
+
+export const formatAddress = address =>
+  address.slice(0, 7) + '...' + address.slice(-4);
+

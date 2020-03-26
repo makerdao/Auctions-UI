@@ -13,6 +13,10 @@ export const TX_PENDING = 'pending';
 export const TX_SUCCESS = 'success';
 export const TX_ERROR = 'error';
 
+// user bid status -------
+export const TOP_BIDDER='bidder';
+export const WINNER = 'winner';
+
 export const REFETCH_BLOCK_INTERVAL = 5;
 
 export const balanceRounding = {

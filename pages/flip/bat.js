@@ -1,20 +1,24 @@
 /** @jsx jsx */
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
-import useMaker from '../hooks/useMaker';
-import useBalances from '../hooks/useBalances';
 import * as _ from 'lodash';
 import BigNumber from 'bignumber.js';
-import { Text, jsx, Flex, Button, Heading, Spinner } from 'theme-ui';
-import FlipAccountManager from '../components/FlipAccountManager';
-import GuttedLayout from '../components/GuttedLayout';
-import { AUCTION_DATA_FETCHER } from '../constants';
 import Moment from 'react-moment';
-import AuctionsLayout from '../components/AuctionsLayout';
-import useAuctionsStore, { selectors } from '../stores/auctionsStore';
-import useAllowances from '../hooks/useAllowances';
 import ReactGA from 'react-ga';
-import useSystemStore from '../stores/systemStore';
+import { Text, jsx, Flex, Button, Heading, Spinner } from 'theme-ui';
+
+import { AUCTION_DATA_FETCHER } from '../../constants';
+
+import useMaker from '../../hooks/useMaker';
+import useBalances from '../../hooks/useBalances';
+import useAllowances from '../../hooks/useAllowances';
+
+import useAuctionsStore, { selectors } from '../../stores/auctionsStore';
+import useSystemStore from '../../stores/systemStore';
+
+import FlipAccountManager from '../../components/FlipAccountManager';
+import GuttedLayout from '../../components/GuttedLayout';
+import AuctionsLayout from '../../components/AuctionsLayout';
 
 const Index = () => {
   const { maker, web3Connected } = useMaker();
@@ -105,7 +109,7 @@ const Index = () => {
               py: 7
             }}
           >
-            Collateral Auctions
+            BAT Collateral Auctions
           </Heading>
 
           <FlipAccountManager web3Connected={web3Connected} />
