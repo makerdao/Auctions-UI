@@ -32,7 +32,7 @@ const Index = () => {
   const [{ isSyncing, lastSynced }, sync] = useState({});
   const featureFlags = useSystemStore(state => state.featureFlags);
   const hasFlipFlag = featureFlags.includes('flip-ui');
-  const selectedIlk = 'ETH-A'; //TODO add a UI filter
+  const ILK = 'BAT-A';
 
   useEffect(() => {
     if (window !== undefined) {
@@ -43,7 +43,7 @@ const Index = () => {
   useEffect(() => {
     if (web3Connected) {
       if (!auctions) {
-        fetchAuctions(maker, selectedIlk);
+        fetchAuctions(maker, ILK);
         fetchFlopStepSize(maker);
       }
     }
@@ -158,7 +158,7 @@ const Index = () => {
               stepSize={stepSize}
               auctions={auctions}
               type="flip"
-              ilk={selectedIlk}
+              ilk={'BAT-A'}
             />
           )}
         </>
