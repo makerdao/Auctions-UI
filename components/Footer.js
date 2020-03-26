@@ -55,6 +55,19 @@ const Footer = () => {
           Terms of Service
         </NavLink>
       </Link>
+      <Link href="/faq">
+        <NavLink
+          p={2}
+          variant="footer"
+          sx={{
+            // px: [4, 6],
+            ml: [0, 6],
+            pr: 0
+          }}
+        >
+          FAQ
+        </NavLink>
+      </Link>
     </Flex>
   );
 };
