@@ -4,6 +4,7 @@ import Head from 'next/head';
 import * as _ from 'lodash';
 import BigNumber from 'bignumber.js';
 import IntroInfoCard from '../components/IntroInfoCard';
+import HwInstructionsMDX from '../text/hwInstructions.mdx';
 import {
   Heading,
   jsx,
@@ -14,6 +15,8 @@ import GuttedLayout from '../components/GuttedLayout';
 export function fromRad(value) {
   return BigNumber(value).shiftedBy(-45);
 }
+
+
 
 const questionAnswerPairs = [
   {
@@ -72,12 +75,19 @@ const questionAnswerPairs = [
   },
   {
     question: `How are debt auctions different from collateral auctions?`,
-    answer: <Text>Collateral auctions occur in two phases - the first phase allows bidders to adjust the bid amounts,
-            and the second phase allows bidders to decrease the collateral lot size requested with the bid amount constant.
-            <br/>
-            <br/>
-            Debt auctions only occur in a single phase which only allows bidders to decrease the MKR lot size requested for a fixed dai bid amount.
-            </Text>
+    answer: (
+      <Text>
+        Collateral auctions occur in two phases - the first phase allows bidders to adjust the bid amounts,
+        and the second phase allows bidders to decrease the collateral lot size requested with the bid amount constant.
+        <br />
+        <br />
+        Debt auctions only occur in a single phase which only allows bidders to decrease the MKR lot size requested for a fixed dai bid amount.
+      </Text>
+    )
+  },
+  {
+    question: `How to Hardware Wallet with debt auctions?`,
+    answer: <HwInstructionsMDX/>
   }
 ]
 
