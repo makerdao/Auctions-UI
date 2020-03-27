@@ -27,3 +27,6 @@ export const balanceRounding = {
 
 // Numbers
 export const ZERO = new BigNumber(0);
+
+// How many hours back in time we should look for events 
+export const CUT_OFF_PERIOD = 1000 * 60 * 60 * 360; // 360 hours -> 15 days

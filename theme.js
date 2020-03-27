@@ -45,7 +45,8 @@ export default {
     blackThree: '#333',
     border: '#D4D9E1',
     white: '#fff',
-    grayishBlue: '#708390',
+    grayishBlue: '#9FAFB9',
+    darkGrayishBlue: '#708390',
     yellow: '#FFF1CF',
     orange: '#E67002',
     lightOrange: '#FFF9ED',
@@ -205,6 +206,11 @@ export default {
     smallDanger: {
       fontSize: 1,
       color: 'red'
+    },
+    muted: {
+      color: 'grayishBlue',
+      fontSize: 4,
+      lineHeight: 'body'
     }
   },
   links: {
@@ -238,7 +244,7 @@ export default {
       minor: {
         fontSize: 1,
         fontWeight: 'body',
-        color: 'grayishBlue'
+        color: 'darkGrayishBlue'
       }
     },
     root: {
