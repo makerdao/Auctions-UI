@@ -19,6 +19,7 @@ import useSystemStore from '../../stores/systemStore';
 import FlipAccountManager from '../../components/FlipAccountManager';
 import GuttedLayout from '../../components/GuttedLayout';
 import AuctionsLayout from '../../components/AuctionsLayout';
+import NoAuctions from '../../components/NoAuctions';
 
 const Index = () => {
   const { maker, web3Connected } = useMaker();
@@ -143,13 +144,9 @@ const Index = () => {
             >
               <Spinner />
             </Flex>
-          ) : !Object.keys(auctions).length ? (
-            <Flex>
-              <Text variant="boldBody">
-                No auctions found, check back later.
-              </Text>
-            </Flex>
-          ) : (
+          ) : !Object.keys(auctions).length
+            ? <NoAuctions/>
+            : (
             // <AuctionsLayout auctions={auctions} type="flip" />
 
             <AuctionsLayout

@@ -11,6 +11,7 @@ import IntroInfoCard from '../components/IntroInfoCard';
 import IntroMDX from '../text/flopIntro.mdx';
 import Footer from '../components/Footer';
 import TermsConfirm from '../components/TermsConfirm';
+import NoAuctions from '../components/NoAuctions';
 import useAllowances from '../hooks/useAllowances';
 import Moment from 'react-moment';
 import useAuctionsStore from '../stores/auctionsStore';
@@ -183,13 +184,9 @@ const Index = () => {
               >
                 <Spinner />
               </Flex>
-            ) : !Object.keys(auctions).length ? (
-              <Flex>
-                <Text variant="boldBody">
-                  No auctions found, check back later.
-                </Text>
-              </Flex>
-            ) : (
+            ) : !Object.keys(auctions).length
+              ? <NoAuctions/>
+              : (
               <AuctionsLayout
                 allowances={allowances}
                 stepSize={stepSize}

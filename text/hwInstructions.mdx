@@ -1,0 +1,59 @@
+The Auction App enables a number of transactions. If you are a HW Wallet user, you have to approve the input for each transaction. That input includes the Method ID of the method being called, the parameters for the method and the address of the contract being called.
+
+In the following you can see the addresses of the MCD mainnet contracts being called and the Method ID of the function (or selector) being called. You can use this as one source of verification that you actually are calling the correct contracts with your HW Wallet.
+
+### **UNLOCK DAI IN YOUR WALLET**
+```
+Function: approve(address usr, uint256 wad)
+MethodID: 0x095ea7b3
+Number of parameters: 2
+Target contract: "MCD_DAI": "0x6B175474E89094C44Da98b954EedeAC495271d0F"
+```
+
+### **UNLOCK DAI IN THE VAT**
+```
+Function: hope(address usr)
+MethodID: 0xa3b22fc4
+Number of parameters: 1
+Target contract: "MCD_VAT": "0x35D1b3F3D7966A1DFe207aa4514C12a259A0492B"
+```
+
+### **UNLOCK DAI IN THE DEBT AUCTION**
+```
+Function: hope(address usr)
+MethodID: 0xa3b22fc4
+Number of parameters: 1
+Target contract: "MCD_VAT": "0x35D1b3F3D7966A1DFe207aa4514C12a259A0492B"
+```
+
+### **DEPOSIT DAI INTO THE VAT**
+```
+Function: join(address usr, uint256 wad)
+MethodID: 0x3b4da69f
+Number of parameters: 2
+Target contract: "MCD_JOIN_DAI": "0x9759A6Ac90977b93B58547b4A71c78317f391A28"
+```
+
+### **INSTANT BID / CUSTOM BID**
+```
+Function: dent(uint256 id, uint256 lot, uint256 bid)
+MethodID: 0x5ff3a382
+Number of parameters: 3
+Target contract:   "MCD_FLOP": "0x4D95A049d5B0b7d32058cd3F2163015747522e99"
+```
+
+### **DEAL**
+```
+Function: deal(uint256 id)
+MethodID: 0xc959c42b
+Number of parameters: 1
+Target contract:   "MCD_FLOP": "0x4D95A049d5B0b7d32058cd3F2163015747522e99"
+```
+
+### **WITHDRAW DAI FROM VAT**
+```
+Function: exit(address usr, uint256 wad)
+MethodID: 0xef693bed
+Number of parameters: 2
+Target contract:  "MCD_JOIN_DAI": "0x9759A6Ac90977b93B58547b4A71c78317f391A28"
+```
