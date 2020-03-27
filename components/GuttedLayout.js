@@ -1,5 +1,4 @@
 import { Heading, Text, jsx, Box, Button, Styled, Input, Flex } from 'theme-ui';
-import CookieNotice from './CookieNotice';
 
 export default ({ children, maxWidth = '1140px' }) => {
   return (
@@ -15,7 +14,6 @@ export default ({ children, maxWidth = '1140px' }) => {
         }}
       >
         {children}
-        <CookieNotice />
       </Box>
     </Flex>
   );

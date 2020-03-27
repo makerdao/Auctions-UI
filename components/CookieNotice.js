@@ -53,11 +53,12 @@ const CookieNotice = () => {
           }}
         >
           By using this website you agree to our{' '}
-          <Link href="/terms">
+          <Link href="/privacy">
             <SLink
               sx={{
                 variant: 'styles.a',
-                display: 'inline'
+                display: 'inline',
+                cursor: 'pointer'
               }}
             >
               privacy policy
