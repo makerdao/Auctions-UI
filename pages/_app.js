@@ -4,6 +4,7 @@ import MakerProvider from '../providers/MakerProvider';
 import { ThemeProvider, Styled, Box } from 'theme-ui';
 import theme from '../theme';
 import Header from '../components/Header';
+import CookieNotice from '../components/CookieNotice';
 import ReactGA from 'react-ga';
 import { sysAPI } from '../stores/systemStore';
 import { updateState } from '../stores/auctionsStore';
@@ -47,6 +48,7 @@ class MyApp extends App {
             <Box pt={4}>
               <Component {...pageProps} />
             </Box>
+            <CookieNotice />
           </MakerProvider>
         </Styled.root>
       </ThemeProvider>
