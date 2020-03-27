@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Text, Flex, Link } from 'theme-ui';
-import { ReactComponent as Cross } from '../assets/cross.svg';
+import { Text, Button, Flex, Link as SLink } from 'theme-ui';
+import Cross from '../assets/cross.svg';
+import Link from 'next/link';
 
 const CookieNotice = () => {
   const PRIVACY_ACCEPTED_DATE = 'makerdao_auctions_privacy_accepted_date';
@@ -28,33 +29,56 @@ const CookieNotice = () => {
   return show ? (
     <Flex
       sx={{
-        alignItems: 'center',
-        background: '#ffffff',
-        border: '1px solid #d4d9e1',
-        boxSizing: 'border-box',
-        boxShadow: '0 1px 2px rgba(90, 90, 90, 0.06)',
-        borderRadius: 24,
-        textAlign: 'left',
+        position: 'absolute',
+        bottom: 0,
+        width: '100%',
+        justifyContent: 'center',
         position: 'fixed',
-        bottom: '24px',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        zIndex: '3000',
-        padding: '8px 18px 10px',
-        whiteSpace: 'no-wrap',
-
-        '@media (max-width: 415px)': {
-          bottom: '0',
-          borderRadius: 'unset',
-          whiteSpace: 'normal',
-          width: '100%'
-        }
+        p: 3
       }}
     >
-      <Text sx={{ fontSize: '14px', color: '#231536', flexShrink: 1, mr: 2 }}>
-        By using this website you agree to our <Link>privacy policy</Link>
-      </Text>
-      <Cross sx={{ width: '10px', cursor: 'pointer' }} onClick={handleClose} />
+      <Flex
+        sx={{
+          variant: 'styles.roundedCard',
+          py: 3,
+          alignItems: 'center',
+          boxShadow: '0 1px 2px rgba(90, 90, 90, 0.06)',
+          borderRadius: 24
+        }}
+      >
+        <Text
+          sx={{
+            mr: 2,
+            variant: 'text.inputText'
+          }}
+        >
+          By using this website you agree to our{' '}
+          <Link href="/terms">
+            <SLink
+              sx={{
+                variant: 'styles.a',
+                display: 'inline'
+              }}
+            >
+              privacy policy
+            </SLink>
+          </Link>
+        </Text>
+        <Button
+          sx={{ cursor: 'pointer' }}
+          variant="clear"
+          onClick={handleClose}
+        >
+          <Flex
+            sx={{
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <Cross />
+          </Flex>
+        </Button>
+      </Flex>
     </Flex>
   ) : null;
 };
