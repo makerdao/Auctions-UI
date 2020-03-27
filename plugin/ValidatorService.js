@@ -3,11 +3,12 @@ import tracksTransactions from './tracksTransactions';
 import BigNumber from 'bignumber.js';
 import { toRad, fromWei, toWei, fromWad } from './utils';
 import * as gqlQueries from '../queries';
+import { CUT_OFF_PERIOD } from '../constants';
 
 export default class ValidatorService extends PublicService {
   flipAuctionsLastSynced = 0;
   flopAuctionsLastSynced = 0;
-  backInTime = 1000 * 60 * 60 * 360; //  360 hours - 15days;
+  backInTime = CUT_OFF_PERIOD;
 
   constructor(name = 'validator') {
     super(name, ['web3', 'smartContract']);

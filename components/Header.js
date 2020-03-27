@@ -9,6 +9,7 @@ import Logo from './Logo';
 import { useRouter } from 'next/router';
 import ReactGA from 'react-ga';
 import useSystemStore from '../stores/systemStore';
+import { formatAddress } from '../utils';
 
 export default () => {
   const { maker, network, web3Connected, setWeb3Connected } = useMaker();
@@ -17,7 +18,8 @@ export default () => {
   const featureFlags = useSystemStore(state => state.featureFlags);
   const hasFlag = true;
   const hasFlipFlag = featureFlags.includes('flip-ui');
-  
+  const hasSubNav = pathname.includes('/flip/');
+
   useEffect(() => {
     if (window) {
       setShow(window.location.search.includes('show-test-ui'));
@@ -56,9 +58,6 @@ export default () => {
 
   // autoConnect();
 
-  const formatAccountAddress = address =>
-    address.slice(0, 7) + '...' + address.slice(-4);
-
   return (
     <GuttedLayout>
       <Flex
@@ -89,10 +88,10 @@ export default () => {
           }}
         >
           {!hasFlipFlag ? null : (
-            <Link href="/flip">
+            <Link href="/flip/eth">
               <NavLink
                 sx={{
-                  fontWeight: pathname === '/flip' ? 'bold' : 'normal',
+                  fontWeight: pathname === '/flip/eth' ? 'bold' : 'normal',
                   cursor: 'default',
                   p: 2,
                   px: [4, 6]
@@ -167,13 +166,51 @@ export default () => {
                 </span>
                 <Text>Metamask</Text>
               </Flex>
-              <Text>{formatAccountAddress(maker.currentAddress())}</Text>
+              <Text>{formatAddress(maker.currentAddress())}</Text>
             </Flex>
           )}
         </Flex>
         </>
 }
       </Flex>
+      {!hasSubNav ? null : <Flex>
+        <Flex
+          as="nav"
+          sx={{
+            ml: [0, 'auto'],
+            mr: [null, 6]
+          }}
+        >
+          
+            <Link href="/flip/eth">
+              <NavLink
+                sx={{
+                  fontWeight: pathname === '/flip/eth' ? 500 : 'normal',
+                  cursor: 'default',
+                  p: 2,
+                  px: [4, 6]
+                }}
+              >
+                ETH Collateral
+              </NavLink>
+            </Link>
+          
+            <Link href="/flip/bat">
+              <NavLink
+                sx={{
+                  fontWeight: pathname === '/flip/bat' ? 500 : 'normal',
+                  cursor: 'default',
+                  p: 2,
+                  px: [4, 6]
+                }}
+              >
+                BAT Collateral
+              </NavLink>
+            </Link>
+
+        </Flex>
+
+        </Flex>}
     </GuttedLayout>
   );
 };

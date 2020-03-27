@@ -13,6 +13,10 @@ export const TX_PENDING = 'pending';
 export const TX_SUCCESS = 'success';
 export const TX_ERROR = 'error';
 
+// user bid status -------
+export const TOP_BIDDER='bidder';
+export const WINNER = 'winner';
+
 export const REFETCH_BLOCK_INTERVAL = 5;
 
 export const balanceRounding = {
@@ -23,3 +27,6 @@ export const balanceRounding = {
 
 // Numbers
 export const ZERO = new BigNumber(0);
+
+// How many hours back in time we should look for events 
+export const CUT_OFF_PERIOD = 1000 * 60 * 60 * 360; // 360 hours -> 15 days

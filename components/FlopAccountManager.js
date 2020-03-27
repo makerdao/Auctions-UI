@@ -99,7 +99,7 @@ export default ({ allowances }) => {
                 shouldUnlock={!hasDaiAllowance}
                 unlock={
                   <Grid
-                    gap={2}
+                    gap={4}
                     sx={{
                       variant: 'styles.roundedCard'
                     }}
@@ -126,7 +126,7 @@ export default ({ allowances }) => {
                 shouldUnlock={!hasJoinDaiHope}
                 unlock={
                   <Grid
-                    gap={2}
+                    gap={4}
                     sx={{
                       variant: 'styles.roundedCard'
                     }}
@@ -155,7 +155,7 @@ export default ({ allowances }) => {
                 shouldUnlock={!hasFlopHope}
                 unlock={
                   <Grid
-                    gap={2}
+                    gap={4}
                     sx={{
                       variant: 'styles.roundedCard'
                     }}
