@@ -17,6 +17,10 @@ import {
 } from 'theme-ui';
 import Link from 'next/link';
 
+import getConfig from 'next/config'
+
+const hash = getConfig().publicRuntimeConfig.buildInfo.hash;
+
 const Footer = () => {
   return (
     <Flex
@@ -29,12 +33,23 @@ const Footer = () => {
         // mr: [null, 6]
       }}
     >
-            <ExternalLink href="https://chat.makerdao.com/channel/help" target="_blank">
+      <Text p={2}
+        variant="footer"
+        sx={{
+          pr: 0,
+        }}>
+        Deployed from:
+        <ExternalLink href={`https://github.com/makerdao/auctions-ui/commit/${hash}`} target="_blank">
+          {' '} {hash}
+        </ExternalLink>
+      </Text>
+      <ExternalLink href="https://chat.makerdao.com/channel/help" target="_blank">
         <NavLink
           p={2}
           variant="footer"
           sx={{
             // px: [4, 6],
+            ml: [0, 6],
             pr: 0
           }}
         >
