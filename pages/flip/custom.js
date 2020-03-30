@@ -24,8 +24,9 @@ import useMaker from '../../hooks/useMaker';
 import useSystemStore from '../../stores/systemStore';
 import FlipAccountManager from '../../components/FlipAccountManager';
 import GuttedLayout from '../../components/GuttedLayout';
+import ActionTabs from '../../components/ActionTabs';
 
-const Form = () => {
+const Form = ({ gem }) => {
   const initialValue = '';
   const [idState, setIdState] = useState(initialValue);
   const [bidState, setBidState] = useState(initialValue);
@@ -36,15 +37,20 @@ const Form = () => {
   const [txErrorMsg, setTxErrorMsg] = useState(undefined);
 
   const { maker } = useMaker();
-  const { callEthTend } = useAuctionActions();
+  const { callEthTend, callBatTend } = useAuctionActions();
 
   const errorMessages = [];
   if (txErrorMsg) {
     errorMessages.push(txErrorMsg);
   }
 
+  const actions = {
+    BAT: callBatTend,
+    ETH: callEthTend
+  };
+
   const _onSubmit = () => {
-    const txObject = callEthTend(idState, lotState, bidState);
+    const txObject = actions[gem](idState, lotState, bidState);
     setTxErrorMsg(undefined);
     maker.service('transactionManager').listen(txObject, {
       initialized: () => {
@@ -102,6 +108,7 @@ const Form = () => {
               borderWidth: '1px',
               borderStyle: 'solid',
               borderColor: 'border',
+              bg: 'white',
               borderRadius: 5,
               fontSize: 4,
               py: 3,
@@ -135,6 +142,7 @@ const Form = () => {
               borderWidth: '1px',
               borderStyle: 'solid',
               borderColor: 'border',
+              bg: 'white',
               borderRadius: 5,
               fontSize: 4,
               py: 3,
@@ -167,6 +175,7 @@ const Form = () => {
                 borderWidth: '1px',
                 borderStyle: 'solid',
                 borderColor: 'border',
+                bg: 'white',
                 borderRadius: 5,
                 fontSize: 4,
                 py: 3,
@@ -243,7 +252,38 @@ const CustomAuction = () => {
           alignItems: ['flex-start', 'center']
         }}
       >
-        <Form />
+        <ActionTabs
+          actions={[
+            [
+              'ETH Auction',
+              <Grid key="ETH">
+                <Box
+                  sx={{
+                    bg: 'background',
+                    p: 4,
+                    borderRadius: 6
+                  }}
+                >
+                  <Form gem={'ETH'} />
+                </Box>
+              </Grid>
+            ],
+            [
+              'BAT Auction',
+              <Grid key="BAT">
+                <Box
+                  sx={{
+                    bg: 'background',
+                    p: 4,
+                    borderRadius: 6
+                  }}
+                >
+                  <Form gem={'BAT'} />
+                </Box>
+              </Grid>
+            ]
+          ]}
+        />
       </Flex>
     </Box>
   );
