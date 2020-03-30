@@ -44,41 +44,41 @@ const Form = ({ gem }) => {
     errorMessages.push(txErrorMsg);
   }
 
+  const inputsValid = idState && bidState && lotState;
+  const disabled =
+    !inputsValid || !!errorMessages.length || txState === TX_PENDING;
+
   const actions = {
     BAT: callBatTend,
     ETH: callEthTend
   };
 
-  const _onSubmit = () => {
+  const onSubmit = () => {
     const txObject = actions[gem](idState, lotState, bidState);
     setTxErrorMsg(undefined);
     maker.service('transactionManager').listen(txObject, {
       initialized: () => {
-        console.log('tx init');
         setTxState(TX_PENDING);
       },
       pending: tx => {
-        console.log('tx pending', tx);
         setTxState(TX_PENDING);
         setTxMsg(
           'Please wait while the transaction is being mined (this can take a while)'
         );
       },
       mined: tx => {
-        console.log('tx mined', tx);
         setTxState(TX_SUCCESS);
         setTxMsg('Transaction Sucessful!');
-        // setInputState(undefined);
-        // if (onTxFinished) onTxFinished(TX_SUCCESS);
+        setIdState(undefined);
+        setBidState(undefined);
+        setLotState(undefined);
       },
       error: (_, err) => {
-        console.log('tx err', err);
         const errorMsg = _.error.message.split('\n')[0];
         setTxState(TX_ERROR);
         setTxMsg(null);
 
         setTxErrorMsg(`Transaction failed with error: ${errorMsg}`);
-        // if (onTxFinished) onTxFinished(TX_ERROR);
       }
     });
     return txObject;
@@ -205,8 +205,8 @@ const Form = ({ gem }) => {
         <Button
           sx={{ mt: 2 }}
           variant="primary"
-          // disabled={_disabled}
-          onClick={_onSubmit}
+          disabled={disabled}
+          onClick={onSubmit}
         >
           {txState === TX_PENDING ? 'Waiting for Transaction' : 'Submit'}
         </Button>

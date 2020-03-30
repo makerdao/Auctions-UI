@@ -145,26 +145,28 @@ export default class ValidatorService extends PublicService {
   }
 
   @tracksTransactions
-  async flipEthTend(id, size, amount) {
+  async flipEthTend(id, size, amount, { promise }) {
     const lotSizeInWei = this.get('web3')._web3.utils.toWei(size.toString());
     const bidAmountRad = toRad(amount);
 
     return this._flipEthAdapter().tend(
       id,
       lotSizeInWei,
-      bidAmountRad.toFixed()
+      bidAmountRad.toFixed(),
+      { promise }
     );
   }
 
   @tracksTransactions
-  async flipBatTend(id, size, amount) {
+  async flipBatTend(id, size, amount, { promise }) {
     const lotSizeInWei = this.get('web3')._web3.utils.toWei(size.toString());
     const bidAmountRad = toRad(amount);
 
     return this._flipBatAdapter().tend(
       id,
       lotSizeInWei,
-      bidAmountRad.toFixed()
+      bidAmountRad.toFixed(),
+      { promise }
     );
   }
 
