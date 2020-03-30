@@ -11,6 +11,7 @@ import AccountManagerLayout from '../components/AccountManagerLayout';
 import ActionTabs from './ActionTabs';
 import MiniFormLayout from './MiniFormLayout';
 import { formatBalance } from '../utils';
+import { MCD_FLIP_BAT_A, MCD_JOIN_DAI, MCD_FLIP_ETH_A } from '../constants';
 
 export default () => {
   const { maker, web3Connected } = useMaker();
@@ -18,6 +19,7 @@ export default () => {
     vatDaiBalance,
     daiBalance,
     mkrBalance,
+    batBalance,
     joinDaiToAdapter,
     exitDaiFromAdapter
   } = useBalances();
@@ -32,14 +34,9 @@ export default () => {
     hasEthFlipHope,
     hasJoinDaiHope,
     giveDaiAllowance,
-    giveMkrAllowance,
-    giveFlipEthHope,
-    giveJoinDaiHope
+    giveHope,
+    hasHope
   } = useAllowances();
-
-  const [daiApprovePending, setDaiApprovePending] = useState(false);
-  const [mkrApprovePending, setMkrApprovePending] = useState(false);
-  const [hopeApprovePending, setHopeApprovePending] = useState(false);
 
   const [joinAddress, setJoinAddress] = useState('');
 
@@ -48,7 +45,7 @@ export default () => {
       (async () => {
         const joinDaiAdapterAddress = maker
           .service('smartContract')
-          .getContractByName('MCD_JOIN_DAI').address;
+          .getContractByName(MCD_JOIN_DAI).address;
         setJoinAddress(joinDaiAdapterAddress);
       })();
     }
@@ -124,9 +121,9 @@ export default () => {
                 }
               />
               <BalanceOf
-                type={'Dai in Adaptor'}
+                type={'Dai in Adapter'}
                 balance={vatDaiBalance}
-                shouldUnlock={!hasEthFlipHope}
+                shouldUnlock={!hasHope[MCD_FLIP_ETH_A]}
                 unlock={
                   <Grid
                     gap={2}
@@ -143,12 +140,12 @@ export default () => {
                       onClick={() => {
                         const flipEthAddress = maker
                           .service('smartContract')
-                          .getContractByName('MCD_FLIP_ETH_A').address;
-                        giveFlipEthHope(flipEthAddress);
+                          .getContractByName(MCD_FLIP_ETH_A).address;
+                        giveHope(flipEthAddress, MCD_FLIP_ETH_A);
                       }}
                       disabled={!web3Connected}
                     >
-                      Unlock Dai in the adapter
+                      Unlock ETH in the VAT
                     </Button>
                   </Grid>
                 }
@@ -165,7 +162,43 @@ export default () => {
                 }}
               />
 
-              {!hasJoinDaiHope ? (
+              <BalanceOf
+                type={'Bat Balance'}
+                balance={batBalance}
+                shouldUnlock={!hasHope[MCD_FLIP_BAT_A]}
+                unlock={
+                  <Grid
+                    gap={2}
+                    sx={{
+                      variant: 'styles.roundedCard'
+                    }}
+                  >
+                    <Text variant="caps">
+                      BAT wallet balance - {batBalance}
+                    </Text>
+
+                    <Button
+                      variant="pill"
+                      onClick={() => {
+                        const flipBatAddress = maker
+                          .service('smartContract')
+                          .getContractByName(MCD_FLIP_BAT_A).address;
+                        giveHope(flipBatAddress, MCD_FLIP_BAT_A);
+                      }}
+                      disabled={!web3Connected}
+                    >
+                      Unlock BAT in the VAT
+                    </Button>
+                  </Grid>
+                }
+                sx={{
+                  borderLeft: '1px solid',
+                  borderRight: '1px solid',
+                  borderColor: 'border'
+                }}
+              />
+
+              {hasHope[MCD_JOIN_DAI] === false ? (
                 <Grid
                   gap={2}
                   sx={{
@@ -175,10 +208,10 @@ export default () => {
                   <Text variant="caps">DAI wallet balance</Text>
                   <Button
                     variant="pill"
-                    onClick={() => giveJoinDaiHope(joinAddress)}
-                    disabled={!web3Connected || hasJoinDaiHope}
+                    onClick={() => giveHope(joinAddress, MCD_JOIN_DAI)}
+                    disabled={!web3Connected || hasHope[MCD_JOIN_DAI]}
                   >
-                    Unlock Dai in the VAT
+                    Unlock DAI in the VAT
                   </Button>
                 </Grid>
               ) : null}

@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react';
 import useMaker from './useMaker';
-import { AUCTION_DATA_FETCHER } from '../constants';
+import {
+  AUCTION_DATA_FETCHER,
+  MCD_FLIP_BAT_A,
+  MCD_JOIN_DAI,
+  MCD_FLIP_ETH_A,
+  MCD_FLOP
+} from '../constants';
 
 const REQUIRED_ALLOWANCE = 0;
 
@@ -11,6 +17,8 @@ const useAllowances = () => {
   const [hasEthFlipHope, setHasFlipEthHope] = useState(false);
   const [hasJoinDaiHope, setHasJoinDaiHope] = useState(false);
   const [hasFlopHope, setHasFlopHope] = useState(false);
+
+  const [hasHope, setHasHope] = useState({});
 
   // DAI Allowance
   useEffect(() => {
@@ -47,7 +55,26 @@ const useAllowances = () => {
         .service('smartContract')
         .getContract('MCD_VAT')
         .can(maker.currentAddress(), flipEthAddress);
-      setHasFlipEthHope(can.toNumber() === 1 ? true : false);
+      setHasHope(state => ({
+        ...state,
+        [MCD_FLIP_ETH_A]: can.toNumber() === 1 ? true : false
+      }));
+    })();
+  }, [maker, web3Connected]);
+
+  // Flip BAT has Hope
+  useEffect(() => {
+    if (!web3Connected) return;
+    (async () => {
+      const flipBatAddress = maker.service(AUCTION_DATA_FETCHER).flipBatAddress;
+      const can = await maker
+        .service('smartContract')
+        .getContract('MCD_VAT')
+        .can(maker.currentAddress(), flipBatAddress);
+      setHasHope(state => ({
+        ...state,
+        [MCD_FLIP_BAT_A]: can.toNumber() === 1 ? true : false
+      }));
     })();
   }, [maker, web3Connected]);
 
@@ -61,7 +88,10 @@ const useAllowances = () => {
         .service('smartContract')
         .getContract('MCD_VAT')
         .can(maker.currentAddress(), joinDaiAdapterAddress);
-      setHasJoinDaiHope(can.toNumber() === 1 ? true : false);
+      setHasHope(state => ({
+        ...state,
+        [MCD_JOIN_DAI]: can.toNumber() === 1 ? true : false
+      }));
     })();
   }, [maker, web3Connected]);
 
@@ -74,7 +104,10 @@ const useAllowances = () => {
         .service('smartContract')
         .getContract('MCD_VAT')
         .can(maker.currentAddress(), flopAddress);
-      setHasFlopHope(can.toNumber() === 1 ? true : false);
+      setHasHope(state => ({
+        ...state,
+        [MCD_FLOP]: can.toNumber() === 1 ? true : false
+      }));
     })();
   }, [maker, web3Connected]);
 
@@ -142,6 +175,21 @@ const useAllowances = () => {
     }
   };
 
+  // Give contract hope
+  const giveHope = async (address, name) => {
+    try {
+      await maker
+        .service('smartContract')
+        .getContract('MCD_VAT')
+        .hope(address);
+      setHasHope({ ...hasHope, [name]: true });
+    } catch (err) {
+      const message = err.message ? err.message : err;
+      const errMsg = `hope tx failed ${message}`;
+      console.error(errMsg);
+    }
+  };
+
   return {
     hasDaiAllowance,
     hasMkrAllowance,
@@ -152,7 +200,9 @@ const useAllowances = () => {
     giveMkrAllowance,
     giveFlipEthHope,
     giveJoinDaiHope,
-    giveFlopHope
+    giveFlopHope,
+    giveHope,
+    hasHope
   };
 };
 
