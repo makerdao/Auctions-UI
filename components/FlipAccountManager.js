@@ -30,9 +30,6 @@ export default () => {
 
   const {
     hasDaiAllowance,
-    hasMkrAllowance,
-    hasEthFlipHope,
-    hasJoinDaiHope,
     giveDaiAllowance,
     giveHope,
     hasHope
@@ -52,10 +49,10 @@ export default () => {
   }, [maker, web3Connected]);
 
   const allowanceMissing =
-    !hasDaiAllowance || !hasEthFlipHope || !hasJoinDaiHope;
+    !hasDaiAllowance || !hasHope[MCD_FLIP_ETH_A] || !hasHope[MCD_JOIN_DAI];
 
   const hasNoAllowances =
-    !hasDaiAllowance && !hasEthFlipHope && !hasJoinDaiHope;
+    !hasDaiAllowance && !!hasHope[MCD_FLIP_ETH_A] && !hasHope[MCD_JOIN_DAI];
 
   return (
     <AccountManagerLayout

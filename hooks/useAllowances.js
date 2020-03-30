@@ -14,10 +14,6 @@ const useAllowances = () => {
   const { maker, web3Connected } = useMaker();
   const [hasDaiAllowance, setHasDaiAllowance] = useState(false);
   const [hasMkrAllowance, setHasMkrAllowance] = useState(false);
-  const [hasEthFlipHope, setHasFlipEthHope] = useState(false);
-  const [hasJoinDaiHope, setHasJoinDaiHope] = useState(false);
-  const [hasFlopHope, setHasFlopHope] = useState(false);
-
   const [hasHope, setHasHope] = useState({});
 
   // DAI Allowance
@@ -133,48 +129,6 @@ const useAllowances = () => {
     }
   };
 
-  const giveFlipEthHope = async address => {
-    try {
-      await maker
-        .service('smartContract')
-        .getContract('MCD_VAT')
-        .hope(address);
-      setHasFlipEthHope(true);
-    } catch (err) {
-      const message = err.message ? err.message : err;
-      const errMsg = `hope tx failed ${message}`;
-      console.error(errMsg);
-    }
-  };
-
-  const giveJoinDaiHope = async address => {
-    try {
-      await maker
-        .service('smartContract')
-        .getContract('MCD_VAT')
-        .hope(address);
-      setHasJoinDaiHope(true);
-    } catch (err) {
-      const message = err.message ? err.message : err;
-      const errMsg = `hope tx failed ${message}`;
-      console.error(errMsg);
-    }
-  };
-
-  const giveFlopHope = async address => {
-    try {
-      await maker
-        .service('smartContract')
-        .getContract('MCD_VAT')
-        .hope(address);
-      setHasFlopHope(true);
-    } catch (err) {
-      const message = err.message ? err.message : err;
-      const errMsg = `hope tx failed ${message}`;
-      console.error(errMsg);
-    }
-  };
-
   // Give contract hope
   const giveHope = async (address, name) => {
     try {
@@ -193,14 +147,8 @@ const useAllowances = () => {
   return {
     hasDaiAllowance,
     hasMkrAllowance,
-    hasEthFlipHope,
-    hasJoinDaiHope,
-    hasFlopHope,
     giveDaiAllowance,
     giveMkrAllowance,
-    giveFlipEthHope,
-    giveJoinDaiHope,
-    giveFlopHope,
     giveHope,
     hasHope
   };

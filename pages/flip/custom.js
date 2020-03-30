@@ -203,7 +203,7 @@ const Form = ({ gem }) => {
           </Flex>
         </Flex>
         <Button
-          sx={{ mt: [2, 0] }}
+          sx={{ mt: 2 }}
           variant="primary"
           // disabled={_disabled}
           onClick={_onSubmit}
@@ -238,7 +238,8 @@ const CustomAuction = () => {
       gap={5}
       sx={{
         variant: 'styles.roundedCard',
-        p: 0
+        p: 0,
+        mt: 4
       }}
     >
       <Flex

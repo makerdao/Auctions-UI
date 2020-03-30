@@ -17,7 +17,9 @@ import {
   CAN_BE_DEALT,
   CAN_BE_RESTARTED,
   WINNER,
-  TOP_BIDDER
+  TOP_BIDDER,
+  MCD_FLOP,
+  MCD_JOIN_DAI
 } from '../constants';
 import useAuctionsStore, { selectors } from '../stores/auctionsStore';
 import InfoPill from './InfoPill';
@@ -31,11 +33,11 @@ const UserBidStatusPills = {
     </InfoPill>
   ),
   [WINNER]: (
-    <InfoPill bg='lightCyan' color='primaryActive'>
+    <InfoPill bg="lightCyan" color="primaryActive">
       You have won this auction
     </InfoPill>
   )
-}
+};
 
 const AuctionEvent = ({
   type,
@@ -213,34 +215,41 @@ const byTimestamp = (prev, next) => {
 // all events for a given auction will be present
 // and they will be sorted in descending order by timestamp
 const checkUserBidStatus = (events, userAddress) => {
-  const { type , fromAddress } = events[0];
+  const { type, fromAddress } = events[0];
   if (type !== 'Kick' && type !== 'Deal' && userAddress === fromAddress) {
     return TOP_BIDDER;
   }
 
   if (type === 'Deal') {
     const { fromAddress: bidderAddress } = events[1];
-    if( bidderAddress.toLowerCase() === userAddress.toLowerCase() ) return WINNER;
+    if (bidderAddress.toLowerCase() === userAddress.toLowerCase())
+      return WINNER;
   }
 
   return null;
-}
+};
 
 export default ({ events, id: auctionId, end, tic, stepSize, allowances }) => {
   const { maker } = useMaker();
   const [currentLotBidAmount, setCurrentLotBidAmount] = useState(BigNumber(0));
-  const { hasDaiAllowance, hasFlopHope, hasJoinDaiHope } = allowances;
+  const { hasDaiAllowance, hasHope } = allowances;
   let { vatDaiBalance } = useBalances();
   const { callFlopDent, callFlopDeal } = useAuctionActions();
   const fetchAuctionsSet = useAuctionsStore(state => state.fetchSet);
   const sortedEvents = events.sort(byTimestamp); // DEAL , [...DENT] , KICK ->
 
   const winnerSummary = {};
-  const { bid: latestBid, lot: latestLot, fromAddress: latestBidder, hash: latestHash } = sortedEvents.find(
-    event => event.type != 'Deal'
-  );
+  const {
+    bid: latestBid,
+    lot: latestLot,
+    fromAddress: latestBidder,
+    hash: latestHash
+  } = sortedEvents.find(event => event.type != 'Deal');
 
-  const chickenDinner = checkUserBidStatus(sortedEvents, maker.currentAddress());  
+  const chickenDinner = checkUserBidStatus(
+    sortedEvents,
+    maker.currentAddress()
+  );
 
   const [justBidded, setJustBidded] = useState(false);
 
@@ -291,7 +300,7 @@ export default ({ events, id: auctionId, end, tic, stepSize, allowances }) => {
   // const bidDisabled = state.error;
   const mainValidation = [];
 
-  const canBid = hasDaiAllowance && hasJoinDaiHope && hasFlopHope;
+  const canBid = hasDaiAllowance && hasHope[MCD_JOIN_DAI] && hasHope[MCD_FLOP];
 
   const bidValidationTests = [
     // [() => !web3Connected],
@@ -338,9 +347,7 @@ export default ({ events, id: auctionId, end, tic, stepSize, allowances }) => {
       }}
       auctionStatus={auctionStatus}
       auctionId={auctionId}
-      pill={
-        chickenDinner && UserBidStatusPills[chickenDinner]
-      }
+      pill={chickenDinner && UserBidStatusPills[chickenDinner]}
       winnerSummary={winnerSummary}
       hasDent={hasDent}
       end={end}
