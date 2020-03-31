@@ -27,6 +27,17 @@ const transformEvents = async (auctions, service) => {
   return auctionsData;
 };
 
+const includeAuctionsWithFullHistoryOnly = (auctions) => {
+  const filteredAuctions = {};
+  Object.keys(auctions).map(auctionId => {
+    const hasKick = auctions[auctionId].events.find(event => event.type === 'Kick');
+    if (hasKick) {
+      filteredAuctions[auctionId.toString()] = auctions[auctionId];
+    }
+  });
+  return filteredAuctions;
+}
+
 const filters = {
   byPage: (state, ids) => {
     const { pageStart, pageEnd } = state;
@@ -247,7 +258,7 @@ const [useAuctionsStore, updateState] = create((set, get) => ({
     const service = maker.service(AUCTION_DATA_FETCHER);
     const auctions = await service.fetchFlopAuctions();
     const transformedAuctions = await transformEvents(auctions, service);
-    set({ auctions: transformedAuctions });
+    set({ auctions: includeAuctionsWithFullHistoryOnly(transformedAuctions) });
   },
 
   fetchSet: async ids => {
