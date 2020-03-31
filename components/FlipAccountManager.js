@@ -233,7 +233,7 @@ export default () => {
                         }}
                       >
                         <MiniFormLayout
-                          text={'Deposit DAI to the Adapter'}
+                          text={'Deposit DAI into the VAT'}
                           disabled={false}
                           inputUnit="DAI"
                           onSubmit={joinDaiToAdapter}
@@ -244,7 +244,7 @@ export default () => {
                     </Grid>
                   ],
                   [
-                    'Withdraw DAI From Adapter',
+                    'Withdraw DAI into the VAT',
                     <Grid>
                       <Box
                         sx={{

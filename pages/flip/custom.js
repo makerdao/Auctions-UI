@@ -135,7 +135,7 @@ const Form = ({ gem }) => {
           </Flex>
         </Flex>
         <Flex sx={{ flexDirection: 'column' }}>
-          <Text>LotSize</Text>
+          <Text>Lot Size</Text>
           <Flex
             sx={{
               maxWidth: ['100%', '224px'],
@@ -164,52 +164,54 @@ const Form = ({ gem }) => {
               onChange={handleLotChange}
             />
             <Label sx={{ p: 0, width: 'auto' }} htmlFor="flip-lotsize">
-              COL
+              {gem}
             </Label>
           </Flex>
           <Flex sx={{ flexDirection: 'column' }}>
-            <Text>Bid Amount in Dai</Text>
-            <Flex
-              sx={{
-                maxWidth: ['100%', '224px'],
-                borderWidth: '1px',
-                borderStyle: 'solid',
-                borderColor: 'border',
-                bg: 'white',
-                borderRadius: 5,
-                fontSize: 4,
-                py: 3,
-                px: 5
-              }}
-            >
-              <Input
+            <Text>Bid Amount</Text>
+            <Flex sx={{ flexDirection: 'row' }}>
+              <Flex
                 sx={{
-                  border: 'none',
-                  outline: 'none',
-                  p: 0,
-                  marginRight: '2',
-                  borderRadius: 5
+                  maxWidth: ['100%', '224px'],
+                  borderWidth: '1px',
+                  borderStyle: 'solid',
+                  borderColor: 'border',
+                  bg: 'white',
+                  borderRadius: 5,
+                  fontSize: 4,
+                  py: 3,
+                  px: 5
                 }}
-                id="flip-bidamount"
-                type="number"
-                step="0.01"
-                placeholder="0"
-                onChange={handleBidChange}
-              />
-              <Label sx={{ p: 0, width: 'auto' }} htmlFor="flip-bidamount">
-                DAI
-              </Label>
+              >
+                <Input
+                  sx={{
+                    border: 'none',
+                    outline: 'none',
+                    p: 0,
+                    marginRight: '2',
+                    borderRadius: 5
+                  }}
+                  id="flip-bidamount"
+                  type="number"
+                  step="0.01"
+                  placeholder="0"
+                  onChange={handleBidChange}
+                />
+                <Label sx={{ p: 0, width: 'auto' }} htmlFor="flip-bidamount">
+                  DAI
+                </Label>
+              </Flex>
+              <Button
+                sx={{ mx: 2 }}
+                variant="primary"
+                disabled={disabled}
+                onClick={onSubmit}
+              >
+                {txState === TX_PENDING ? 'Waiting for Transaction' : 'Submit'}
+              </Button>
             </Flex>
           </Flex>
         </Flex>
-        <Button
-          sx={{ mt: 2 }}
-          variant="primary"
-          disabled={disabled}
-          onClick={onSubmit}
-        >
-          {txState === TX_PENDING ? 'Waiting for Transaction' : 'Submit'}
-        </Button>
       </Flex>
       {!errorMessages
         ? null
@@ -237,20 +239,13 @@ const CustomAuction = () => {
     <Box
       gap={5}
       sx={{
-        variant: 'styles.roundedCard',
         p: 0,
         mt: 4
       }}
     >
-      <Flex
+      <Grid
         sx={{
-          p: 6,
-          py: 5,
-          flexDirection: ['column', 'row'],
-          justifyContent: 'flex-start',
-          borderBottom: '1px solid',
-          borderColor: 'border',
-          alignItems: ['flex-start', 'center']
+          variant: 'styles.roundedCard'
         }}
       >
         <ActionTabs
@@ -285,7 +280,7 @@ const CustomAuction = () => {
             ]
           ]}
         />
-      </Flex>
+      </Grid>
     </Box>
   );
 };
