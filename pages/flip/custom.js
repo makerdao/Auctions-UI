@@ -26,7 +26,7 @@ import FlipAccountManager from '../../components/FlipAccountManager';
 import GuttedLayout from '../../components/GuttedLayout';
 import ActionTabs from '../../components/ActionTabs';
 
-const Form = ({ gem }) => {
+const Form = ({ ilk }) => {
   const initialValue = '';
   const [idState, setIdState] = useState(initialValue);
   const [bidState, setBidState] = useState(initialValue);
@@ -37,7 +37,7 @@ const Form = ({ gem }) => {
   const [txErrorMsg, setTxErrorMsg] = useState(undefined);
 
   const { maker } = useMaker();
-  const { callEthTend, callBatTend } = useAuctionActions();
+  const { callTend } = useAuctionActions();
 
   const errorMessages = [];
   if (txErrorMsg) {
@@ -48,13 +48,8 @@ const Form = ({ gem }) => {
   const disabled =
     !inputsValid || !!errorMessages.length || txState === TX_PENDING;
 
-  const actions = {
-    BAT: callBatTend,
-    ETH: callEthTend
-  };
-
   const onSubmit = () => {
-    const txObject = actions[gem](idState, lotState, bidState);
+    const txObject = callTend(idState, lotState, bidState, ilk);
     setTxErrorMsg(undefined);
     maker.service('transactionManager').listen(txObject, {
       initialized: () => {
@@ -164,7 +159,7 @@ const Form = ({ gem }) => {
               onChange={handleLotChange}
             />
             <Label sx={{ p: 0, width: 'auto' }} htmlFor="flip-lotsize">
-              {gem}
+              {ilk.slice(0, -2)}
             </Label>
           </Flex>
           <Flex sx={{ flexDirection: 'column' }}>
@@ -260,7 +255,7 @@ const CustomAuction = () => {
                     borderRadius: 6
                   }}
                 >
-                  <Form gem={'ETH'} />
+                  <Form ilk={'ETH-A'} />
                 </Box>
               </Grid>
             ],
@@ -274,7 +269,7 @@ const CustomAuction = () => {
                     borderRadius: 6
                   }}
                 >
-                  <Form gem={'BAT'} />
+                  <Form ilk={'BAT-A'} />
                 </Box>
               </Grid>
             ]
