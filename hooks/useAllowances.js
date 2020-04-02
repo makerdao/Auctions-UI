@@ -53,7 +53,7 @@ const useAllowances = () => {
         .can(maker.currentAddress(), flipEthAddress);
       setHasHope(state => ({
         ...state,
-        [MCD_FLIP_ETH_A]: can.toNumber() === 1 ? true : false
+        [MCD_FLIP_ETH_A]: can.toNumber() === 1
       }));
     })();
   }, [maker, web3Connected]);
@@ -69,7 +69,7 @@ const useAllowances = () => {
         .can(maker.currentAddress(), flipBatAddress);
       setHasHope(state => ({
         ...state,
-        [MCD_FLIP_BAT_A]: can.toNumber() === 1 ? true : false
+        [MCD_FLIP_BAT_A]: can.toNumber() === 1
       }));
     })();
   }, [maker, web3Connected]);
@@ -86,7 +86,7 @@ const useAllowances = () => {
         .can(maker.currentAddress(), joinDaiAdapterAddress);
       setHasHope(state => ({
         ...state,
-        [MCD_JOIN_DAI]: can.toNumber() === 1 ? true : false
+        [MCD_JOIN_DAI]: can.toNumber() === 1
       }));
     })();
   }, [maker, web3Connected]);
@@ -102,7 +102,7 @@ const useAllowances = () => {
         .can(maker.currentAddress(), flopAddress);
       setHasHope(state => ({
         ...state,
-        [MCD_FLOP]: can.toNumber() === 1 ? true : false
+        [MCD_FLOP]: can.toNumber() === 1
       }));
     })();
   }, [maker, web3Connected]);
