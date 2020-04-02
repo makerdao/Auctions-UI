@@ -115,12 +115,14 @@ const OrderSummary = ({
   currentBid,
   minMkrAsk,
   calculatedBidPrice,
+  hasSlippage,
   remainingBal
 }) => {
+  console.log(hasSlippage);
   const fields = [
     ['Max lot amount', minMkrAsk, { fontWeight: 600 }],
     ['Requested lot amount', currentBid, { fontWeight: 600 }],
-    ['Bid price per MKR', calculatedBidPrice, { fontWeight: 600 }]
+    ['Bid price per MKR', calculatedBidPrice, { fontWeight: 600, color: hasSlippage ? 'red' : 'text' }]
   ];
 
   const SummaryLine = ({ title, value, styling }) => (
@@ -315,6 +317,11 @@ export default ({ events, id: auctionId, end, tic, stepSize, allowances }) => {
   ];
 
   const calculatedBidPrice = BigNumber(latestBid).div(currentLotBidAmount);
+  const priceThreshold = new BigNumber(latestBid)
+                          .div(new BigNumber(latestLot))
+                          .times(new BigNumber(1.10)); // 10% up
+
+  const hasPriceSlippage = calculatedBidPrice.gt(priceThreshold);
 
   const printedLot =
     !currentLotBidAmount ||
@@ -457,6 +464,7 @@ export default ({ events, id: auctionId, end, tic, stepSize, allowances }) => {
                           .minus(BigNumber(latestBid))
                           .toFormat(0, 4)} DAI`
                       }
+                      hasSlippage={hasPriceSlippage}
                       currentBid={`${printedLot} MKR`}
                       minMkrAsk={`${minMkrAsk.toFixed(2, 1)} MKR`}
                       calculatedBidPrice={`${printedPrice} DAI`}
