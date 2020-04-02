@@ -11,10 +11,6 @@ const useBalances = () => {
   const [mkrBalance, setMkrBalance] = useState(null);
   const [batBalance, setBatBalance] = useState(null);
 
-  const daiSymbol = 'MDAI';
-  const mkrSymbol = 'MKR';
-  const batSymbol = 'BAT';
-
   const fetchVatDaiBalance = () => {
     return maker
       .service('smartContract')
@@ -22,36 +18,27 @@ const useBalances = () => {
       .dai(maker.currentAddress());
   };
 
-  const fetchDaiBalance = () => {
-    return maker.getToken(daiSymbol).balance();
-  };
-  const fetchBatBalance = () => {
-    return maker.getToken(batSymbol).balance();
+  const fetchTokenBalance = token => {
+    return maker.getToken(token).balance();
   };
 
   const fetchBalances = () => {
     return Promise.all([
       fetchVatDaiBalance(),
-      fetchDaiBalance(),
-      fetchBatBalance()
+      fetchTokenBalance('MDAI'),
+      fetchTokenBalance('MKR'),
+      fetchTokenBalance('BAT')
     ]);
   };
 
   useEffect(() => {
     if (!web3Connected) return;
     (async () => {
-      const [vatBal, daiBal, batBal] = await fetchBalances();
+      const [vatBal, daiBal, mkrBal, batBal] = await fetchBalances();
       setVatDaiBalance(fromRad(vatBal).toFixed());
       setDaiBalance(daiBal.toNumber());
-      setBatBalance(batBal.toNumber());
-    })();
-  }, [maker, web3Connected]);
-
-  useEffect(() => {
-    if (!web3Connected) return;
-    (async () => {
-      const mkrBal = await maker.getToken(mkrSymbol).balance();
       setMkrBalance(mkrBal.toNumber());
+      setBatBalance(batBal.toNumber());
     })();
   }, [maker, web3Connected]);
 
