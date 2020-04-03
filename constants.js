@@ -14,7 +14,7 @@ export const TX_SUCCESS = 'success';
 export const TX_ERROR = 'error';
 
 // user bid status -------
-export const TOP_BIDDER='bidder';
+export const TOP_BIDDER = 'bidder';
 export const WINNER = 'winner';
 
 export const REFETCH_BLOCK_INTERVAL = 5;
@@ -28,5 +28,11 @@ export const balanceRounding = {
 // Numbers
 export const ZERO = new BigNumber(0);
 
-// How many hours back in time we should look for events 
+// How many hours back in time we should look for events
 export const CUT_OFF_PERIOD = 1000 * 60 * 60 * 360; // 360 hours -> 15 days
+
+// Contract names
+export const MCD_FLIP_ETH_A = 'MCD_FLIP_ETH_A';
+export const MCD_FLIP_BAT_A = 'MCD_FLIP_BAT_A';
+export const MCD_JOIN_DAI = 'MCD_JOIN_DAI';
+export const MCD_FLOP = 'MCD_FLOP';

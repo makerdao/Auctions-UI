@@ -10,7 +10,12 @@ import ActionTabs from './ActionTabs';
 import MiniFormLayout from './MiniFormLayout';
 import { formatBalance } from '../utils';
 import ReactGA from 'react-ga';
-import { AUCTION_DATA_FETCHER } from '../constants';
+import {
+  AUCTION_DATA_FETCHER,
+  MCD_FLIP_ETH_A,
+  MCD_JOIN_DAI,
+  MCD_FLOP
+} from '../constants';
 
 export default ({ allowances }) => {
   const { maker, web3Connected } = useMaker();
@@ -27,18 +32,7 @@ export default ({ allowances }) => {
   vatDaiBalance = formatBalance(vatDaiBalance);
   mkrBalance = formatBalance(mkrBalance);
 
-  const {
-    hasDaiAllowance,
-    hasMkrAllowance,
-    hasEthFlipHope,
-    hasJoinDaiHope,
-    hasFlopHope,
-    giveDaiAllowance,
-    giveMkrAllowance,
-    giveFlipEthHope,
-    giveJoinDaiHope,
-    giveFlopHope
-  } = allowances;
+  const { hasDaiAllowance, giveDaiAllowance, hasHope, giveHope } = allowances;
 
   const [joinAddress, setJoinAddress] = useState('');
 
@@ -51,10 +45,10 @@ export default ({ allowances }) => {
   }, [maker, web3Connected]);
 
   const allowanceMissing =
-    !hasDaiAllowance || !hasEthFlipHope || !hasJoinDaiHope;
+    !hasDaiAllowance || !hasHope[MCD_FLIP_ETH_A] || !hasHope[MCD_JOIN_DAI];
 
   const hasNoAllowances =
-    !hasDaiAllowance && !hasEthFlipHope && !hasJoinDaiHope;
+    !hasDaiAllowance && !hasHope[MCD_FLIP_ETH_A] && !hasHope[MCD_JOIN_DAI];
 
   return (
     <AccountManagerLayout
@@ -123,7 +117,7 @@ export default ({ allowances }) => {
               <BalanceOf
                 type={'Dai locked in the Vat '}
                 balance={`${vatDaiBalance} DAI`}
-                shouldUnlock={!hasJoinDaiHope}
+                shouldUnlock={!hasHope[MCD_JOIN_DAI]}
                 unlock={
                   <Grid
                     gap={4}
@@ -136,8 +130,8 @@ export default ({ allowances }) => {
                     </Text>
                     <Button
                       variant="pill"
-                      onClick={() => giveJoinDaiHope(joinAddress)}
-                      disabled={!web3Connected || hasJoinDaiHope}
+                      onClick={() => giveHope(joinAddress, MCD_JOIN_DAI)}
+                      disabled={!web3Connected || hasHope[MCD_JOIN_DAI]}
                     >
                       Unlock Dai in the VAT
                     </Button>
@@ -152,7 +146,7 @@ export default ({ allowances }) => {
               <BalanceOf
                 type={'MKR in your wallet'}
                 balance={`${mkrBalance} MKR`}
-                shouldUnlock={!hasFlopHope}
+                shouldUnlock={!hasHope[MCD_FLOP]}
                 unlock={
                   <Grid
                     gap={4}
@@ -166,8 +160,8 @@ export default ({ allowances }) => {
                       onClick={() => {
                         const flopAddress = maker
                           .service('smartContract')
-                          .getContractByName('MCD_FLOP').address;
-                        giveFlopHope(flopAddress);
+                          .getContractByName(MCD_FLOP).address;
+                        giveHope(flopAddress, MCD_FLOP);
                       }}
                       disabled={!web3Connected}
                     >

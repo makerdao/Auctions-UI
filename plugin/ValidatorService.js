@@ -61,6 +61,26 @@ export default class ValidatorService extends PublicService {
     });
   }
 
+  async fetchFlipAuctionsByIds(ids) {
+    let currentTime = new Date().getTime();
+    const queryDate = new Date(currentTime - this.backInTime);
+
+    const variables = {
+      sources: [this.flipEthAddress, this.flipBatAddress],
+      auctionIds: ids,
+      fromDate: queryDate
+    };
+
+    const response = await this.getQueryResponse(
+      this._cacheAPI,
+      gqlQueries.specificAuctionEvents,
+      'setAuctionsEvents',
+      variables
+    );
+
+    return response.allLeveragedEvents.nodes;
+  }
+
   async fetchFlopAuctions(shouldSync = false) {
     let currentTime = new Date().getTime();
     const timePassed = currentTime - this.flopAuctionsLastSynced;
@@ -124,14 +144,29 @@ export default class ValidatorService extends PublicService {
     return lotSize;
   }
 
-  async flipEthTend(id, size, amount) {
+  @tracksTransactions
+  async flipEthTend(id, size, amount, { promise }) {
     const lotSizeInWei = this.get('web3')._web3.utils.toWei(size.toString());
     const bidAmountRad = toRad(amount);
 
-    const tend = await this._flipEthAdapter().tend(
+    return this._flipEthAdapter().tend(
       id,
       lotSizeInWei,
-      bidAmountRad.toFixed()
+      bidAmountRad.toFixed(),
+      { promise }
+    );
+  }
+
+  @tracksTransactions
+  async flipBatTend(id, size, amount, { promise }) {
+    const lotSizeInWei = this.get('web3')._web3.utils.toWei(size.toString());
+    const bidAmountRad = toRad(amount);
+
+    return this._flipBatAdapter().tend(
+      id,
+      lotSizeInWei,
+      bidAmountRad.toFixed(),
+      { promise }
     );
   }
 
@@ -175,22 +210,15 @@ export default class ValidatorService extends PublicService {
     } catch (err) {}
   }
 
-  async getFlopDuration(id) {
+  async getAuctionDuration(id, type, ilk) {
     try {
-      const flop = await this._flop().bids(id);
+      const bid =
+        type === 'flip'
+          ? await this._flipIlkAdapter(ilk).bids(id)
+          : await this._flop().bids(id);
       return {
-        end: new BigNumber(flop.end).times(1000),
-        tic: flop.tic ? new BigNumber(flop.tic).times(1000) : new BigNumber(0)
-      };
-    } catch (err) {}
-  }
-
-  async getFlipDuration(id) {
-    try {
-      const flip = await this._flipEthAdapter().bids(id);
-      return {
-        end: new BigNumber(flip.end).times(1000),
-        tic: flip.tic ? new BigNumber(flip.tic).times(1000) : new BigNumber(0)
+        end: new BigNumber(bid.end).times(1000),
+        tic: bid.tic ? new BigNumber(bid.tic).times(1000) : new BigNumber(0)
       };
     } catch (err) {}
   }
@@ -224,6 +252,13 @@ export default class ValidatorService extends PublicService {
 
   get joinDaiAdapterAddress() {
     return this._joinDaiAdapter().address;
+  }
+
+  _flipIlkAdapter(ilk) {
+    return {
+      'ETH-A': this._flipEthAdapter(),
+      'BAT-A': this._flipBatAdapter()
+    }[ilk];
   }
 
   _flipEthAdapter() {
