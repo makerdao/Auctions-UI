@@ -97,27 +97,9 @@ const Form = ({ ilk }) => {
       <Flex sx={{ flexDirection: 'column' }}>
         <Flex sx={{ flexDirection: 'column' }}>
           <Text>Auction ID</Text>
-          <Flex
-            sx={{
-              maxWidth: ['100%', '224px'],
-              borderWidth: '1px',
-              borderStyle: 'solid',
-              borderColor: 'border',
-              bg: 'white',
-              borderRadius: 5,
-              fontSize: 4,
-              py: 3,
-              px: 5
-            }}
-          >
+          <Flex variant="flex.input">
             <Input
-              sx={{
-                border: 'none',
-                outline: 'none',
-                p: 0,
-                marginRight: '2',
-                borderRadius: 5
-              }}
+              variant="primary"
               id="flip-auctionid"
               type="number"
               step="0.01"
@@ -131,27 +113,9 @@ const Form = ({ ilk }) => {
         </Flex>
         <Flex sx={{ flexDirection: 'column' }}>
           <Text>Lot Size</Text>
-          <Flex
-            sx={{
-              maxWidth: ['100%', '224px'],
-              borderWidth: '1px',
-              borderStyle: 'solid',
-              borderColor: 'border',
-              bg: 'white',
-              borderRadius: 5,
-              fontSize: 4,
-              py: 3,
-              px: 5
-            }}
-          >
+          <Flex variant="flex.input">
             <Input
-              sx={{
-                border: 'none',
-                outline: 'none',
-                p: 0,
-                marginRight: '2',
-                borderRadius: 5
-              }}
+              variant="primary"
               id="flip-lotsize"
               type="number"
               step="0.01"
@@ -165,27 +129,9 @@ const Form = ({ ilk }) => {
           <Flex sx={{ flexDirection: 'column' }}>
             <Text>Bid Amount</Text>
             <Flex sx={{ flexDirection: 'row' }}>
-              <Flex
-                sx={{
-                  maxWidth: ['100%', '224px'],
-                  borderWidth: '1px',
-                  borderStyle: 'solid',
-                  borderColor: 'border',
-                  bg: 'white',
-                  borderRadius: 5,
-                  fontSize: 4,
-                  py: 3,
-                  px: 5
-                }}
-              >
+              <Flex variant="flex.input">
                 <Input
-                  sx={{
-                    border: 'none',
-                    outline: 'none',
-                    p: 0,
-                    marginRight: '2',
-                    borderRadius: 5
-                  }}
+                  variant="primary"
                   id="flip-bidamount"
                   type="number"
                   step="0.01"

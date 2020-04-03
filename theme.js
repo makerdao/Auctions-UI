@@ -160,6 +160,29 @@ export default {
     }
   },
 
+  flex: {
+    input: {
+      maxWidth: ['100%', '224px'],
+      borderWidth: '1px',
+      borderStyle: 'solid',
+      borderColor: 'border',
+      bg: 'white',
+      borderRadius: 6,
+      fontSize: 4,
+      py: 3,
+      px: 5
+    }
+  },
+
+  forms: {
+    primary: {
+      border: 'none',
+      outline: 'none',
+      p: 0,
+      marginRight: '2'
+    }
+  },
+
   text: {
     heading: {
       fontFamily: 'heading',

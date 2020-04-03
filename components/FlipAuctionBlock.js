@@ -60,27 +60,9 @@ const DentForm = ({ auctionId, lot, bid, ilk }) => {
           flexDirection: ['column', 'row']
         }}
       >
-        <Flex
-          sx={{
-            maxWidth: ['100%', '224px'],
-            borderWidth: '1px',
-            borderStyle: 'solid',
-            borderColor: 'border',
-            borderRadius: 5,
-            fontSize: 4,
-            // lineHeight: '24px',
-            py: 3,
-            px: 5
-          }}
-        >
+        <Flex variant="flex.input">
           <Input
-            sx={{
-              border: 'none',
-              outline: 'none',
-              p: 0,
-              marginRight: '2',
-              borderRadius: 5
-            }}
+            variant="primary"
             id="big-amount"
             type="number"
             step="0.01"

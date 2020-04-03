@@ -109,27 +109,13 @@ const MiniFormLayout = ({
       >
         {!buttonOnly ? (
           <Flex
+            variant="flex.input"
             sx={{
-              maxWidth: ['100%', '224px'],
-              mr: [0, 2],
-              borderWidth: '1px',
-              borderStyle: 'solid',
-              borderColor: 'border',
-              bg: 'white',
-              borderRadius: 6,
-              fontSize: 4,
-              // lineHeight: '24px',
-              py: 3,
-              px: 5
+              mr: [0, 2]
             }}
           >
             <Input
-              sx={{
-                border: 'none',
-                outline: 'none',
-                p: 0,
-                marginRight: '2'
-              }}
+              variant="primary"
               id="big-amount"
               type={inputType}
               value={inputState ? inputState.toNumber() : inputState}
