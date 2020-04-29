@@ -5,8 +5,31 @@ export default {
 
   breakpoints: ['40em', '52em', '64em'],
 
-  space: [0, 4, 8, 12, 14, 16, 24, 32, 64, 128, 256, 512],
-  sizes: [0, 4, 8, 12, 14, 16, 24, 32, 64, 128, 256, 512],
+  colors: {
+    primary: '#1AAB9B',
+    primaryEmphasis: '#139D8D',
+    primaryAlt: '#098C7D',
+    primaryMuted: '#B6EDE7',
+    text: '#231536',
+    textMuted: '#7E7E88',
+    textAlt: '#48495F',
+    primaryContrast: '#FFF',
+    background: '#F6F8F9',
+    foreground: '#FFF',
+    muted: '#D4D9E1',
+    danger: '#F77249',
+    dangerMuted: '#FDEDE8',
+    dangerEmphasis: '#CB532D',
+    warning: '#FCDC93',
+    warningMuted: '#FFF9ED',
+    warningEmphasis: '#E67003',
+    success: '#2DC1B1',
+    successMuted: '#E7FCFA',
+    successEmphasis: '#098C7D',
+    accentBlue: '#447AFB',
+    accentPurple: '#9055AF'
+  },
+
   fonts: {
     body:
       '-apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu',
@@ -16,6 +39,8 @@ export default {
   },
 
   fontSizes: [11, 13, 14, 15, 16, 18, 20, 24, 32, 48, 64, 96],
+  // Dai UI fontSizes
+  // fontSizes: [10, 12, 14, 16, 18, 20, 24, 32, 48, 64, 96],
 
   fontWeights: {
     body: 400,
@@ -31,100 +56,84 @@ export default {
     loose: 1.2
   },
 
-  colors: {
-    // textMuted: '#6F8390', //used in card title/headers
-    text: '#231536', //some text like headers are black
-    // textMuted: '#6F8390', //used in card title/headers (not sure whats for??)
-    // changing textMuted from ... to #7E7E88
-    textMuted: '#7E7E88',
-    //changing textAlt fro #7E7E88 to #48495F (formerly graphite)
-
-    textAlt: '#48495F', // was graphite, lightest shade of grey
-    background: '#F6F8F9',
-    foreground: '#fff',
-    primary: '#1AAB9B',
-    primaryEmphasis: '#139D8D', // same as primaryHover & green1
-    // primaryEmphasis: '#2DC1B1', //from figma-- should be Emph
-    primaryAlt: '#098C7D', //from figma, should be Alt ?
-    primaryMuted: '#B6EDE7', // used in disabled...
-    primaryContrast: '#FFF', //
-    secondary: '#FFF', //maybe not needed bc of transparent
-    accentBlue: '#447AFB', // blue link text
-    accentPurple: '#9055AF', //used for Kovan indicator
-    // orangeText: '#E67003', //used in error/warning text --use same from warning
-    muted: '#D4D9E1', // border color for cards/buttons, called muted
-    // grey2: "#E2E9EC",
-    // white: "#fff",
-    // sidebar: "#1E2C37",
-    // subText: "#48495F",
-    lightText: '#708390',
-    // accent: "#447AFB",
-    // green1: "#098C7D",
-    // green2: "#139D8D",
-    // green3: "#B6EDE7",
-    // highlight: "#E7FCFA",
-    warningMuted: '#FFF9ED', // background color for status
-    warning: '#FCDC93', // border color
-    warningEmphasis: '#E67003', // text color
-    successMuted: '#E7FCFA', // bg, from figma
-    success: '#2DC1B1', //from figma, border color
-    successEmphasis: '#098C7D', // bg, from figma
-    dangerMuted: '#FDEDE8', // bg, from figma
-    danger: '#F77249', //from figma, border color
-    dangerEmphasis: '#7E2205'
-    // yellow1: "#E47F09",
-    // yellow2: "#FBCC5F",
-    // yellow3: "#FFF9ED",
-    // red1: "#CB532D",
-    // red2: "#FA7249",
-    // red3: "#FA7249",
-  },
-
-  xcolorsx: {
-    text: '#231536',
-    background: '#F6F8F9',
-    primary: '#1AAB9B',
-    primaryHover: '#139D8D',
-    primaryActive: '#098C7D',
-    lightGreen: '#B6EDE7',
-    lightCyan: '#E7FCFA',
-    darkCyan: '#2DC1B1',
-    graphite: '#48495F',
-    lightGraphite: '#7E7E88',
-    purple: '#447AFB',
-    blackThree: '#333',
-    border: '#D4D9E1',
-    white: '#fff',
-    grayishBlue: '#9FAFB9',
-    darkGrayishBlue: '#708390',
-    yellow: '#FFF1CF',
-    orange: '#E67002',
-    lightOrange: '#FFF9ED',
-    borderOrange: '#FBCC5F'
-
-    // text: '#000',
-    // background: '#fff',
-    // primary: '#07c',
-    // secondary: '#30c',
-    // muted: '#f6f6f6',
-  },
-
   borders: {
     light: '1px solid'
   },
 
-  buttons: {
-    //todo text is no longer caps, & p is off (but that's ok bc its from new figma spec)
+  space: [0, 4, 8, 12, 14, 16, 24, 32, 64, 128, 256, 512],
+  sizes: [0, 4, 8, 12, 14, 16, 24, 32, 64, 128, 256, 512],
+  // Dai UI sizes
+  // space: [0, 4, 8, 16, 32, 64, 128, 256, 512],
+  // sizes: [0, 4, 8, 16, 32, 64, 128, 256, 512],
+
+  radii: {
+    xs: 2,
+    small: 4,
+    medium: 6,
+    roundish: 12,
+    round: 24
+  },
+
+  shadows: {
+    floater: '0 0 8px rgba(0, 0, 0, 0.125)',
+    deep: '2px 2px 8px rgba(0, 0, 0, 0.925)'
+  },
+
+  alerts: {
     primary: {
-      // maxWidth: ['100%', '224px'], //need this?
+      borderRadius: 'xs',
+      border: '1px solid',
+      borderColor: 'primaryAlt',
+      bg: 'primaryMuted',
+      color: 'primaryEmphasis'
+    },
+    danger: {
+      variant: 'alerts.primary',
+      borderColor: 'danger',
+      bg: 'dangerMuted',
+      color: 'dangerEmphasis'
+    },
+    warning: {
+      variant: 'alerts.primary',
+      borderColor: 'warning',
+      bg: 'warningMuted',
+      color: 'warningEmphasis'
+    }
+  },
+
+  badges: {
+    primary: {
+      py: 1,
+      px: 4,
+      borderRadius: 'roundish',
+      variant: 'text.caps',
+      color: 'primary',
+      bg: 'foreground',
+      border: '1px solid',
+      borderColor: 'primary'
+    },
+    warning: {
+      variant: 'badges.primary',
+      borderColor: 'warning',
+      color: 'warningEmphasis'
+    },
+    danger: {
+      variant: 'badges.primary',
+      borderColor: 'danger',
+      color: 'dangerEmphasis'
+    }
+  },
+
+  buttons: {
+    primary: {
+      borderRadius: 'xs',
       cursor: 'pointer',
       outline: 'none',
       fontFamily: 'body',
-      fontSize: 4,
+      fontSize: 4, //fixme here 4-16; there 2-14
       p: 3,
       color: 'primaryContrast',
       fontWeight: 'semiBold',
-      borderRadius: 'xs',
       letterSpacing: '0.03em',
       bg: 'primary',
       '&:hover': {
@@ -139,36 +148,14 @@ export default {
         cursor: 'not-allowed'
       }
     },
-    // xprimary: {
-    //   outline: 'none',
-    //   fontFamily: 'body',
-    //   fontSize: 4,
-    //   px: 6,
-    //   py: 3,
-    //   color: 'primaryContrast',
-    //   fontWeight: 'semiBold',
-    //   letterSpacing: '0.03em',
-    //   bg: 'primary',
-    //   '&:hover': {
-    //     bg: 'primaryEmphasis'
-    //   },
-    //   '&:active': {
-    //     bg: 'primaryAlt'
-    //   },
-    //   '&:disabled': {
-    //     bg: 'primaryMuted',
-    //     pointerEvents: 'none',
-    //     cursor: 'not-allowed'
-    //   }
-    // },
     outline: {
       variant: 'buttons.primary',
-      bg: 'transparent',
+      bg: 'foreground',
       color: 'textMuted',
       border: '1px solid',
       borderColor: 'muted',
       '&:hover': {
-        bg: 'transparent',
+        bg: 'foreground',
         color: 'textAlt',
         borderColor: 'textMuted'
       },
@@ -184,24 +171,6 @@ export default {
         opacity: 0.5
       }
     },
-    // todo come back to this...? not used??
-    // xoutline: {
-    //   variant: 'buttons.primary',
-    //   bg: 'transparent',
-    //   color: 'text', // text Muted
-    //   border: '1px solid',
-    //   cursor: 'pointer',
-    //   borderColor: 'text', //border color change to textContrast
-    //   '&:hover': {
-    //     bg: 'transparent',
-    //     color: 'text', //should be a darker gray (mutedAlt?)
-    //     borderColor: 'text' //should be a darker gray (mutedAlt?)
-    //   },
-    //   '&:active': {
-    //     borderColor: 'text',
-    //     color: 'text'
-    //   }
-    // },
 
     small: {
       variant: 'buttons.primary',
@@ -214,8 +183,6 @@ export default {
       p: 2,
       color: 'primaryContrast',
       bg: 'primary',
-      border: '1px solid',
-      borderColor: 'primary',
       '&:hover': {
         bg: 'primaryEmphasis'
       },
@@ -223,85 +190,48 @@ export default {
         bg: 'primaryAlt'
       },
       '&:disabled': {
-        // opacity: 0.5,
         bg: 'primaryMuted',
-        // bg: 'lightGreen',
         pointerEvents: 'none',
         cursor: 'not-allowed'
       }
     },
 
-    // small: {
-    //   outline: 'none',
-    //   variant: 'text.caps',
-    //   letterSpacing: '0.05em',
-    //   cursor: 'pointer',
-    //   py: 2,
-    //   px: 4,
-    //   color: 'white',
-    //   bg: 'primary',
-    //   border: '1px solid',
-    //   borderColor: 'primary',
-    //   '&:hover': {
-    //     bg: 'primaryHover'
-    //   },
-    //   '&:active': {
-    //     bg: 'primaryActive'
-    //   },
-    //   '&:disabled': {
-    //     opacity: 0.5,
-    //     // bg: 'lightGreen',
-    //     pointerEvents: 'none',
-    //     cursor: 'not-allowed'
-    //   }
-    // },
     smallOutline: {
       variant: 'buttons.small',
-      bg: 'transparent',
+      bg: 'foreground',
       color: 'textMuted',
       border: '1px solid',
       borderColor: 'muted',
       '&:hover': {
-        bg: 'transparent',
+        bg: 'foreground',
         color: 'textAlt',
         borderColor: 'textMuted'
       },
       '&:active': {
-        bg: 'transparent',
+        bg: 'foreground',
         borderColor: 'text',
         color: 'text'
       },
       '&:disabled': {
-        bg: 'background',
+        bg: 'foreground',
         pointerEvents: 'none',
         cursor: 'not-allowed',
         borderColor: 'muted',
         opacity: 0.5
       }
     },
-    // xsmallOutline: {
-    //   variant: 'buttons.small',
-    //   bg: 'transparent',
-    //   color: 'textAlt', //was lightGraphite
-    //   border: '1px solid',
-    //   borderColor: 'muted', // was border
-    //   '&:hover': {
-    //     bg: 'transparent',
-    //     color: 'textAlt', //was graphite
-    //     borderColor: 'textMuted' //was lightGraphite
-    //   },
-    //   '&:active': {
-    //     bg: 'transparent',
-    //     borderColor: 'text',
-    //     color: 'text'
-    //   }
-    // },
     clear: {
       bg: 'transparent',
       p: 1
       // p: 0
     },
-
+    close: {
+      color: 'text'
+    },
+    menu: {
+      color: 'text'
+    },
+    icon: {},
     textual: {
       background: 'transparent',
       color: 'accentBlue',
@@ -311,6 +241,76 @@ export default {
     }
   },
 
+  // fixme: everything in forms will have wrong sizing
+  forms: {
+    label: {
+      fontSize: 3,
+      fontWeight: 'semiBold',
+      py: 2
+    },
+    input: {
+      outline: 'none',
+      borderRadius: 'small',
+      borderColor: 'muted',
+      color: 'textMuted',
+      p: 2,
+      '&:focus': {
+        borderColor: 'textAlt',
+        color: 'text'
+      }
+    },
+    inputDanger: {
+      variant: 'forms.input',
+      borderColor: 'danger',
+      color: 'text',
+      '&:focus': {
+        borderColor: 'danger',
+        color: 'text'
+      }
+    },
+    textarea: { variant: 'forms.input' },
+    textareaDanger: { variant: 'forms.inputDanger' },
+    select: { variant: 'forms.input' },
+    slider: {
+      height: '2px',
+      borderRadius: 'small',
+      color: 'text'
+    },
+    sliderActive: {
+      variant: 'forms.slider',
+      color: 'primary',
+      bg: 'primary'
+    },
+    radio: {
+      color: 'muted',
+      'input:checked ~ &': {
+        color: 'primary'
+      },
+      'input:focus ~ &': {
+        bg: 'successMuted'
+      }
+    },
+    checkbox: {
+      color: 'muted',
+      'input:checked ~ &': {
+        color: 'primary'
+      },
+      'input:focus ~ &': {
+        color: 'primary',
+        bg: 'successMuted'
+      }
+    }
+  },
+  cards: {
+    primary: {
+      border: '1px solid',
+      borderColor: 'muted',
+      p: 3,
+      borderRadius: 'medium',
+      bg: 'foreground'
+    }
+  },
+  messages: {}, // Defaults to "primary" & "highlight"
   text: {
     heading: {
       fontFamily: 'heading',
@@ -339,11 +339,18 @@ export default {
       letterSpacing: '0.4px'
     },
 
+    h3: {
+      fontSize: 5,
+      lineHeight: 'loose',
+      fontWeight: 'semiBold',
+      letterSpacing: '0.4px'
+    },
+
     bigText: {
       fontSize: 8
     },
     boldBody: {
-      fontSize: 4,
+      fontSize: 3, //fixme here 4; there 3
       fontWeight: 'semiBold',
       letterSpacing: '0.3px'
     },
@@ -355,7 +362,7 @@ export default {
       fontWeight: 'normal'
     },
     smallDanger: {
-      fontSize: 1,
+      fontSize: 2, //fixme here 3; there 2
       color: 'danger'
     },
     muted: {
@@ -366,6 +373,7 @@ export default {
   },
   links: {
     nav: {
+      p: 2,
       fontSize: 5,
       fontWeight: 'body',
       letterSpacing: '0.4px',
@@ -385,7 +393,20 @@ export default {
       cursor: 'pointer'
     }
   },
+  images: {
+    avatar: {}
+  },
   styles: {
+    spinner: {
+      color: 'primary',
+      strokeWidth: 3,
+      size: 4
+    },
+    donut: {
+      color: 'primary',
+      strokeWidth: 3,
+      size: 6
+    },
     time: {
       display: 'inline',
       major: {
@@ -395,7 +416,7 @@ export default {
       minor: {
         fontSize: 1,
         fontWeight: 'body',
-        color: 'textMuted' //todo check if it looks ok
+        color: 'textMuted'
       }
     },
     root: {
@@ -403,6 +424,7 @@ export default {
       lineHeight: 'body',
       fontWeight: 'body'
     },
+    // TODO this will need to be hacked into the dai-ui theme locally until we update forms components
     roundedCard: {
       border: '1px solid',
       borderColor: 'muted',
@@ -413,7 +435,7 @@ export default {
     statusBox: {
       layout: {
         border: '1px solid',
-        borderRadius: 6,
+        borderRadius: 'medium',
         fontSize: 2,
         fontWeight: 'bold',
         py: 3,
@@ -423,17 +445,16 @@ export default {
         width: '100%'
       },
       warning: {
-        //todo match these with alert
         variant: 'styles.statusBox.layout',
-        bg: 'lightOrange',
-        borderColor: 'orangeBorder',
-        color: 'orange'
+        bg: 'warningMuted',
+        borderColor: 'warning',
+        color: 'warningEmphasis'
       },
       success: {
         variant: 'styles.statusBox.layout',
-        bg: 'lightCyan',
-        borderColor: 'darkCyan',
-        color: 'primaryActive'
+        bg: 'primaryMuted',
+        borderColor: 'primaryEmphasis',
+        color: 'primaryAlt'
       }
     },
     h1: {
@@ -463,34 +484,12 @@ export default {
     a: {
       color: 'accentBlue',
       textDecoration: 'none'
+    },
+    hr: {},
+    layout: {
+      container: {
+        px: 2
+      }
     }
-    // h6: {
-    //   variant: 'text.heading',
-    //   fontSize: 2,
-    // },
-    // pre: {
-    //   fontFamily: 'monospace',
-    //   overflowX: 'auto',
-    //   code: {
-    //     color: 'inherit',
-    //   },
-    // },
-    // code: {
-    //   fontFamily: 'monospace',
-    //   fontSize: 'inherit',
-    // },
-    // table: {
-    //   width: '100%',
-    //   borderCollapse: 'separate',
-    //   borderSpacing: 0,
-    // },
-    // th: {
-    //   textAlign: 'left',
-    //   borderBottomStyle: 'solid',
-    // },
-    // td: {
-    //   textAlign: 'left',
-    //   borderBottomStyle: 'solid',
-    // },
   }
 };
