@@ -114,7 +114,7 @@ const MiniFormLayout = ({
               mr: [0, 2],
               borderWidth: '1px',
               borderStyle: 'solid',
-              borderColor: 'border',
+              borderColor: 'muted',
               bg: 'white',
               borderRadius: 6,
               fontSize: 4,

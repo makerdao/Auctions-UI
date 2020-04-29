@@ -20,7 +20,7 @@ const BalanceFormVat = ({ joinDaiToAdapter, exitDaiFromAdapter }) => {
       <Input
         onChange={ev => setAmount(ev.target.value)}
         sx={{
-          borderColor: 'border'
+          borderColor: 'muted'
         }}
       ></Input>
       <Button

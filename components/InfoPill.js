@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, jsx, Grid, Box } from 'theme-ui';
 
-const InfoPill = ({ bg = 'primary', color = 'white', sx, children }) => {
+const InfoPill = ({ bg = 'primary', color = 'primaryContrast', sx, children }) => {
   return (
     <Box
       sx={{

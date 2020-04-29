@@ -109,7 +109,7 @@ export default ({ allowances }) => {
                     </Text>
 
                     <Button
-                      variant="pill"
+                      variant="small"
                       onClick={() => giveDaiAllowance(joinAddress)}
                       disabled={!web3Connected}
                     >
@@ -135,7 +135,7 @@ export default ({ allowances }) => {
                       DAI Adapter Balance - {vatDaiBalance}
                     </Text>
                     <Button
-                      variant="pill"
+                      variant="small"
                       onClick={() => giveJoinDaiHope(joinAddress)}
                       disabled={!web3Connected || hasJoinDaiHope}
                     >
@@ -146,7 +146,7 @@ export default ({ allowances }) => {
                 sx={{
                   borderLeft: '1px solid',
                   borderRight: '1px solid',
-                  borderColor: 'border'
+                  borderColor: 'muted'
                 }}
               />
               <BalanceOf
@@ -162,7 +162,7 @@ export default ({ allowances }) => {
                   >
                     <Text variant="caps">Enable Debt Auctions</Text>
                     <Button
-                      variant="pill"
+                      variant="small"
                       onClick={() => {
                         const flopAddress = maker
                           .service('smartContract')

@@ -69,7 +69,7 @@ const Index = () => {
             <Text
               variant="caps"
               sx={{
-                color: 'orange',
+                color: 'warningEmphasis',
                 display: 'inline-block',
                 ml: 4
               }}
@@ -108,7 +108,7 @@ const Index = () => {
             <Text
               variant="caps"
               sx={{
-                color: 'orange',
+                color: 'warningEmphasis',
                 display: 'inline-block',
                 ml: 4
               }}
@@ -157,7 +157,7 @@ const Index = () => {
                   />
                 ) : (
                   <Button
-                    variant="pill"
+                    variant="small"
                     sx={{ ml: 5 }}
                     disabled={!web3Connected}
                     onClick={() => {
@@ -184,9 +184,9 @@ const Index = () => {
               >
                 <Spinner />
               </Flex>
-            ) : !Object.keys(auctions).length
-              ? <NoAuctions/>
-              : (
+            ) : !Object.keys(auctions).length ? (
+              <NoAuctions />
+            ) : (
               <AuctionsLayout
                 allowances={allowances}
                 stepSize={stepSize}

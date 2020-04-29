@@ -26,16 +26,16 @@ import ReactGA from 'react-ga';
 
 const UserBidStatusPills = {
   [TOP_BIDDER]: (
-    <InfoPill bg="yellow" color="orange">
+    <InfoPill bg="warningMuted" color="warningEmphasis">
       Current Winning Bidder
     </InfoPill>
   ),
   [WINNER]: (
-    <InfoPill bg='lightCyan' color='primaryActive'>
+    <InfoPill bg="successMuted" color="primaryAlt">
       You have won this auction
     </InfoPill>
   )
-}
+};
 
 const AuctionEvent = ({
   type,
@@ -213,18 +213,19 @@ const byTimestamp = (prev, next) => {
 // all events for a given auction will be present
 // and they will be sorted in descending order by timestamp
 const checkUserBidStatus = (events, userAddress) => {
-  const { type , fromAddress } = events[0];
+  const { type, fromAddress } = events[0];
   if (type !== 'Kick' && type !== 'Deal' && userAddress === fromAddress) {
     return TOP_BIDDER;
   }
 
   if (type === 'Deal') {
     const { fromAddress: bidderAddress } = events[1];
-    if( bidderAddress.toLowerCase() === userAddress.toLowerCase() ) return WINNER;
+    if (bidderAddress.toLowerCase() === userAddress.toLowerCase())
+      return WINNER;
   }
 
   return null;
-}
+};
 
 export default ({ events, id: auctionId, end, tic, stepSize, allowances }) => {
   const { maker } = useMaker();
@@ -236,11 +237,17 @@ export default ({ events, id: auctionId, end, tic, stepSize, allowances }) => {
   const sortedEvents = events.sort(byTimestamp); // DEAL , [...DENT] , KICK ->
 
   const winnerSummary = {};
-  const { bid: latestBid, lot: latestLot, fromAddress: latestBidder, hash: latestHash } = sortedEvents.find(
-    event => event.type != 'Deal'
-  );
+  const {
+    bid: latestBid,
+    lot: latestLot,
+    fromAddress: latestBidder,
+    hash: latestHash
+  } = sortedEvents.find(event => event.type != 'Deal');
 
-  const chickenDinner = checkUserBidStatus(sortedEvents, maker.currentAddress());  
+  const chickenDinner = checkUserBidStatus(
+    sortedEvents,
+    maker.currentAddress()
+  );
 
   const [justBidded, setJustBidded] = useState(false);
 
@@ -338,9 +345,7 @@ export default ({ events, id: auctionId, end, tic, stepSize, allowances }) => {
       }}
       auctionStatus={auctionStatus}
       auctionId={auctionId}
-      pill={
-        chickenDinner && UserBidStatusPills[chickenDinner]
-      }
+      small={chickenDinner && UserBidStatusPills[chickenDinner]}
       winnerSummary={winnerSummary}
       hasDent={hasDent}
       end={end}

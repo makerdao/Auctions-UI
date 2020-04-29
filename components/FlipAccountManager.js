@@ -107,7 +107,7 @@ export default () => {
                     </Text>
 
                     <Button
-                      variant="pill"
+                      variant="small"
                       onClick={() => giveDaiAllowance(joinAddress)}
                       disabled={!web3Connected}
                     >
@@ -134,7 +134,7 @@ export default () => {
                     </Text>
 
                     <Button
-                      variant="pill"
+                      variant="small"
                       onClick={() => {
                         const flipEthAddress = maker
                           .service('smartContract')
@@ -156,7 +156,7 @@ export default () => {
                 sx={{
                   borderLeft: '1px solid',
                   borderRight: '1px solid',
-                  borderColor: 'border'
+                  borderColor: 'muted'
                 }}
               />
 
@@ -169,7 +169,7 @@ export default () => {
                 >
                   <Text variant="caps">DAI wallet balance</Text>
                   <Button
-                    variant="pill"
+                    variant="small"
                     onClick={() => giveJoinDaiHope(joinAddress)}
                     disabled={!web3Connected || hasJoinDaiHope}
                   >

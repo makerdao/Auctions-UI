@@ -33,7 +33,7 @@ export default () => {
         const { networkName } = maker.service('web3');
         if (network === 'mainnet' && networkName !== 'mainnet')
           window.alert(
-            `Please connect your wallet to mainnet to use this app. Or, if you'd like to try this app on the Kovan test network, add ?network=kovan to the end of the URL.`
+            "Please connect your wallet to mainnet to use this app. Or, if you'd like to try this app on the Kovan test network, add ?network=kovan to the end of the URL."
           );
 
         setWeb3Connected(true);
@@ -78,110 +78,110 @@ export default () => {
             <Logo />
           </Flex>
         </Link>
-        {!hasFlag ? null :
-        <>
-        <Flex
-          as="nav"
-          sx={{
-            ml: [0, 'auto'],
-            mr: [null, 6]
-          }}
-        >
-          {!hasFlipFlag ? null : (
-            <Link href="/flip/eth">
-              <NavLink
-                sx={{
-                  fontWeight: pathname === '/flip/eth' ? 'bold' : 'normal',
-                  cursor: 'default',
-                  p: 2,
-                  px: [4, 6]
-                }}
-              >
-                Collateral auctions
-              </NavLink>
-            </Link>
-          )}
-          <Link href="/flop">
-            <NavLink
-              p={2}
-              sx={{
-                fontWeight: pathname === '/flop' ? 500 : 'normal',
-                // color: pathname === '/flop' ? 'primary' : 'body',
-                cursor: 'default',
-                px: [4, 6]
-              }}
-            >
-              Debt auctions
-            </NavLink>
-          </Link>
-        </Flex>
-        <Flex
-          sx={{
-            mt: [2, 0],
-            width: ['100%', 'auto'],
-            justifyContent: ['center', '']
-          }}
-        >
-          {!web3Connected ? (
-            <Button
-              variant="primary"
-              disabled={!maker}
-              onClick={connectBrowserWallet}
-              sx={{
-                width: ['100%', 'auto']
-              }}
-            >
-              Connect Wallet
-            </Button>
-          ) : (
+        {!hasFlag ? null : (
+          <>
             <Flex
+              as="nav"
               sx={{
-                p: 2,
-                bg: 'white',
-                px: 4,
-                py: 3,
-                fontSize: 2,
-                lineHeight: '20px',
-                width: '296px',
-                borderWidth: 1,
-                borderStyle: 'solid',
-                borderColor: 'border',
-                borderRadius: 4,
-                color: 'blackThree'
+                ml: [0, 'auto'],
+                mr: [null, 6]
               }}
             >
-              <Flex
-                sx={{
-                  flex: '1 1 auto'
-                }}
-              >
-                <span
+              {!hasFlipFlag ? null : (
+                <Link href="/flip/eth">
+                  <NavLink
+                    sx={{
+                      fontWeight: pathname === '/flip/eth' ? 'bold' : 'normal',
+                      cursor: 'default',
+                      p: 2,
+                      px: [4, 6]
+                    }}
+                  >
+                    Collateral auctions
+                  </NavLink>
+                </Link>
+              )}
+              <Link href="/flop">
+                <NavLink
+                  p={2}
                   sx={{
-                    color:
-                      network === 'mainnet' ? 'primary' : 'rgb(144, 85, 175)',
-                    marginRight: 2
+                    fontWeight: pathname === '/flop' ? 500 : 'normal',
+                    // color: pathname === '/flop' ? 'primary' : 'body',
+                    cursor: 'default',
+                    px: [4, 6]
                   }}
                 >
-                  ●
-                </span>
-                <Text>Metamask</Text>
-              </Flex>
-              <Text>{formatAddress(maker.currentAddress())}</Text>
+                  Debt auctions
+                </NavLink>
+              </Link>
             </Flex>
-          )}
-        </Flex>
-        </>
-}
+            <Flex
+              sx={{
+                mt: [2, 0],
+                width: ['100%', 'auto'],
+                justifyContent: ['center', '']
+              }}
+            >
+              {!web3Connected ? (
+                <Button
+                  variant="primary"
+                  disabled={!maker}
+                  onClick={connectBrowserWallet}
+                  sx={{
+                    width: ['100%', 'auto']
+                  }}
+                >
+                  Connect Wallet
+                </Button>
+              ) : (
+                <Flex
+                  sx={{
+                    p: 2,
+                    bg: 'white',
+                    px: 4,
+                    py: 3,
+                    fontSize: 2,
+                    lineHeight: '20px',
+                    width: '296px',
+                    borderWidth: 1,
+                    borderStyle: 'solid',
+                    borderColor: 'muted',
+                    borderRadius: 4,
+                    color: 'text' // was blackThree
+                  }}
+                >
+                  <Flex
+                    sx={{
+                      flex: '1 1 auto'
+                    }}
+                  >
+                    <span
+                      sx={{
+                        color:
+                          network === 'mainnet' ? 'primary' : 'accentPurple',
+                        marginRight: 2
+                      }}
+                    >
+                      ●
+                    </span>
+                    <Text>Metamask</Text>
+                  </Flex>
+                  <Text>{formatAddress(maker.currentAddress())}</Text>
+                </Flex>
+              )}
+            </Flex>
+          </>
+        )}
       </Flex>
-      {!hasSubNav ? null : <Flex>
-        <Flex
-          as="nav"
-          sx={{
-            ml: [0, 'auto'],
-            mr: [null, 6]
-          }}
-        >
-          
+      {!hasSubNav ? null : (
+        <Flex>
+          <Flex
+            as="nav"
+            sx={{
+              ml: [0, 'auto'],
+              mr: [null, 6]
+            }}
+          >
             <Link href="/flip/eth">
               <NavLink
                 sx={{
@@ -194,7 +194,7 @@ export default () => {
                 ETH Collateral
               </NavLink>
             </Link>
-          
+
             <Link href="/flip/bat">
               <NavLink
                 sx={{
@@ -207,10 +207,9 @@ export default () => {
                 BAT Collateral
               </NavLink>
             </Link>
-
+          </Flex>
         </Flex>
-
-        </Flex>}
+      )}
     </GuttedLayout>
   );
 };

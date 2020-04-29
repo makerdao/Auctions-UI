@@ -20,9 +20,7 @@ import FlipAccountManager from '../../components/FlipAccountManager';
 import GuttedLayout from '../../components/GuttedLayout';
 import AuctionsLayout from '../../components/AuctionsLayout';
 
-
 const Index = () => {
-
   const { maker, web3Connected } = useMaker();
   const auctions = useAuctionsStore(state => state.auctions);
   const fetchAuctions = useAuctionsStore(state => state.fetchAll);
@@ -34,7 +32,6 @@ const Index = () => {
   const [{ isSyncing, lastSynced }, sync] = useState({});
   const featureFlags = useSystemStore(state => state.featureFlags);
   const hasFlipFlag = featureFlags.includes('flip-ui');
-
 
   useEffect(() => {
     if (window !== undefined) {
@@ -60,7 +57,6 @@ const Index = () => {
     }
   }, [auctions]);
 
-
   if (!hasFlipFlag)
     return (
       <GuttedLayout>
@@ -75,7 +71,7 @@ const Index = () => {
             <Text
               variant="caps"
               sx={{
-                color: 'orange',
+                color: 'warningEmphasis',
                 display: 'inline-block',
                 ml: 4
               }}
@@ -125,7 +121,7 @@ const Index = () => {
             >
               <Text variant="h2">Active Auctions</Text>
               <Button
-                variant="pill"
+                variant="small"
                 sx={{ ml: 5 }}
                 disabled={!web3Connected}
                 onClick={() => fetchAuctions(true)}
@@ -147,18 +143,17 @@ const Index = () => {
             >
               <Spinner />
             </Flex>
-          ) : !Object.keys(auctions).length 
-            ? <NoAuctions/>
-            : (
+          ) : !Object.keys(auctions).length ? (
+            <NoAuctions />
+          ) : (
             // <AuctionsLayout auctions={auctions} type="flip" />
 
             <AuctionsLayout
-            allowances={allowances}
-            stepSize={stepSize}
-            auctions={auctions}
-            type="flip"
-          />
-
+              allowances={allowances}
+              stepSize={stepSize}
+              auctions={auctions}
+              type="flip"
+            />
           )}
         </>
       )}

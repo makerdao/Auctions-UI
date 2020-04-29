@@ -26,7 +26,7 @@ export default ({
   actions,
   forceExpanded,
   hasDent,
-  pill,
+  small,
   orderSummary,
   winnerSummary
 }) => {
@@ -51,7 +51,7 @@ export default ({
   };
 
   const auctionStatusColors = {
-    [COMPLETED]: 'primaryHover',
+    [COMPLETED]: 'primaryEmphasis',
     [IN_PROGRESS]: 'text',
     [CAN_BE_DEALT]: 'text',
     [CAN_BE_RESTARTED]: 'text'
@@ -134,7 +134,7 @@ export default ({
           flexDirection: ['column', 'row'],
           justifyContent: 'flex-start',
           borderBottom: collapsed ? null : '1px solid',
-          borderColor: 'border',
+          borderColor: 'muted',
           alignItems: ['flex-start', 'center']
         }}
       >
@@ -149,7 +149,7 @@ export default ({
             position: 'relative'
           }}
         >
-          {!pill ? null : <Box ml={[0, 4]}>{pill}</Box>}
+          {!small ? null : <Box ml={[0, 4]}>{small}</Box>}
           {collapsed && auctionStatus === IN_PROGRESS && (
             <Flex
               sx={{
@@ -217,7 +217,11 @@ export default ({
               <Box variant="styles.statusBox.warning">
                 {' '}
                 {auctionStatusHeadings[COMPLETED]}. The winner is{' '}
-                <a href={etherscanLink(winnerSummary.address, network)} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={etherscanLink(winnerSummary.address, network)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <Link>{`${formatAddress(winnerSummary.address)}`}</Link>
                 </a>
               </Box>

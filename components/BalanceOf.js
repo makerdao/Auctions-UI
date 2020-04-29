@@ -32,7 +32,7 @@ const BalanceOf = ({
         // p: 6,
         // borderRadius: 5,
         // border: '1px solid',
-        // borderColor: 'border',
+        // borderColor: 'muted',
         alignItems: 'center'
       }}
     >

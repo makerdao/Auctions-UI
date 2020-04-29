@@ -85,7 +85,7 @@ const gloss = [
 const AuctionFilters = ({ title, text, action, forceExpanded }) => {
   const { maker, web3Connected } = useMaker();
 
-  const filterByIdValue = useAuctionsStore (state => state.filterByIdValue);
+  const filterByIdValue = useAuctionsStore(state => state.filterByIdValue);
   const [collapsed, setCollapsed] = useState(filterByIdValue ? false : true);
   const [collapsedGloss, setCollapsedGloss] = useState(true);
 
@@ -117,7 +117,7 @@ const AuctionFilters = ({ title, text, action, forceExpanded }) => {
       <Input
         sx={{
           bg: 'white',
-          borderColor: 'border',
+          borderColor: 'muted',
           width: ['100%', '280px']
         }}
         value={filterByIdValue}
@@ -130,7 +130,7 @@ const AuctionFilters = ({ title, text, action, forceExpanded }) => {
       <Input
         sx={{
           bg: 'white',
-          borderColor: 'border',
+          borderColor: 'muted',
           width: ['100%', '280px']
         }}
         placeholder="Bidder Address"
@@ -143,7 +143,7 @@ const AuctionFilters = ({ title, text, action, forceExpanded }) => {
     [
       '',
       <Button
-        variant={filterByNotCompleted ? 'pill' : 'pillInactive'}
+        variant={filterByNotCompleted ? 'small' : 'smallOutline'}
         onClick={toggleFilterByNotCompleted}
       >
         Hide Completed Auctions
@@ -152,7 +152,7 @@ const AuctionFilters = ({ title, text, action, forceExpanded }) => {
     [
       '',
       <Button
-        variant={filterByCurrentBidder ? 'pill' : 'pillInactive'}
+        variant={filterByCurrentBidder ? 'small' : 'smallOutline'}
         onClick={() => toggleFilterByCurrentBidder(maker.currentAddress())}
       >
         Show Only Participating
@@ -176,12 +176,14 @@ const AuctionFilters = ({ title, text, action, forceExpanded }) => {
           width: '100%'
         }}
       >
-        <Flex sx={{
-          alignItems: 'flex-end'
-        }}>
+        <Flex
+          sx={{
+            alignItems: 'flex-end'
+          }}
+        >
           <Button
-            key={``}
-            variant={collapsed ? 'pillInactive' : 'pill'}
+            key={''}
+            variant={collapsed ? 'smallOutline' : 'small'}
             sx={{
               mr: 2
             }}
@@ -191,7 +193,7 @@ const AuctionFilters = ({ title, text, action, forceExpanded }) => {
           </Button>
           <Box>
             <Button
-              variant={collapsedGloss ? 'pillInactive' : 'pill'}
+              variant={collapsedGloss ? 'smallOutline' : 'small'}
               onClick={() => setCollapsedGloss(!collapsedGloss)}
             >
               Glossary
@@ -204,7 +206,7 @@ const AuctionFilters = ({ title, text, action, forceExpanded }) => {
               width: ['100%', '300px'],
               // height: 7,
               // fontSize: 0,
-              borderColor: 'border',
+              borderColor: 'muted',
               bg: 'white'
             }}
             defaultValue="Sort By Id (Desc)"

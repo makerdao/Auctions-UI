@@ -65,7 +65,7 @@ const DentForm = ({ auctionId, lot, bid }) => {
             maxWidth: ['100%', '224px'],
             borderWidth: '1px',
             borderStyle: 'solid',
-            borderColor: 'border',
+            borderColor: 'muted',
             borderRadius: 5,
             fontSize: 4,
             // lineHeight: '24px',
@@ -214,7 +214,7 @@ export default ({ events: auctionEvents, id: auctionId }) => {
         p: 6,
         borderRadius: 5,
         border: '1px solid',
-        borderColor: 'border'
+        borderColor: 'muted'
       }}
     >
       <Flex
