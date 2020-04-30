@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import useMaker from '../hooks/useMaker';
 import useBalances from '../hooks/useBalances';
-import { Text, jsx, Box, Button, Grid } from 'theme-ui';
+import { Text, jsx, Box, Button, Grid, Card } from 'theme-ui';
 import BalanceOf from './BalanceOf';
 import AccountManagerLayout from '../components/AccountManagerLayout';
 import ActionTabs from './ActionTabs';
@@ -72,7 +72,7 @@ export default ({ allowances }) => {
             </Text>
           ) : null}
           <Grid
-            gap={4}
+            gap={3}
             columns={[1, 3]}
             sx={{
               flexDirection: ['column', 'row'],
@@ -86,11 +86,11 @@ export default ({ allowances }) => {
         <Box>
           {web3Connected ? (
             <Grid
-              gap={4}
+              gap={3}
               columns={[1, 3]}
               sx={{
                 pt: 0,
-                pb: 4
+                pb: 3
               }}
             >
               <BalanceOf
@@ -98,26 +98,23 @@ export default ({ allowances }) => {
                 balance={`${daiBalance} DAI`}
                 shouldUnlock={!hasDaiAllowance}
                 unlock={
-                  <Grid
-                    gap={4}
-                    sx={{
-                      variant: 'styles.roundedCard'
-                    }}
-                  >
-                    <Text variant="caps">
-                      DAI wallet balance - {daiBalance}
-                    </Text>
+                  <Card>
+                    <Grid gap={3}>
+                      <Text variant="caps">
+                        DAI wallet balance - {daiBalance}
+                      </Text>
 
-                    <Button
-                      variant="small"
-                      onClick={() => giveDaiAllowance(joinAddress)}
-                      disabled={!web3Connected}
-                    >
-                      {hasDaiAllowance
-                        ? 'Dai Unlocked'
-                        : 'Unlock Dai in your wallet'}
-                    </Button>
-                  </Grid>
+                      <Button
+                        variant="small"
+                        onClick={() => giveDaiAllowance(joinAddress)}
+                        disabled={!web3Connected}
+                      >
+                        {hasDaiAllowance
+                          ? 'Dai Unlocked'
+                          : 'Unlock Dai in your wallet'}
+                      </Button>
+                    </Grid>
+                  </Card>
                 }
               />
               <BalanceOf
@@ -125,23 +122,20 @@ export default ({ allowances }) => {
                 balance={`${vatDaiBalance} DAI`}
                 shouldUnlock={!hasJoinDaiHope}
                 unlock={
-                  <Grid
-                    gap={4}
-                    sx={{
-                      variant: 'styles.roundedCard'
-                    }}
-                  >
-                    <Text variant="caps">
-                      DAI Adapter Balance - {vatDaiBalance}
-                    </Text>
-                    <Button
-                      variant="small"
-                      onClick={() => giveJoinDaiHope(joinAddress)}
-                      disabled={!web3Connected || hasJoinDaiHope}
-                    >
-                      Unlock Dai in the VAT
-                    </Button>
-                  </Grid>
+                  <Card>
+                    <Grid gap={3}>
+                      <Text variant="caps">
+                        DAI Adapter Balance - {vatDaiBalance}
+                      </Text>
+                      <Button
+                        variant="small"
+                        onClick={() => giveJoinDaiHope(joinAddress)}
+                        disabled={!web3Connected || hasJoinDaiHope}
+                      >
+                        Unlock Dai in the VAT
+                      </Button>
+                    </Grid>
+                  </Card>
                 }
                 sx={{
                   borderLeft: '1px solid',
@@ -154,99 +148,94 @@ export default ({ allowances }) => {
                 balance={`${mkrBalance} MKR`}
                 shouldUnlock={!hasFlopHope}
                 unlock={
-                  <Grid
-                    gap={4}
-                    sx={{
-                      variant: 'styles.roundedCard'
-                    }}
-                  >
-                    <Text variant="caps">Enable Debt Auctions</Text>
-                    <Button
-                      variant="small"
-                      onClick={() => {
-                        const flopAddress = maker
-                          .service('smartContract')
-                          .getContractByName('MCD_FLOP').address;
-                        giveFlopHope(flopAddress);
-                      }}
-                      disabled={!web3Connected}
-                    >
-                      Unlock DAI in the Debt Auction
-                    </Button>
-                  </Grid>
+                  <Card>
+                    <Grid gap={3}>
+                      <Text variant="caps">Enable Debt Auctions</Text>
+                      <Button
+                        variant="small"
+                        onClick={() => {
+                          const flopAddress = maker
+                            .service('smartContract')
+                            .getContractByName('MCD_FLOP').address;
+                          giveFlopHope(flopAddress);
+                        }}
+                        disabled={!web3Connected}
+                      >
+                        Unlock DAI in the Debt Auction
+                      </Button>
+                    </Grid>
+                  </Card>
                 }
               />
             </Grid>
           ) : null}
           {hasNoAllowances ? null : (
-            <Grid
-              sx={{
-                variant: 'styles.roundedCard'
-              }}
-            >
-              <ActionTabs
-                actions={[
-                  [
-                    'Deposit DAI into the VAT',
-                    <Grid>
-                      <Box
-                        sx={{
-                          bg: 'background',
-                          p: 4,
-                          borderRadius: 6
-                        }}
-                      >
-                        <MiniFormLayout
-                          text={'Deposit DAI into the VAT'}
-                          disabled={false}
-                          inputUnit="DAI"
-                          onSubmit={joinDaiToAdapter}
-                          onTxFinished={() => {
-                            ReactGA.event({
-                              category: 'account',
-                              action: 'deposited'
-                              // label: maker.currentAddress()
-                            });
-                            updateDaiBalances();
+            <Card>
+              <Grid>
+                <ActionTabs
+                  actions={[
+                    [
+                      'Deposit DAI into the VAT',
+                      <Grid>
+                        <Box
+                          sx={{
+                            bg: 'background',
+                            p: 3,
+                            borderRadius: 'medium'
                           }}
-                          small={''}
-                          actionText={'Deposit'}
-                        />
-                      </Box>
-                    </Grid>
-                  ],
-                  [
-                    'Withdraw DAI From VAT',
-                    <Grid>
-                      <Box
-                        sx={{
-                          bg: 'background',
-                          p: 4,
-                          borderRadius: 6
-                        }}
-                      >
-                        <MiniFormLayout
-                          text={'Withdraw DAI from the VAT'}
-                          disabled={false}
-                          inputUnit="DAI"
-                          onSubmit={exitDaiFromAdapter}
-                          onTxFinished={() => {
-                            ReactGA.event({
-                              category: 'account',
-                              action: 'withdraw'
-                              // label: maker.currentAddress()
-                            });
-                            updateDaiBalances();
+                        >
+                          <MiniFormLayout
+                            text={'Deposit DAI into the VAT'}
+                            disabled={false}
+                            inputUnit="DAI"
+                            onSubmit={joinDaiToAdapter}
+                            onTxFinished={() => {
+                              ReactGA.event({
+                                category: 'account',
+                                action: 'deposited'
+                                // label: maker.currentAddress()
+                              });
+                              updateDaiBalances();
+                            }}
+                            small={''}
+                            actionText={'Deposit'}
+                          />
+                        </Box>
+                      </Grid>
+                    ],
+                    [
+                      'Withdraw DAI From VAT',
+                      <Grid>
+                        <Box
+                          sx={{
+                            bg: 'background',
+                            p: 3,
+                            borderRadius: 'medium'
                           }}
-                          small={''}
-                          actionText={'Withdraw'}
-                        />
-                      </Box>
-                    </Grid>
-                  ]
-                ]}
-              />
-            </Grid>
+                        >
+                          <MiniFormLayout
+                            text={'Withdraw DAI from the VAT'}
+                            disabled={false}
+                            inputUnit="DAI"
+                            onSubmit={exitDaiFromAdapter}
+                            onTxFinished={() => {
+                              ReactGA.event({
+                                category: 'account',
+                                action: 'withdraw'
+                                // label: maker.currentAddress()
+                              });
+                              updateDaiBalances();
+                            }}
+                            small={''}
+                            actionText={'Withdraw'}
+                          />
+                        </Box>
+                      </Grid>
+                    ]
+                  ]}
+                />
+              </Grid>
+            </Card>
           )}
         </Box>
       }

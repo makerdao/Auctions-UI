@@ -8,6 +8,7 @@ import {
   Button,
   Grid,
   Box,
+  Card,
   Styled,
   Label,
   Input,
@@ -24,23 +25,16 @@ const IntroInfoCard = ({
 }) => {
   const [collapsed, setCollapsed] = useState(isCollapsed || false);
   return (
-    <Box
-      sx={{
-        variant: 'styles.roundedCard',
-        p: 0,
-        mb: 6
-      }}
-    >
+    <Card p={0}>
       <Flex
         sx={{
-          p: 6,
-          py: 5,
+          p: 3,
           borderBottom: collapsed ? null : '1px solid',
           borderColor: 'muted',
           alignItems: 'center'
         }}
       >
-        <Heading variant="h2">{title}</Heading>
+        <Heading variant="h3">{title}</Heading>
         <Box
           sx={{
             ml: 'auto'
@@ -54,13 +48,13 @@ const IntroInfoCard = ({
       </Flex>
       {collapsed ? null : (
         <>
-          <Box px="6" pb="3">
+          <Box px="3" pb="3">
             {text}
           </Box>
           {action}
         </>
       )}
-    </Box>
+    </Card>
   );
 };
 

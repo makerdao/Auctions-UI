@@ -62,16 +62,16 @@ const Index = () => {
           <Heading
             variant="h1"
             sx={{
-              py: 7
+              py: 4
             }}
           >
             Debt Auctions
             <Text
               variant="caps"
               sx={{
-                color: 'warningEmphasis',
+                color: 'warning',
                 display: 'inline-block',
-                ml: 4
+                ml: 3
               }}
             >
               BETA{' '}
@@ -91,7 +91,7 @@ const Index = () => {
         <Flex
           sx={{
             justifyContent: 'center',
-            p: 8
+            p: 5
           }}
         >
           <Spinner />
@@ -99,18 +99,18 @@ const Index = () => {
       ) : (
         <>
           <Heading
-            variant="h1"
+            variant="h2"
             sx={{
-              py: 7
+              py: 4
             }}
           >
             Debt Auctions
             <Text
               variant="caps"
               sx={{
-                color: 'warningEmphasis',
+                color: 'warning',
                 display: 'inline-block',
-                ml: 4
+                ml: 3
               }}
             >
               BETA{' '}
@@ -142,8 +142,8 @@ const Index = () => {
             {!web3Connected ? null : (
               <Flex
                 sx={{
-                  py: 4,
-                  pt: 7,
+                  py: 3,
+                  pt: 4,
                   alignItems: 'center'
                 }}
               >
@@ -151,14 +151,14 @@ const Index = () => {
                 {isSyncing ? (
                   <Spinner
                     sx={{
-                      height: 7,
-                      ml: 5
+                      height: 4,
+                      ml: 3
                     }}
                   />
                 ) : (
                   <Button
                     variant="small"
-                    sx={{ ml: 5 }}
+                    sx={{ ml: 3 }}
                     disabled={!web3Connected}
                     onClick={() => {
                       sync({ isSyncing: true, lastSynced: new Date() });
@@ -170,7 +170,7 @@ const Index = () => {
                 )}
 
                 {lastSynced && (
-                  <Text title={lastSynced} sx={{ ml: 5, fontSize: 2 }}>
+                  <Text title={lastSynced} sx={{ ml: 3, fontSize: 2 }}>
                     (Last synced: <Moment local>{lastSynced.getTime()}</Moment>)
                   </Text>
                 )}

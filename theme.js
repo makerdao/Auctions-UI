@@ -1,4 +1,5 @@
 // example base theme from @theme-ui/presets
+
 export default {
   useBorderBox: true,
   useBodyStyles: true,
@@ -17,7 +18,6 @@ export default {
     text: '#231536',
     textMuted: '#7E7E88',
     textAlt: '#FFF',
-    // textAlt: "#FFF",
     '': '',
     background: '#F6F8F9',
     foreground: '#FFF',
@@ -92,21 +92,21 @@ export default {
     primary: {
       borderRadius: 'xs',
       border: '1px solid',
-      borderColor: 'primaryAlt',
-      bg: 'primaryMuted',
-      color: 'primaryEmphasis'
-    },
-    danger: {
-      variant: 'alerts.primary',
-      borderColor: 'danger',
-      bg: 'dangerMuted',
-      color: 'dangerEmphasis'
+      borderColor: 'success',
+      bg: 'successMuted',
+      color: 'successEmphasis'
     },
     warning: {
       variant: 'alerts.primary',
       borderColor: 'warning',
       bg: 'warningMuted',
       color: 'warningEmphasis'
+    },
+    danger: {
+      variant: 'alerts.primary',
+      borderColor: 'danger',
+      bg: 'dangerMuted',
+      color: 'dangerEmphasis'
     }
   },
 
@@ -260,11 +260,11 @@ export default {
     input: {
       outline: 'none',
       borderRadius: 'small',
-      borderColor: 'muted',
-      color: 'textMuted',
+      borderColor: 'secondary',
+      color: 'text',
       p: 2,
       '&:focus': {
-        borderColor: 'textAlt',
+        borderColor: 'secondaryEmphasis',
         color: 'text'
       }
     },
@@ -359,7 +359,7 @@ export default {
       fontSize: 8
     },
     boldBody: {
-      fontSize: 3, //fixme here 4; there 3
+      fontSize: 3,
       fontWeight: 'semiBold',
       letterSpacing: '0.3px'
     },
@@ -371,7 +371,7 @@ export default {
       fontWeight: 'normal'
     },
     smallDanger: {
-      fontSize: 2, //fixme here 3; there 2
+      fontSize: 2,
       color: 'danger'
     },
     muted: {
@@ -494,11 +494,11 @@ export default {
       color: 'accentBlue',
       textDecoration: 'none'
     },
-    hr: {},
-    layout: {
-      container: {
-        px: 2
-      }
+    hr: {}
+  },
+  layout: {
+    container: {
+      px: 2
     }
   }
 };

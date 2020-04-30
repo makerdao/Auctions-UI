@@ -84,7 +84,7 @@ export default () => {
               as="nav"
               sx={{
                 ml: [0, 'auto'],
-                mr: [null, 6]
+                mr: [null, 4]
               }}
             >
               {!hasFlipFlag ? null : (
@@ -94,7 +94,7 @@ export default () => {
                       fontWeight: pathname === '/flip/eth' ? 'bold' : 'normal',
                       cursor: 'default',
                       p: 2,
-                      px: [4, 6]
+                      px: [3, 4]
                     }}
                   >
                     Collateral auctions
@@ -108,7 +108,7 @@ export default () => {
                     fontWeight: pathname === '/flop' ? 500 : 'normal',
                     // color: pathname === '/flop' ? 'primary' : 'body',
                     cursor: 'default',
-                    px: [4, 6]
+                    px: [3, 4]
                   }}
                 >
                   Debt auctions
@@ -138,7 +138,7 @@ export default () => {
                   sx={{
                     p: 2,
                     bg: 'white',
-                    px: 4,
+                    px: 3,
                     py: 3,
                     fontSize: 2,
                     lineHeight: '20px',
@@ -146,7 +146,7 @@ export default () => {
                     borderWidth: 1,
                     borderStyle: 'solid',
                     borderColor: 'muted',
-                    borderRadius: 4,
+                    borderRadius: 'small',
                     color: 'text' // was blackThree
                   }}
                 >
@@ -179,7 +179,7 @@ export default () => {
             as="nav"
             sx={{
               ml: [0, 'auto'],
-              mr: [null, 6]
+              mr: [null, 4]
             }}
           >
             <Link href="/flip/eth">
@@ -188,7 +188,7 @@ export default () => {
                   fontWeight: pathname === '/flip/eth' ? 500 : 'normal',
                   cursor: 'default',
                   p: 2,
-                  px: [4, 6]
+                  px: [3, 4]
                 }}
               >
                 ETH Collateral
@@ -201,7 +201,7 @@ export default () => {
                   fontWeight: pathname === '/flip/bat' ? 500 : 'normal',
                   cursor: 'default',
                   p: 2,
-                  px: [4, 6]
+                  px: [3, 4]
                 }}
               >
                 BAT Collateral

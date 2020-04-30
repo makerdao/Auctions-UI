@@ -64,16 +64,16 @@ const Index = () => {
           <Heading
             variant="h1"
             sx={{
-              py: 7
+              py: 4
             }}
           >
             Collateral Auctions
             <Text
               variant="caps"
               sx={{
-                color: 'warningEmphasis',
+                color: 'warning',
                 display: 'inline-block',
-                ml: 4
+                ml: 3
               }}
             >
               BETA{' '}
@@ -95,7 +95,7 @@ const Index = () => {
         <Flex
           sx={{
             justifyContent: 'center',
-            p: 8
+            p: 5
           }}
         >
           <Spinner />
@@ -105,7 +105,7 @@ const Index = () => {
           <Heading
             variant="h1"
             sx={{
-              py: 7
+              py: 4
             }}
           >
             BAT Collateral Auctions
@@ -122,14 +122,14 @@ const Index = () => {
               <Text variant="h2">Active Auctions</Text>
               <Button
                 variant="small"
-                sx={{ ml: 5 }}
+                sx={{ ml: 3 }}
                 disabled={!web3Connected}
                 onClick={() => fetchAuctions(true)}
               >
                 Sync
               </Button>
               {lastSynced && (
-                <Text title={lastSynced} sx={{ ml: 5, fontSize: 2 }}>
+                <Text title={lastSynced} sx={{ ml: 3, fontSize: 2 }}>
                   (Last synced: <Moment local>{lastSynced.getTime()}</Moment>)
                 </Text>
               )}

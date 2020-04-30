@@ -10,7 +10,8 @@ import {
   Grid,
   Styled,
   Input,
-  Flex
+  Flex,
+  Card
 } from 'theme-ui';
 
 const BalanceOf = ({
@@ -25,14 +26,8 @@ const BalanceOf = ({
     return <Box>{unlock}</Box>;
   }
   return (
-    <Flex
+    <Card
       sx={{
-        variant: 'styles.roundedCard',
-        // bg: '#fff',
-        // p: 6,
-        // borderRadius: 5,
-        // border: '1px solid',
-        // borderColor: 'muted',
         alignItems: 'center'
       }}
     >
@@ -63,7 +58,7 @@ const BalanceOf = ({
           </Box>
         ) : null}
       </Grid>
-    </Flex>
+    </Card>
   );
 };
 

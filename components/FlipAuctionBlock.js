@@ -66,11 +66,11 @@ const DentForm = ({ auctionId, lot, bid }) => {
             borderWidth: '1px',
             borderStyle: 'solid',
             borderColor: 'muted',
-            borderRadius: 5,
-            fontSize: 4,
+            borderRadius: 'medium',
+            fontSize: 3,
             // lineHeight: '24px',
             py: 3,
-            px: 5
+            px: 3
           }}
         >
           <Input
@@ -79,7 +79,7 @@ const DentForm = ({ auctionId, lot, bid }) => {
               outline: 'none',
               p: 0,
               marginRight: '2',
-              borderRadius: 5
+              borderRadius: 'medium'
             }}
             id="big-amount"
             type="number"
@@ -140,11 +140,11 @@ const AuctionEvent = ({
   return (
     <Grid
       gap={2}
-      columns={[2, 4, 8]}
+      columns={[2, 3, 5]}
       sx={{
         bg: 'background',
-        p: 5,
-        borderRadius: 5
+        p: 3,
+        borderRadius: 'medium'
       }}
     >
       {fields.map(([title, value]) => {

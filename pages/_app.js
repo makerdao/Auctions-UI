@@ -2,7 +2,8 @@ import React from 'react';
 import App from 'next/app';
 import MakerProvider from '../providers/MakerProvider';
 import { ThemeProvider, Styled, Box } from 'theme-ui';
-import theme from '../theme';
+// import theme from '../theme';
+import theme from '@makerdao/dai-ui-theme-maker';
 import Header from '../components/Header';
 import CookieNotice from '../components/CookieNotice';
 import ReactGA from 'react-ga';
@@ -45,7 +46,7 @@ class MyApp extends App {
         <Styled.root>
           <MakerProvider network={network}>
             <Header />
-            <Box pt={4}>
+            <Box pt={3}>
               <Component {...pageProps} />
             </Box>
             <CookieNotice />

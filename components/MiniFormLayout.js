@@ -117,7 +117,7 @@ const MiniFormLayout = ({
               borderColor: 'muted',
               bg: 'white',
               borderRadius: 6,
-              fontSize: 4,
+              fontSize: 3,
               // lineHeight: '24px',
               py: 3,
               px: 5

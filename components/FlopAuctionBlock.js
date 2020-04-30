@@ -26,12 +26,12 @@ import ReactGA from 'react-ga';
 
 const UserBidStatusPills = {
   [TOP_BIDDER]: (
-    <InfoPill bg="warningMuted" color="warningEmphasis">
+    <InfoPill bg="warningAlt" color="warning">
       Current Winning Bidder
     </InfoPill>
   ),
   [WINNER]: (
-    <InfoPill bg="successMuted" color="primaryAlt">
+    <InfoPill bg="successAlt" color="success">
       You have won this auction
     </InfoPill>
   )
@@ -77,11 +77,11 @@ const AuctionEvent = ({
   return (
     <Grid
       gap={2}
-      columns={[2, 4, 7]}
+      columns={[2, 3, 4]}
       sx={{
         bg: 'background',
-        p: 5,
-        borderRadius: 5
+        p: 3,
+        borderRadius: 'medium'
       }}
     >
       {fields.map(([title, value, styling]) => {
@@ -157,11 +157,11 @@ const OrderSummary = ({
       <Grid
         maxWidth={'500px'}
         gap={2}
-        rows={[2, 4, 7]}
+        rows={[2, 3, 4]}
         sx={{
           bg: 'background',
-          p: 5,
-          borderRadius: 5
+          p: 3,
+          borderRadius: 3
         }}
       >
         {fields.map(([title, value, styling]) => {
@@ -177,11 +177,11 @@ const OrderSummary = ({
       </Grid>
       <Grid
         gap={2}
-        rows={[2, 4, 7]}
+        rows={[2, 3, 4]}
         sx={{
           bg: 'background',
-          p: 5,
-          borderRadius: 5
+          p: 3,
+          borderRadius: 'medium'
         }}
       >
         <SummaryLine

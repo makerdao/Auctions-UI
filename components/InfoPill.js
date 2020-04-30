@@ -8,8 +8,8 @@ const InfoPill = ({ bg = 'primary', color = 'primaryContrast', sx, children }) =
     <Box
       sx={{
         py: 1,
-        px: 4,
-        borderRadius: 12,
+        px: 3,
+        borderRadius: 'roundish',
         bg,
         ...sx
       }}
