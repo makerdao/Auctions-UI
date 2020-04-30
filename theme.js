@@ -10,22 +10,31 @@ export default {
     primaryEmphasis: '#139D8D',
     primaryAlt: '#098C7D',
     primaryMuted: '#B6EDE7',
+    secondary: '#D4D9E1',
+    secondaryEmphasis: '#7E7E88',
+    secondaryAlt: '#231536',
+    secondaryMuted: '#D4D9E1',
     text: '#231536',
     textMuted: '#7E7E88',
-    textAlt: '#48495F',
-    primaryContrast: '#FFF',
+    textAlt: '#FFF',
+    // textAlt: "#FFF",
+    '': '',
     background: '#F6F8F9',
     foreground: '#FFF',
     muted: '#D4D9E1',
-    danger: '#F77249',
-    dangerMuted: '#FDEDE8',
-    dangerEmphasis: '#CB532D',
-    warning: '#FCDC93',
-    warningMuted: '#FFF9ED',
-    warningEmphasis: '#E67003',
+    ' ': '',
+    warning: '#F77249',
+    warningAlt: '#FDEDE8',
+    '  ': '',
+    '   ': '',
+    notice: '#FCDC93',
+    noticeAlt: '#FFF9ED',
+    '    ': '',
+    '     ': '',
     success: '#2DC1B1',
-    successMuted: '#E7FCFA',
-    successEmphasis: '#098C7D',
+    successAlt: '#E7FCFA',
+    '      ': '',
+    '       ': '',
     accentBlue: '#447AFB',
     accentPurple: '#9055AF'
   },
@@ -128,11 +137,12 @@ export default {
     primary: {
       borderRadius: 'xs',
       cursor: 'pointer',
+      maxWidth: ['100%', '224px'],
       outline: 'none',
       fontFamily: 'body',
-      fontSize: 4, //fixme here 4-16; there 2-14
+      fontSize: 2,
       p: 3,
-      color: 'primaryContrast',
+      color: 'textAlt',
       fontWeight: 'semiBold',
       letterSpacing: '0.03em',
       bg: 'primary',
@@ -151,23 +161,23 @@ export default {
     outline: {
       variant: 'buttons.primary',
       bg: 'foreground',
-      color: 'textMuted',
+      color: 'secondary',
       border: '1px solid',
-      borderColor: 'muted',
+      borderColor: 'secondary',
       '&:hover': {
         bg: 'foreground',
-        color: 'textAlt',
-        borderColor: 'textMuted'
+        color: 'secondaryEmphasis',
+        borderColor: 'secondaryEmphasis'
       },
       '&:active': {
-        borderColor: 'text',
-        color: 'text'
+        borderColor: 'secondaryAlt',
+        color: 'secondaryAlt'
       },
       '&:disabled': {
         bg: 'background',
         pointerEvents: 'none',
         cursor: 'not-allowed',
-        borderColor: 'muted',
+        borderColor: 'secondaryMuted',
         opacity: 0.5
       }
     },
@@ -181,7 +191,7 @@ export default {
       fontWeight: 'bold',
       cursor: 'pointer',
       p: 2,
-      color: 'primaryContrast',
+      color: 'textAlt',
       bg: 'primary',
       '&:hover': {
         bg: 'primaryEmphasis'
@@ -190,40 +200,39 @@ export default {
         bg: 'primaryAlt'
       },
       '&:disabled': {
+        // opacity: 0.5,
         bg: 'primaryMuted',
         pointerEvents: 'none',
         cursor: 'not-allowed'
       }
     },
-
     smallOutline: {
       variant: 'buttons.small',
       bg: 'foreground',
-      color: 'textMuted',
+      color: 'secondary',
       border: '1px solid',
-      borderColor: 'muted',
+      borderColor: 'secondary',
       '&:hover': {
         bg: 'foreground',
-        color: 'textAlt',
-        borderColor: 'textMuted'
+        color: 'secondaryEmphasis',
+        borderColor: 'secondaryEmphasis'
       },
       '&:active': {
         bg: 'foreground',
-        borderColor: 'text',
-        color: 'text'
+        borderColor: 'secondaryAlt',
+        color: 'secondaryAlt'
       },
       '&:disabled': {
         bg: 'foreground',
         pointerEvents: 'none',
         cursor: 'not-allowed',
-        borderColor: 'muted',
+        borderColor: 'secondaryMuted',
         opacity: 0.5
       }
     },
     clear: {
       bg: 'transparent',
       p: 1
-      // p: 0
     },
     close: {
       color: 'text'
@@ -321,7 +330,7 @@ export default {
     caps: {
       textTransform: 'uppercase',
       letterSpacing: '0.05em',
-      color: 'textAlt',
+      color: 'textMuted',
       fontSize: 0,
       fontWeight: 'bold'
     },
