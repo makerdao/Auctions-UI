@@ -114,21 +114,21 @@ const MiniFormLayout = ({
               mr: [0, 2],
               borderWidth: '1px',
               borderStyle: 'solid',
-              borderColor: 'muted',
-              bg: 'white',
-              borderRadius: 6,
+              borderColor: 'secondary',
+              bg: 'foreground',
+              borderRadius: 'medium',
               fontSize: 3,
-              // lineHeight: '24px',
-              py: 3,
-              px: 5
+              py: 1,
+              px: 3
             }}
           >
             <Input
               sx={{
-                border: 'none',
-                outline: 'none',
+                borderColor: 'transparent',
                 p: 0,
-                marginRight: '2'
+                '&:focus': {
+                  borderColor: 'transparent'
+                }
               }}
               id="big-amount"
               type={inputType}
@@ -138,7 +138,7 @@ const MiniFormLayout = ({
               onChange={handleInputChange}
             />
             {inputUnit ? (
-              <Label sx={{ p: 0, width: 'auto' }} htmlFor="bid-amount">
+              <Label sx={{ width: 'auto' }} htmlFor="bid-amount">
                 {inputUnit}
               </Label>
             ) : null}
