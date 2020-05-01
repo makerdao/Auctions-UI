@@ -63,9 +63,9 @@ const Index = () => {
       <GuttedLayout>
         <>
           <Heading
-            variant="h1"
+            variant="h2"
             sx={{
-              py: 4
+              py: 3
             }}
           >
             Collateral Auctions
@@ -96,7 +96,7 @@ const Index = () => {
         <Flex
           sx={{
             justifyContent: 'center',
-            p: 5
+            p: 3
           }}
         >
           <Spinner />
@@ -104,9 +104,9 @@ const Index = () => {
       ) : (
         <>
           <Heading
-            variant="h1"
+            variant="h2"
             sx={{
-              py: 4
+              py: 3
             }}
           >
             ETH Collateral Auctions
@@ -117,6 +117,7 @@ const Index = () => {
             <Flex
               sx={{
                 py: 3,
+                pt: 4,
                 alignItems: 'center'
               }}
             >

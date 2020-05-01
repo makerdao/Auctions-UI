@@ -124,7 +124,6 @@ export default ({
       <Flex
         sx={{
           p: 3,
-          py: 3,
           flexDirection: ['column', 'row'],
           justifyContent: 'flex-start',
           borderBottom: collapsed ? null : '1px solid',

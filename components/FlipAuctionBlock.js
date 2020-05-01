@@ -63,23 +63,24 @@ const DentForm = ({ auctionId, lot, bid }) => {
         <Flex
           sx={{
             maxWidth: ['100%', '224px'],
+            mr: [0, 2],
             borderWidth: '1px',
             borderStyle: 'solid',
-            borderColor: 'muted',
+            borderColor: 'secondary',
+            bg: 'foreground',
             borderRadius: 'medium',
             fontSize: 3,
-            // lineHeight: '24px',
-            py: 3,
+            py: 1,
             px: 3
           }}
         >
           <Input
             sx={{
-              border: 'none',
-              outline: 'none',
+              borderColor: 'transparent',
               p: 0,
-              marginRight: '2',
-              borderRadius: 'medium'
+              '&:focus': {
+                borderColor: 'transparent'
+              }
             }}
             id="big-amount"
             type="number"
@@ -87,7 +88,7 @@ const DentForm = ({ auctionId, lot, bid }) => {
             placeholder="0"
             onChange={handleBidAmountInput}
           />
-          <Label sx={{ p: 0, width: 'auto' }} htmlFor="bid-amount">
+          <Label sx={{ width: 'auto' }} htmlFor="bid-amount">
             DAI
           </Label>
         </Flex>
@@ -140,7 +141,7 @@ const AuctionEvent = ({
   return (
     <Grid
       gap={2}
-      columns={[2, 3, 5]}
+      columns={[2, 3, 4]}
       sx={{
         bg: 'background',
         p: 3,
@@ -153,8 +154,8 @@ const AuctionEvent = ({
             <Text
               variant="caps"
               sx={{
-                fontSize: '10px',
-                mb: 1
+                fontSize: 0,
+                mb: 2
               }}
             >
               {title}
@@ -208,11 +209,11 @@ export default ({ events: auctionEvents, id: auctionId }) => {
 
   return (
     <Grid
-      gap={5}
+      gap={3}
       sx={{
-        bg: '#fff',
-        p: 6,
-        borderRadius: 5,
+        bg: 'foreground',
+        p: 3,
+        borderRadius: 'medium',
         border: '1px solid',
         borderColor: 'muted'
       }}
@@ -223,7 +224,7 @@ export default ({ events: auctionEvents, id: auctionId }) => {
           justifyContent: 'space-between'
         }}
       >
-        <Heading as="h5" variant="h2">
+        <Heading as="h5" variant="h3">
           Auction ID: {auctionId}
         </Heading>
         {/* <Heading

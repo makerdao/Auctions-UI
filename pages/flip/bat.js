@@ -19,6 +19,7 @@ import useSystemStore from '../../stores/systemStore';
 import FlipAccountManager from '../../components/FlipAccountManager';
 import GuttedLayout from '../../components/GuttedLayout';
 import AuctionsLayout from '../../components/AuctionsLayout';
+import NoAuctions from '../../components/NoAuctions';
 
 const Index = () => {
   const { maker, web3Connected } = useMaker();
@@ -62,9 +63,9 @@ const Index = () => {
       <GuttedLayout>
         <>
           <Heading
-            variant="h1"
+            variant="h2"
             sx={{
-              py: 4
+              py: 3
             }}
           >
             Collateral Auctions
@@ -95,7 +96,7 @@ const Index = () => {
         <Flex
           sx={{
             justifyContent: 'center',
-            p: 5
+            p: 3
           }}
         >
           <Spinner />
@@ -103,9 +104,9 @@ const Index = () => {
       ) : (
         <>
           <Heading
-            variant="h1"
+            variant="h2"
             sx={{
-              py: 4
+              py: 3
             }}
           >
             BAT Collateral Auctions
@@ -115,7 +116,8 @@ const Index = () => {
           {!web3Connected ? null : (
             <Flex
               sx={{
-                py: 6,
+                py: 3,
+                pt: 4,
                 alignItems: 'center'
               }}
             >

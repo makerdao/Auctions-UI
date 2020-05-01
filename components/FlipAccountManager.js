@@ -4,22 +4,27 @@ import React, { useState, useEffect } from 'react';
 import useMaker from '../hooks/useMaker';
 import useBalances from '../hooks/useBalances';
 import useAllowances from '../hooks/useAllowances';
-import { Text, jsx, Box, Button, Grid } from 'theme-ui';
+import { Text, jsx, Box, Button, Grid, Card } from 'theme-ui';
 import BalanceFormVat from './BalanceFormVat';
 import BalanceOf from './BalanceOf';
 import AccountManagerLayout from '../components/AccountManagerLayout';
 import ActionTabs from './ActionTabs';
 import MiniFormLayout from './MiniFormLayout';
+import { formatBalance } from '../utils';
 
 export default () => {
   const { maker, web3Connected } = useMaker();
-  const {
+  let {
     vatDaiBalance,
     daiBalance,
     mkrBalance,
     joinDaiToAdapter,
     exitDaiFromAdapter
   } = useBalances();
+
+  daiBalance = formatBalance(daiBalance);
+  vatDaiBalance = formatBalance(vatDaiBalance);
+  mkrBalance = formatBalance(mkrBalance);
 
   const {
     hasDaiAllowance,
@@ -70,7 +75,7 @@ export default () => {
             </Text>
           ) : null}
           <Grid
-            gap={4}
+            gap={3}
             columns={[1, 3]}
             sx={{
               flexDirection: ['column', 'row'],
@@ -84,68 +89,62 @@ export default () => {
         <Box>
           {web3Connected ? (
             <Grid
-              gap={4}
-              columns={3}
+              gap={3}
+              columns={[1, 3]}
               sx={{
                 pt: 0,
-                pb: 4
+                pb: 3
               }}
             >
               <BalanceOf
                 type={'Dai in your Wallet'}
-                balance={daiBalance}
+                balance={`${daiBalance} DAI`}
                 shouldUnlock={!hasDaiAllowance}
                 unlock={
-                  <Grid
-                    gap={2}
-                    sx={{
-                      variant: 'styles.roundedCard'
-                    }}
-                  >
-                    <Text variant="caps">
-                      DAI wallet balance - {daiBalance}
-                    </Text>
+                  <Card>
+                    <Grid gap={3}>
+                      <Text variant="caps">
+                        DAI wallet balance - {daiBalance}
+                      </Text>
 
-                    <Button
-                      variant="small"
-                      onClick={() => giveDaiAllowance(joinAddress)}
-                      disabled={!web3Connected}
-                    >
-                      {hasDaiAllowance
-                        ? 'Dai Unlocked'
-                        : 'Unlock Dai in your wallet'}
-                    </Button>
-                  </Grid>
+                      <Button
+                        variant="small"
+                        onClick={() => giveDaiAllowance(joinAddress)}
+                        disabled={!web3Connected}
+                      >
+                        {hasDaiAllowance
+                          ? 'Dai Unlocked'
+                          : 'Unlock Dai in your wallet'}
+                      </Button>
+                    </Grid>
+                  </Card>
                 }
               />
               <BalanceOf
-                type={'Dai in Adaptor'}
-                balance={vatDaiBalance}
+                type={'Dai in Adapter'}
+                balance={`${vatDaiBalance} DAI`}
                 shouldUnlock={!hasEthFlipHope}
                 unlock={
-                  <Grid
-                    gap={2}
-                    sx={{
-                      variant: 'styles.roundedCard'
-                    }}
-                  >
-                    <Text variant="caps">
-                      DAI wallet balance - {vatDaiBalance}
-                    </Text>
+                  <Card>
+                    <Grid gap={3}>
+                      <Text variant="caps">
+                        DAI wallet balance - {vatDaiBalance}
+                      </Text>
 
-                    <Button
-                      variant="small"
-                      onClick={() => {
-                        const flipEthAddress = maker
-                          .service('smartContract')
-                          .getContractByName('MCD_FLIP_ETH_A').address;
-                        giveFlipEthHope(flipEthAddress);
-                      }}
-                      disabled={!web3Connected}
-                    >
-                      Unlock Dai in the adapter
-                    </Button>
-                  </Grid>
+                      <Button
+                        variant="small"
+                        onClick={() => {
+                          const flipEthAddress = maker
+                            .service('smartContract')
+                            .getContractByName('MCD_FLIP_ETH_A').address;
+                          giveFlipEthHope(flipEthAddress);
+                        }}
+                        disabled={!web3Connected}
+                      >
+                        Unlock Dai in the adapter
+                      </Button>
+                    </Grid>
+                  </Card>
                 }
                 vatActions={
                   <BalanceFormVat
@@ -161,77 +160,72 @@ export default () => {
               />
 
               {!hasJoinDaiHope ? (
-                <Grid
-                  gap={2}
-                  sx={{
-                    variant: 'styles.roundedCard'
-                  }}
-                >
-                  <Text variant="caps">DAI wallet balance</Text>
-                  <Button
-                    variant="small"
-                    onClick={() => giveJoinDaiHope(joinAddress)}
-                    disabled={!web3Connected || hasJoinDaiHope}
-                  >
-                    Unlock Dai in the VAT
-                  </Button>
-                </Grid>
+                <Card>
+                  <Grid gap={2}>
+                    <Text variant="caps">DAI wallet balance</Text>
+                    <Button
+                      variant="small"
+                      onClick={() => giveJoinDaiHope(joinAddress)}
+                      disabled={!web3Connected || hasJoinDaiHope}
+                    >
+                      Unlock Dai in the VAT
+                    </Button>
+                  </Grid>
+                </Card>
               ) : null}
             </Grid>
           ) : null}
           {hasNoAllowances ? null : (
-            <Grid
-              sx={{
-                variant: 'styles.roundedCard'
-              }}
-            >
-              <ActionTabs
-                actions={[
-                  [
-                    'Deposit DAI to Adapter',
-                    <Grid>
-                      <Box
-                        sx={{
-                          bg: 'background',
-                          p: 4,
-                          borderRadius: 6
-                        }}
-                      >
-                        <MiniFormLayout
-                          text={'Deposit DAI to the Adapter'}
-                          disabled={false}
-                          inputUnit="DAI"
-                          onSubmit={joinDaiToAdapter}
-                          small={''}
-                          actionText={'Deposit'}
-                        />
-                      </Box>
-                    </Grid>
-                  ],
-                  [
-                    'Withdraw DAI From Adapter',
-                    <Grid>
-                      <Box
-                        sx={{
-                          bg: 'background',
-                          p: 4,
-                          borderRadius: 6
-                        }}
-                      >
-                        <MiniFormLayout
-                          text={'Withdraw DAI from the Adapter'}
-                          disabled={false}
-                          inputUnit="DAI"
-                          onSubmit={exitDaiFromAdapter}
-                          small={''}
-                          actionText={'Withdraw'}
-                        />
-                      </Box>
-                    </Grid>
-                  ]
-                ]}
-              />
-            </Grid>
+            <Card>
+              <Grid>
+                <ActionTabs
+                  actions={[
+                    [
+                      'Deposit DAI to Adapter',
+                      <Grid>
+                        <Box
+                          sx={{
+                            bg: 'background',
+                            p: 3,
+                            borderRadius: 'medium'
+                          }}
+                        >
+                          <MiniFormLayout
+                            text={'Deposit DAI to the Adapter'}
+                            disabled={false}
+                            inputUnit="DAI"
+                            onSubmit={joinDaiToAdapter}
+                            small={''}
+                            actionText={'Deposit'}
+                          />
+                        </Box>
+                      </Grid>
+                    ],
+                    [
+                      'Withdraw DAI From Adapter',
+                      <Grid>
+                        <Box
+                          sx={{
+                            bg: 'background',
+                            p: 3,
+                            borderRadius: 'medium'
+                          }}
+                        >
+                          <MiniFormLayout
+                            text={'Withdraw DAI from the Adapter'}
+                            disabled={false}
+                            inputUnit="DAI"
+                            onSubmit={exitDaiFromAdapter}
+                            small={''}
+                            actionText={'Withdraw'}
+                          />
+                        </Box>
+                      </Grid>
+                    ]
+                  ]}
+                />
+              </Grid>
+            </Card>
           )}
         </Box>
       }

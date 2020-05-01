@@ -12,7 +12,8 @@ import {
   Select,
   Label,
   Input,
-  Flex
+  Flex,
+  Card
 } from 'theme-ui';
 import CollapseToggle from './CollapseToggle';
 import useAuctionsStore, { selectors } from '../stores/auctionsStore';
@@ -116,7 +117,7 @@ const AuctionFilters = ({ title, text, action, forceExpanded }) => {
       'Filter by ID',
       <Input
         sx={{
-          bg: 'white',
+          bg: 'foreground',
           borderColor: 'muted',
           width: ['100%', '280px']
         }}
@@ -129,7 +130,7 @@ const AuctionFilters = ({ title, text, action, forceExpanded }) => {
       'Filter By Bidder Address',
       <Input
         sx={{
-          bg: 'white',
+          bg: 'foreground',
           borderColor: 'muted',
           width: ['100%', '280px']
         }}
@@ -164,12 +165,11 @@ const AuctionFilters = ({ title, text, action, forceExpanded }) => {
     <Box
       sx={{
         p: 0,
-        mb: 4
+        mb: 3
       }}
     >
       <Flex
         sx={{
-          // p: 6,
           py: 0,
           alignItems: ['flex-start', 'flex-end'],
           flexDirection: ['column', 'row'],
@@ -200,14 +200,14 @@ const AuctionFilters = ({ title, text, action, forceExpanded }) => {
             </Button>
           </Box>
         </Flex>
-        <Box ml={[0, 'auto']} mt={[4, 0]}>
+        <Box ml={[0, 'auto']} mt={[3, 0]}>
           <Select
             sx={{
               width: ['100%', '300px'],
               // height: 7,
               // fontSize: 0,
               borderColor: 'muted',
-              bg: 'white'
+              bg: 'foreground'
             }}
             defaultValue="Sort By Id (Desc)"
             onChange={({ target: { value } }) => setSortBy(value)}
@@ -223,42 +223,25 @@ const AuctionFilters = ({ title, text, action, forceExpanded }) => {
       </Flex>
       {collapsedGloss ? null : (
         <Box>
-          <Box
-            px="6"
-            pb="4"
-            mt="4"
-            sx={{
-              variant: 'styles.roundedCard'
-            }}
-          >
-            <Grid gap={6} columns={[1, 2]}>
+          <Card px="3" pb="3" mt="3">
+            <Grid gap={3} columns={[1, 2]}>
               {gloss.map(([title, text]) => {
                 return (
                   <Box>
                     <Text mb="1" variant="boldBody">
                       {title}
                     </Text>
-                    <Text>
-                      {/* <Text mb="2" variant="boldBody" as="span">{title}{" "}</Text> */}
-                      {text}
-                    </Text>
+                    <Text>{text}</Text>
                   </Box>
                 );
               })}
             </Grid>
-          </Box>
+          </Card>
         </Box>
       )}
       {collapsed ? null : (
-        <Box
-          px="6"
-          pb="4"
-          mt="4"
-          sx={{
-            variant: 'styles.roundedCard'
-          }}
-        >
-          <Text variant="caps" mb="4">
+        <Card px="3" pb="3" mt="3">
+          <Text variant="caps" mb="3">
             Show or hide
           </Text>
           <Flex
@@ -270,8 +253,8 @@ const AuctionFilters = ({ title, text, action, forceExpanded }) => {
               return (
                 <Box
                   sx={{
-                    mr: [0, 4],
-                    mb: [4, 0]
+                    mr: [0, 3],
+                    mb: [3, 0]
                   }}
                   key={index}
                 >
@@ -281,7 +264,7 @@ const AuctionFilters = ({ title, text, action, forceExpanded }) => {
             })}
           </Flex>
           <Flex
-            mt="6"
+            mt="3"
             sx={{
               flexDirection: ['column', 'row']
             }}
@@ -290,8 +273,8 @@ const AuctionFilters = ({ title, text, action, forceExpanded }) => {
               return (
                 <Box
                   sx={{
-                    mr: [0, 4],
-                    mb: [4, 0]
+                    mr: [0, 3],
+                    mb: [3, 0]
                   }}
                   key={index}
                 >
@@ -308,7 +291,7 @@ const AuctionFilters = ({ title, text, action, forceExpanded }) => {
               );
             })}
           </Flex>
-        </Box>
+        </Card>
       )}
     </Box>
   );

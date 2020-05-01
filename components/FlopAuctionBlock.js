@@ -90,7 +90,7 @@ const AuctionEvent = ({
             <Text
               variant="caps"
               sx={{
-                fontSize: '10px',
+                fontSize: 0,
                 mb: 2
               }}
             >
@@ -153,15 +153,15 @@ const OrderSummary = ({
 
   return (
     <Grid gap={2}>
-      <Text variant="caps">{'Order Summary'}</Text>
+      <Text variant="caps">Order Summary</Text>
       <Grid
-        maxWidth={'500px'}
+        maxWidth={11}
         gap={2}
         rows={[2, 3, 4]}
         sx={{
           bg: 'background',
           p: 3,
-          borderRadius: 3
+          borderRadius: 'medium'
         }}
       >
         {fields.map(([title, value, styling]) => {

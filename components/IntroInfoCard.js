@@ -25,10 +25,9 @@ const IntroInfoCard = ({
 }) => {
   const [collapsed, setCollapsed] = useState(isCollapsed || false);
   return (
-    <Card p={0}>
+    <Card>
       <Flex
         sx={{
-          p: 3,
           borderBottom: collapsed ? null : '1px solid',
           borderColor: 'muted',
           alignItems: 'center'
