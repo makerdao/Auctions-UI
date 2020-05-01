@@ -1,7 +1,7 @@
 /** @jsx jsx */
 
 import React, { useState, useEffect } from 'react';
-import { Heading, jsx, Grid, Box, Flex, Text, Link } from 'theme-ui';
+import { Heading, jsx, Grid, Box, Flex, Text, Link, Card } from 'theme-ui';
 import useMaker from '../hooks/useMaker';
 
 import EventsList from './AuctionEventsList';
@@ -120,17 +120,11 @@ export default ({
   }, [end, tic]);
 
   return (
-    <Box
-      gap={5}
-      sx={{
-        variant: 'styles.roundedCard',
-        p: 0
-      }}
-    >
+    <Card p={0}>
       <Flex
         sx={{
-          p: 6,
-          py: 5,
+          p: 3,
+          py: 3,
           flexDirection: ['column', 'row'],
           justifyContent: 'flex-start',
           borderBottom: collapsed ? null : '1px solid',
@@ -138,7 +132,7 @@ export default ({
           alignItems: ['flex-start', 'center']
         }}
       >
-        <Heading as="h5" variant="h2">
+        <Heading as="h5" variant="h3">
           Auction ID: {auctionId}
         </Heading>
         <Flex
@@ -149,7 +143,7 @@ export default ({
             position: 'relative'
           }}
         >
-          {!small ? null : <Box ml={[0, 4]}>{small}</Box>}
+          {!small ? null : <Box ml={[0, 3]}>{small}</Box>}
           {collapsed && auctionStatus === IN_PROGRESS && (
             <Flex
               sx={{
@@ -167,7 +161,7 @@ export default ({
                     variant="boldBody"
                     sx={{
                       // fontSize: 4,
-                      ml: [0, '6'],
+                      ml: [0, 3],
                       mb: [2, 0],
 
                       // mr: [0, 20],
@@ -197,10 +191,10 @@ export default ({
         </Heading>
         <Box
           sx={{
-            ml: [0, 4],
+            ml: [0, 3],
             position: ['absolute', 'relative'],
             right: [0, null],
-            mr: [7, 0]
+            mr: [4, 0]
           }}
         >
           <CollapseToggle
@@ -211,7 +205,7 @@ export default ({
       </Flex>
       {collapsed ? null : (
         <>
-          <Box p="6">
+          <Box p="3">
             <EventsList events={auctionEvents} />
             {auctionStatus === COMPLETED ? (
               <Box variant="styles.statusBox.warning">
@@ -227,13 +221,13 @@ export default ({
               </Box>
             ) : (
               <Grid columns={1}>
-                <Box pt={['7', '6']}>{actions}</Box>
+                <Box pt={['4', '3']}>{actions}</Box>
                 {/* <Box pt="6">{orderSummary}</Box> */}
               </Grid>
             )}
           </Box>
         </>
       )}
-    </Box>
+    </Card>
   );
 };
