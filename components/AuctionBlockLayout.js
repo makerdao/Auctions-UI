@@ -193,7 +193,7 @@ export default ({
             ml: [0, 3],
             position: ['absolute', 'relative'],
             right: [0, null],
-            mr: [4, 0]
+            mr: [3, 0]
           }}
         >
           <CollapseToggle

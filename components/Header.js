@@ -84,7 +84,7 @@ export default () => {
               as="nav"
               sx={{
                 ml: [0, 'auto'],
-                mr: [null, 4]
+                mr: [null, 3]
               }}
             >
               {!hasFlipFlag ? null : (
@@ -136,18 +136,17 @@ export default () => {
               ) : (
                 <Flex
                   sx={{
-                    p: 2,
-                    bg: 'white',
+                    bg: 'surface',
                     px: 3,
-                    py: 3,
+                    py: 2,
                     fontSize: 2,
-                    lineHeight: '20px',
-                    width: '296px',
+                    alignItems: 'center',
+                    width: 7,
                     borderWidth: 1,
                     borderStyle: 'solid',
                     borderColor: 'muted',
                     borderRadius: 'small',
-                    color: 'text' // was blackThree
+                    color: 'text'
                   }}
                 >
                   <Flex

@@ -66,8 +66,8 @@ const DentForm = ({ auctionId, lot, bid }) => {
             mr: [0, 2],
             borderWidth: '1px',
             borderStyle: 'solid',
-            borderColor: 'secondary',
-            bg: 'foreground',
+            borderColor: 'muted',
+            bg: 'surface',
             borderRadius: 'medium',
             fontSize: 3,
             py: 1,
@@ -101,7 +101,7 @@ const DentForm = ({ auctionId, lot, bid }) => {
           Bid Now
         </Button>
       </Flex>
-      {state.error && <Text variant="smallDanger">{state.error} </Text>}
+      {state.error && <Text variant="smallError">{state.error} </Text>}
       {/* <Text variant="small">Price 1 MKR = 300 DAI</Text> */}
     </Grid>
   );
@@ -211,7 +211,7 @@ export default ({ events: auctionEvents, id: auctionId }) => {
     <Grid
       gap={3}
       sx={{
-        bg: 'foreground',
+        bg: 'surface',
         p: 3,
         borderRadius: 'medium',
         border: '1px solid',

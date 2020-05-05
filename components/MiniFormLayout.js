@@ -114,8 +114,8 @@ const MiniFormLayout = ({
               mr: [0, 2],
               borderWidth: '1px',
               borderStyle: 'solid',
-              borderColor: 'secondary',
-              bg: 'foreground',
+              borderColor: 'muted',
+              bg: 'surface',
               borderRadius: 'medium',
               fontSize: 3,
               py: 1,
@@ -155,7 +155,7 @@ const MiniFormLayout = ({
       </Flex>
       {!errorMessages
         ? null
-        : errorMessages.map(err => <Text variant="smallDanger">{err}</Text>)}
+        : errorMessages.map(err => <Text variant="smallError">{err}</Text>)}
       <Text variant="small">
         {typeof small === 'function' ? small(inputState) : small}
       </Text>

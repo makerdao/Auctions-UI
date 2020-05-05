@@ -117,7 +117,7 @@ const AuctionFilters = ({ title, text, action, forceExpanded }) => {
       'Filter by ID',
       <Input
         sx={{
-          bg: 'foreground',
+          bg: 'surface',
           borderColor: 'muted',
           width: ['100%', '280px']
         }}
@@ -130,7 +130,7 @@ const AuctionFilters = ({ title, text, action, forceExpanded }) => {
       'Filter By Bidder Address',
       <Input
         sx={{
-          bg: 'foreground',
+          bg: 'surface',
           borderColor: 'muted',
           width: ['100%', '280px']
         }}
@@ -207,7 +207,7 @@ const AuctionFilters = ({ title, text, action, forceExpanded }) => {
               // height: 7,
               // fontSize: 0,
               borderColor: 'muted',
-              bg: 'foreground'
+              bg: 'surface'
             }}
             defaultValue="Sort By Id (Desc)"
             onChange={({ target: { value } }) => setSortBy(value)}

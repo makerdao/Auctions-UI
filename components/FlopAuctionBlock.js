@@ -26,12 +26,12 @@ import ReactGA from 'react-ga';
 
 const UserBidStatusPills = {
   [TOP_BIDDER]: (
-    <InfoPill bg="noticeAlt" color="notice">
+    <InfoPill bg="noticeAlt" color="onNotice">
       Current Winning Bidder
     </InfoPill>
   ),
   [WINNER]: (
-    <InfoPill bg="successAlt" color="success">
+    <InfoPill bg="successAlt" color="onSuccess">
       You have won this auction
     </InfoPill>
   )

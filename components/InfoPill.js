@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, jsx, Grid, Box } from 'theme-ui';
 
-const InfoPill = ({ bg = 'primary', color = 'foreground', sx, children }) => {
+const InfoPill = ({ bg = 'primary', color = 'surface', sx, children }) => {
   return (
     <Box
       sx={{
@@ -14,12 +14,16 @@ const InfoPill = ({ bg = 'primary', color = 'foreground', sx, children }) => {
         ...sx
       }}
     >
-      <Text variant="caps" sx={{
-        color
-      }}>{children}</Text>
+      <Text
+        variant="caps"
+        sx={{
+          color
+        }}
+      >
+        {children}
+      </Text>
     </Box>
   );
 };
-
 
 export default InfoPill;

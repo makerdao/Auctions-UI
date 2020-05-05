@@ -91,7 +91,7 @@ const Index = () => {
         <Flex
           sx={{
             justifyContent: 'center',
-            p: 5
+            p: 3
           }}
         >
           <Spinner />
