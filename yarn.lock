@@ -1516,10 +1516,10 @@
     bignumber.js "^8.1.1"
     rxjs "^6.5.4"
 
-"@makerdao/dai-ui-theme-maker@^0.0.23":
-  version "0.0.23"
-  resolved "https://registry.yarnpkg.com/@makerdao/dai-ui-theme-maker/-/dai-ui-theme-maker-0.0.23.tgz#7c1dccce2a7cf56f8dee352cd08b59657aec9dfe"
-  integrity sha512-587m0CrAv1BWWLPes4mUflwzgOtLWQ7Yy77q3vl8H7y/IiVmd7zW9WGwtDbo/Eh8inwKSZBnsx5H4RgxA81z7A==
+"@makerdao/dai-ui-theme-maker@^0.0.25":
+  version "0.0.25"
+  resolved "https://registry.yarnpkg.com/@makerdao/dai-ui-theme-maker/-/dai-ui-theme-maker-0.0.25.tgz#d3e5b093ca919c8576f1358c006adc464cb3a8da"
+  integrity sha512-7JRJujr5rs9d+9JzH+Bw2kqk6/6TLY4cUTTwVE5fQ0jrPoA6SqLA+uhQXsohk/dm36koRXXAuVCk1FM82/v4+g==
   dependencies:
     "@theme-ui/color" "^0.3.1"
 

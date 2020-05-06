@@ -110,15 +110,14 @@ const MiniFormLayout = ({
         {!buttonOnly ? (
           <Flex
             sx={{
-              maxWidth: ['100%', '224px'],
+              maxWidth: ['100%', 7],
               mr: [0, 2],
               borderWidth: '1px',
               borderStyle: 'solid',
               borderColor: 'muted',
               bg: 'surface',
-              borderRadius: 'medium',
+              borderRadius: 'small',
               fontSize: 3,
-              py: 1,
               px: 3
             }}
           >
@@ -126,6 +125,7 @@ const MiniFormLayout = ({
               sx={{
                 borderColor: 'transparent',
                 p: 0,
+                m: 0,
                 '&:focus': {
                   borderColor: 'transparent'
                 }

@@ -119,7 +119,8 @@ const AuctionFilters = ({ title, text, action, forceExpanded }) => {
         sx={{
           bg: 'surface',
           borderColor: 'muted',
-          width: ['100%', '280px']
+          width: ['100%', 7],
+          px: 3
         }}
         value={filterByIdValue}
         placeholder="Auction ID"
@@ -132,7 +133,8 @@ const AuctionFilters = ({ title, text, action, forceExpanded }) => {
         sx={{
           bg: 'surface',
           borderColor: 'muted',
-          width: ['100%', '280px']
+          width: ['100%', 7],
+          px: 3
         }}
         placeholder="Bidder Address"
         onChange={({ target: { value } }) => setFilterByBidderValue(value)}
@@ -203,11 +205,9 @@ const AuctionFilters = ({ title, text, action, forceExpanded }) => {
         <Box ml={[0, 'auto']} mt={[3, 0]}>
           <Select
             sx={{
-              width: ['100%', '300px'],
-              // height: 7,
-              // fontSize: 0,
-              borderColor: 'muted',
-              bg: 'surface'
+              width: ['100%', 7],
+              bg: 'surface',
+              px: 3
             }}
             defaultValue="Sort By Id (Desc)"
             onChange={({ target: { value } }) => setSortBy(value)}

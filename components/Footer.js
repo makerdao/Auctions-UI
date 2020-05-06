@@ -29,7 +29,10 @@ const Footer = () => {
         // mr: [null, 6]
       }}
     >
-            <ExternalLink href="https://chat.makerdao.com/channel/help" target="_blank">
+      <ExternalLink
+        href="https://chat.makerdao.com/channel/help"
+        target="_blank"
+      >
         <NavLink
           p={2}
           variant="footer"
