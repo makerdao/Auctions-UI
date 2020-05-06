@@ -5,6 +5,71 @@ import { toRad, fromWei, toWei, fromWad } from './utils';
 import * as gqlQueries from '../queries';
 import { CUT_OFF_PERIOD } from '../constants';
 
+/**
+ *  
+ *    id
+      type
+      ilk
+      hash
+      fromAddress
+      amount
+      payAmount
+      minPayAmount
+      maxPayAmount
+      dgem
+      ddai
+      auctionId
+      lot
+      bid
+      ink
+      tab
+      timestamp
+      price
+ */
+
+const mocks = [
+  {
+    id: 101,
+    type: 'type',
+    ilk: 'ilk',
+    hash: '0x02e0632d67da2cb319e366ecd7500b9f463095888879d97a646435526343fa29',
+    fromAddress: '0x9ee5e175d09895b8e1e28c22b961345e1df4b5ae',
+    amount: 'amount',
+    payAmount: 'payamount',
+    minPayAmount: 'minpayamount',
+    maxPayAmount: 'maxpayamount',
+    dgem: 'dgem',
+    ddai: 'ddai',
+    auctionId: '1',
+    lot: 'lot',
+    bid: 'bid',
+    ink: 'ink',
+    tab: 'tab',
+    timestamp: 1588338005,
+    price: 'price'
+  },
+  {
+    id: 102,
+    type: 'type2',
+    ilk: 'ilk2',
+    hash: '0x02e0632d67da2cb319e366ecd7500b9f463095888879d97a646435526343fa29',
+    fromAddress: '0x9ee5e175d09895b8e1e28c22b961345e1df4b5ae',
+    amount: 'amount2',
+    payAmount: 'payamount2',
+    minPayAmount: 'minpayamount2',
+    maxPayAmount: 'maxpayamount2',
+    dgem: 'dgem2',
+    ddai: 'ddai2',
+    auctionId: '2',
+    lot: 'lot2',
+    bid: 'bid2',
+    ink: 'ink2',
+    tab: 'tab2',
+    timestamp: 'timestamp2',
+    price: 'price2'
+  }
+];
+
 export default class ValidatorService extends PublicService {
   flipAuctionsLastSynced = 0;
   flopAuctionsLastSynced = 0;
@@ -19,6 +84,7 @@ export default class ValidatorService extends PublicService {
   }
 
   async getQueryResponse(serverUrl, query, operationName, variables = {}) {
+    console.log('1. getQueryResponse', query);
     const resp = await fetch(serverUrl, {
       method: 'POST',
       headers: {
@@ -36,6 +102,7 @@ export default class ValidatorService extends PublicService {
   }
 
   async getQueryResponseMemoized(serverUrl, query) {
+    console.log('getQueryResponseMemoized', query);
     let cacheKey = `${serverUrl};${query}`;
     if (this.queryPromises[cacheKey]) return this.queryPromises[cacheKey];
     this.queryPromises[cacheKey] = this.getQueryResponse(serverUrl, query);
@@ -80,6 +147,7 @@ export default class ValidatorService extends PublicService {
   }
 
   async fetchFlopAuctionsByIds(ids) {
+    console.log('fetchFlopAuctionsByIds', ids);
     let currentTime = new Date().getTime();
     const queryDate = new Date(currentTime - this.backInTime);
 
@@ -89,26 +157,33 @@ export default class ValidatorService extends PublicService {
       fromDate: queryDate
     };
 
-    const response = await this.getQueryResponse(
-      this._cacheAPI,
-      gqlQueries.specificAuctionEvents,
-      'setAuctionsEvents',
-      variables
-    );
+    // console.log('mocks.some(ids)', mocks.some(ids));
+    const filt = mocks.filter(x => ids.includes(x.auctionId));
+    console.log('mocks.filter', filt);
+    return filt;
 
-    // console.log('GraphQL response', response);
-    return response.allLeveragedEvents.nodes;
+    // const response = await this.getQueryResponse(
+    //   this._cacheAPI,
+    //   gqlQueries.specificAuctionEvents,
+    //   'setAuctionsEvents',
+    //   variables
+    // );
+
+    // // console.log('GraphQL response', response);
+    // return response.allLeveragedEvents.nodes;
   }
 
   async getAllAuctions(variables) {
-    const response = await this.getQueryResponse(
-      this._cacheAPI,
-      gqlQueries.allAuctionEvents,
-      'allAuctionsEvents',
-      variables
-    );
+    console.log('1- getAllAuctions', variables);
+    // const response = await this.getQueryResponse(
+    //   this._cacheAPI,
+    //   gqlQueries.allAuctionEvents,
+    //   'allAuctionsEvents',
+    //   variables
+    // );
     // console.log('GraphQL response', response);
-    return response.allLeveragedEvents.nodes;
+    // return response.allLeveragedEvents.nodes;
+    return mocks;
   }
 
   connect() {
@@ -177,7 +252,8 @@ export default class ValidatorService extends PublicService {
 
   async getFlopDuration(id) {
     try {
-      const flop = await this._flop().bids(id);
+      // const flop = await this._flop().bids(id);
+      return { end: BigNumber(0), tic: BigNumber(0) };
       return {
         end: new BigNumber(flop.end).times(1000),
         tic: flop.tic ? new BigNumber(flop.tic).times(1000) : new BigNumber(0)
