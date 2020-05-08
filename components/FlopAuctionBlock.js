@@ -17,7 +17,9 @@ import {
   CAN_BE_DEALT,
   CAN_BE_RESTARTED,
   WINNER,
-  TOP_BIDDER
+  TOP_BIDDER,
+  MCD_FLOP,
+  MCD_JOIN_DAI
 } from '../constants';
 import useAuctionsStore, { selectors } from '../stores/auctionsStore';
 import InfoPill from './InfoPill';
@@ -26,16 +28,16 @@ import ReactGA from 'react-ga';
 
 const UserBidStatusPills = {
   [TOP_BIDDER]: (
-    <InfoPill bg="yellow" color="orange">
+    <InfoPill bg="noticeAlt" color="onNotice">
       Current Winning Bidder
     </InfoPill>
   ),
   [WINNER]: (
-    <InfoPill bg='lightCyan' color='primaryActive'>
+    <InfoPill bg="successAlt" color="onSuccess">
       You have won this auction
     </InfoPill>
   )
-}
+};
 
 const AuctionEvent = ({
   type,
@@ -77,11 +79,11 @@ const AuctionEvent = ({
   return (
     <Grid
       gap={2}
-      columns={[2, 4, 7]}
+      columns={[2, 3, 4]}
       sx={{
         bg: 'background',
-        p: 5,
-        borderRadius: 5
+        p: 3,
+        borderRadius: 'medium'
       }}
     >
       {fields.map(([title, value, styling]) => {
@@ -90,7 +92,7 @@ const AuctionEvent = ({
             <Text
               variant="caps"
               sx={{
-                fontSize: '10px',
+                fontSize: 0,
                 mb: 2
               }}
             >
@@ -115,12 +117,18 @@ const OrderSummary = ({
   currentBid,
   minMkrAsk,
   calculatedBidPrice,
+  hasSlippage,
   remainingBal
 }) => {
+  console.log(hasSlippage);
   const fields = [
     ['Max lot amount', minMkrAsk, { fontWeight: 600 }],
     ['Requested lot amount', currentBid, { fontWeight: 600 }],
-    ['Bid price per MKR', calculatedBidPrice, { fontWeight: 600 }]
+    [
+      'Bid price per MKR',
+      calculatedBidPrice,
+      { fontWeight: 600, color: hasSlippage ? 'red' : 'text' }
+    ]
   ];
 
   const SummaryLine = ({ title, value, styling }) => (
@@ -153,15 +161,15 @@ const OrderSummary = ({
 
   return (
     <Grid gap={2}>
-      <Text variant="caps">{'Order Summary'}</Text>
+      <Text variant="caps">Order Summary</Text>
       <Grid
-        maxWidth={'500px'}
+        maxWidth={11}
         gap={2}
-        rows={[2, 4, 7]}
+        rows={[2, 3, 4]}
         sx={{
           bg: 'background',
-          p: 5,
-          borderRadius: 5
+          p: 3,
+          borderRadius: 'medium'
         }}
       >
         {fields.map(([title, value, styling]) => {
@@ -177,11 +185,11 @@ const OrderSummary = ({
       </Grid>
       <Grid
         gap={2}
-        rows={[2, 4, 7]}
+        rows={[2, 3, 4]}
         sx={{
           bg: 'background',
-          p: 5,
-          borderRadius: 5
+          p: 3,
+          borderRadius: 'medium'
         }}
       >
         <SummaryLine
@@ -213,34 +221,41 @@ const byTimestamp = (prev, next) => {
 // all events for a given auction will be present
 // and they will be sorted in descending order by timestamp
 const checkUserBidStatus = (events, userAddress) => {
-  const { type , fromAddress } = events[0];
+  const { type, fromAddress } = events[0];
   if (type !== 'Kick' && type !== 'Deal' && userAddress === fromAddress) {
     return TOP_BIDDER;
   }
 
   if (type === 'Deal') {
     const { fromAddress: bidderAddress } = events[1];
-    if( bidderAddress.toLowerCase() === userAddress.toLowerCase() ) return WINNER;
+    if (bidderAddress.toLowerCase() === userAddress.toLowerCase())
+      return WINNER;
   }
 
   return null;
-}
+};
 
 export default ({ events, id: auctionId, end, tic, stepSize, allowances }) => {
   const { maker } = useMaker();
   const [currentLotBidAmount, setCurrentLotBidAmount] = useState(BigNumber(0));
-  const { hasDaiAllowance, hasFlopHope, hasJoinDaiHope } = allowances;
+  const { hasDaiAllowance, hasHope } = allowances;
   let { vatDaiBalance } = useBalances();
   const { callFlopDent, callFlopDeal } = useAuctionActions();
   const fetchAuctionsSet = useAuctionsStore(state => state.fetchSet);
   const sortedEvents = events.sort(byTimestamp); // DEAL , [...DENT] , KICK ->
 
   const winnerSummary = {};
-  const { bid: latestBid, lot: latestLot, fromAddress: latestBidder, hash: latestHash } = sortedEvents.find(
-    event => event.type != 'Deal'
-  );
+  const {
+    bid: latestBid,
+    lot: latestLot,
+    fromAddress: latestBidder,
+    hash: latestHash
+  } = sortedEvents.find(event => event.type != 'Deal');
 
-  const chickenDinner = checkUserBidStatus(sortedEvents, maker.currentAddress());  
+  const chickenDinner = checkUserBidStatus(
+    sortedEvents,
+    maker.currentAddress()
+  );
 
   const [justBidded, setJustBidded] = useState(false);
 
@@ -291,7 +306,7 @@ export default ({ events, id: auctionId, end, tic, stepSize, allowances }) => {
   // const bidDisabled = state.error;
   const mainValidation = [];
 
-  const canBid = hasDaiAllowance && hasJoinDaiHope && hasFlopHope;
+  const canBid = hasDaiAllowance && hasHope[MCD_JOIN_DAI] && hasHope[MCD_FLOP];
 
   const bidValidationTests = [
     // [() => !web3Connected],
@@ -315,6 +330,11 @@ export default ({ events, id: auctionId, end, tic, stepSize, allowances }) => {
   ];
 
   const calculatedBidPrice = BigNumber(latestBid).div(currentLotBidAmount);
+  const priceThreshold = new BigNumber(latestBid)
+    .div(new BigNumber(latestLot))
+    .times(new BigNumber(1.1)); // 10% up
+
+  const hasPriceSlippage = calculatedBidPrice.gt(priceThreshold);
 
   const printedLot =
     !currentLotBidAmount ||
@@ -338,9 +358,7 @@ export default ({ events, id: auctionId, end, tic, stepSize, allowances }) => {
       }}
       auctionStatus={auctionStatus}
       auctionId={auctionId}
-      pill={
-        chickenDinner && UserBidStatusPills[chickenDinner]
-      }
+      small={chickenDinner && UserBidStatusPills[chickenDinner]}
       winnerSummary={winnerSummary}
       hasDent={hasDent}
       end={end}
@@ -457,6 +475,7 @@ export default ({ events, id: auctionId, end, tic, stepSize, allowances }) => {
                           .minus(BigNumber(latestBid))
                           .toFormat(0, 4)} DAI`
                       }
+                      hasSlippage={hasPriceSlippage}
                       currentBid={`${printedLot} MKR`}
                       minMkrAsk={`${minMkrAsk.toFixed(2, 1)} MKR`}
                       calculatedBidPrice={`${printedPrice} DAI`}

@@ -15,7 +15,8 @@ import {
   Button,
   Styled,
   Input,
-  Flex
+  Flex,
+  Card
 } from 'theme-ui';
 import GuttedLayout from '../components/GuttedLayout';
 export function fromRad(value) {
@@ -29,23 +30,24 @@ const Index = () => {
     <GuttedLayout maxWidth="970px">
       <Box
         sx={{
-          pb: 5
+          pb: 3
         }}
       >
         <Head>
           <title>Terms</title>
         </Head>
-        <Heading variant="h1" py="7">
+        <Heading variant="h2" py="5">
           Terms of Service
         </Heading>
 
-        <Box sx={{
-          variant: 'styles.roundedCard',
-          px: 6,
-          py: 4
-        }}>
+        <Card
+          sx={{
+            px: 3,
+            py: 3
+          }}
+        >
           <TermsMDX />
-        </Box>
+        </Card>
       </Box>
     </GuttedLayout>
   );

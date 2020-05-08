@@ -45,7 +45,7 @@ class MyApp extends App {
         <Styled.root>
           <MakerProvider network={network}>
             <Header />
-            <Box pt={4}>
+            <Box pt={3}>
               <Component {...pageProps} />
             </Box>
             <CookieNotice />

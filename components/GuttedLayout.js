@@ -9,7 +9,7 @@ export default ({ children, maxWidth = '1140px' }) => {
     >
       <Box
         sx={{
-          px: 5,
+          px: 3,
           width: maxWidth
         }}
       >

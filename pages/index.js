@@ -19,7 +19,6 @@ import {
 import GuttedLayout from '../components/GuttedLayout';
 import ReactGA from 'react-ga';
 
-
 export function fromRad(value) {
   return BigNumber(value).shiftedBy(-45);
 }
@@ -42,20 +41,20 @@ const Index = () => {
 
         {/* <Text variant="boldBody">Welcome to Maker auctions</Text> */}
         <Heading
-            variant="h1"
-            sx={{
-              py: 7
-            }}
-          >
-            Maker Auctions
-          </Heading>
+          variant="h2"
+          sx={{
+            py: 4
+          }}
+        >
+          Maker Auctions
+        </Heading>
 
         {/* <Box sx={{ my: 2 }}>
           <Link href="/flip">
             <StyledLink variant="nav">Collateral Auctions →</StyledLink>
           </Link>
         </Box> */}
-        <Box pt="6">
+        <Box pt="3">
           <Link href="/flop">
             <StyledLink variant="nav">Debt Auctions →</StyledLink>
           </Link>

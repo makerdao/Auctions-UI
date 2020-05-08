@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, Button, Flex, Link as SLink } from 'theme-ui';
+import { Text, Card, Button, Flex, Link as SLink } from 'theme-ui';
 import Cross from '../assets/cross.svg';
 import Link from 'next/link';
 
@@ -37,49 +37,50 @@ const CookieNotice = () => {
         p: 3
       }}
     >
-      <Flex
+      <Card
         sx={{
-          variant: 'styles.roundedCard',
-          py: 3,
-          alignItems: 'center',
+          py: 2,
           boxShadow: '0 1px 2px rgba(90, 90, 90, 0.06)',
-          borderRadius: 24
+          borderRadius: 'round'
         }}
       >
-        <Text
-          sx={{
-            mr: 2,
-            variant: 'text.inputText'
-          }}
-        >
-          By using this website you agree to our{' '}
-          <Link href="/privacy">
-            <SLink
-              sx={{
-                variant: 'styles.a',
-                display: 'inline',
-                cursor: 'pointer'
-              }}
-            >
-              privacy policy
-            </SLink>
-          </Link>
-        </Text>
-        <Button
-          sx={{ cursor: 'pointer' }}
-          variant="clear"
-          onClick={handleClose}
-        >
-          <Flex
+        <Flex>
+          <Text
             sx={{
-              justifyContent: 'center',
-              alignItems: 'center'
+              mr: 2,
+              variant: 'text.inputText',
+              fontSize: 2
             }}
           >
-            <Cross />
-          </Flex>
-        </Button>
-      </Flex>
+            By using this website you agree to our{' '}
+            <Link href="/privacy">
+              <SLink
+                sx={{
+                  variant: 'styles.a',
+                  display: 'inline',
+                  cursor: 'pointer'
+                }}
+              >
+                privacy policy
+              </SLink>
+            </Link>
+          </Text>
+          <Button
+            sx={{ cursor: 'pointer' }}
+            variant="clear"
+            onClick={handleClose}
+          >
+            <Flex
+              sx={{
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+              <Cross />
+            </Flex>
+          </Button>
+        </Flex>
+      </Card>
     </Flex>
   ) : null;
 };

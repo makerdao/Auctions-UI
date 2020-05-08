@@ -2,7 +2,7 @@
 import React from 'react';
 import Head from 'next/head';
 import PrivacyMDX from '../text/privacy.mdx';
-import { Heading, jsx, Box } from 'theme-ui';
+import { Heading, jsx, Box, Card } from 'theme-ui';
 import GuttedLayout from '../components/GuttedLayout';
 
 const Index = () => {
@@ -10,25 +10,24 @@ const Index = () => {
     <GuttedLayout maxWidth="970px">
       <Box
         sx={{
-          pb: 5
+          pb: 3
         }}
       >
         <Head>
           <title>Privacy Policy</title>
         </Head>
-        <Heading variant="h1" py="7">
+        <Heading variant="h2" py="5">
           Privacy Policy
         </Heading>
 
-        <Box
+        <Card
           sx={{
-            variant: 'styles.roundedCard',
-            px: 6,
-            py: 4
+            px: 3,
+            py: 3
           }}
         >
           <PrivacyMDX />
-        </Box>
+        </Card>
       </Box>
     </GuttedLayout>
   );

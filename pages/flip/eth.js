@@ -9,7 +9,6 @@ import { Text, jsx, Flex, Button, Heading, Spinner } from 'theme-ui';
 
 import { AUCTION_DATA_FETCHER } from '../../constants';
 
-
 import useMaker from '../../hooks/useMaker';
 import useBalances from '../../hooks/useBalances';
 import useAllowances from '../../hooks/useAllowances';
@@ -22,13 +21,10 @@ import GuttedLayout from '../../components/GuttedLayout';
 import AuctionsLayout from '../../components/AuctionsLayout';
 import NoAuctions from '../../components/NoAuctions';
 
-
 const Index = () => {
-
   const { maker, web3Connected } = useMaker();
-  const auctions = useAuctionsStore(state => state.auctions);
-  const fetchAuctions = useAuctionsStore(state => state.fetchAll);
-  const fetchAuctionsSet = useAuctionsStore(state => state.fetchSet);
+  const auctions = useAuctionsStore(state => state.flipAuctions);
+  const fetchAuctions = useAuctionsStore(state => state.fetchAllFlip);
   const fetchFlopStepSize = useAuctionsStore(state => state.fetchFlopStepSize);
   const stepSize = useAuctionsStore(state => state.flopStepSize);
   const [TOCAccepted, setTOCAccepted] = useState(false);
@@ -36,7 +32,7 @@ const Index = () => {
   const [{ isSyncing, lastSynced }, sync] = useState({});
   const featureFlags = useSystemStore(state => state.featureFlags);
   const hasFlipFlag = featureFlags.includes('flip-ui');
-
+  const ILK = 'ETH-A';
 
   useEffect(() => {
     if (window !== undefined) {
@@ -47,7 +43,7 @@ const Index = () => {
   useEffect(() => {
     if (web3Connected) {
       if (!auctions) {
-        fetchAuctions(maker);
+        fetchAuctions(maker, ILK);
         fetchFlopStepSize(maker);
       }
     }
@@ -62,24 +58,23 @@ const Index = () => {
     }
   }, [auctions]);
 
-
   if (!hasFlipFlag)
     return (
       <GuttedLayout>
         <>
           <Heading
-            variant="h1"
+            variant="h2"
             sx={{
-              py: 7
+              py: 3
             }}
           >
             Collateral Auctions
             <Text
               variant="caps"
               sx={{
-                color: 'orange',
+                color: 'warning',
                 display: 'inline-block',
-                ml: 4
+                ml: 3
               }}
             >
               BETA{' '}
@@ -101,7 +96,7 @@ const Index = () => {
         <Flex
           sx={{
             justifyContent: 'center',
-            p: 8
+            p: 3
           }}
         >
           <Spinner />
@@ -109,33 +104,34 @@ const Index = () => {
       ) : (
         <>
           <Heading
-            variant="h1"
+            variant="h2"
             sx={{
-              py: 7
+              py: 3
             }}
           >
             ETH Collateral Auctions
           </Heading>
 
-          <FlipAccountManager web3Connected={web3Connected} />
+          <FlipAccountManager web3Connected={web3Connected} ilk={ILK} />
           {!web3Connected ? null : (
             <Flex
               sx={{
-                py: 6,
+                py: 3,
+                pt: 4,
                 alignItems: 'center'
               }}
             >
               <Text variant="h2">Active Auctions</Text>
               <Button
-                variant="pill"
-                sx={{ ml: 5 }}
+                variant="small"
+                sx={{ ml: 3 }}
                 disabled={!web3Connected}
                 onClick={() => fetchAuctions(true)}
               >
                 Sync
               </Button>
               {lastSynced && (
-                <Text title={lastSynced} sx={{ ml: 5, fontSize: 2 }}>
+                <Text title={lastSynced} sx={{ ml: 3, fontSize: 2 }}>
                   (Last synced: <Moment local>{lastSynced.getTime()}</Moment>)
                 </Text>
               )}
@@ -149,18 +145,18 @@ const Index = () => {
             >
               <Spinner />
             </Flex>
-          ) : !Object.keys(auctions).length
-            ? <NoAuctions/>
-            : (
+          ) : !Object.keys(auctions).length ? (
+            <NoAuctions />
+          ) : (
             // <AuctionsLayout auctions={auctions} type="flip" />
 
             <AuctionsLayout
-            allowances={allowances}
-            stepSize={stepSize}
-            auctions={auctions}
-            type="flip"
-          />
-
+              allowances={allowances}
+              stepSize={stepSize}
+              auctions={auctions}
+              type="flip"
+              ilk={ILK}
+            />
           )}
         </>
       )}
