@@ -12,7 +12,8 @@ import {
   Select,
   Label,
   Input,
-  Flex
+  Flex,
+  Card
 } from 'theme-ui';
 import CollapseToggle from './CollapseToggle';
 import useAuctionsStore, { selectors } from '../stores/auctionsStore';
@@ -85,7 +86,7 @@ const gloss = [
 const AuctionFilters = ({ title, text, action, forceExpanded }) => {
   const { maker, web3Connected } = useMaker();
 
-  const filterByIdValue = useAuctionsStore (state => state.filterByIdValue);
+  const filterByIdValue = useAuctionsStore(state => state.filterByIdValue);
   const [collapsed, setCollapsed] = useState(filterByIdValue ? false : true);
   const [collapsedGloss, setCollapsedGloss] = useState(true);
 
@@ -116,9 +117,10 @@ const AuctionFilters = ({ title, text, action, forceExpanded }) => {
       'Filter by ID',
       <Input
         sx={{
-          bg: 'white',
-          borderColor: 'border',
-          width: ['100%', '280px']
+          bg: 'surface',
+          borderColor: 'muted',
+          width: ['100%', 7],
+          px: 3
         }}
         value={filterByIdValue}
         placeholder="Auction ID"
@@ -129,9 +131,10 @@ const AuctionFilters = ({ title, text, action, forceExpanded }) => {
       'Filter By Bidder Address',
       <Input
         sx={{
-          bg: 'white',
-          borderColor: 'border',
-          width: ['100%', '280px']
+          bg: 'surface',
+          borderColor: 'muted',
+          width: ['100%', 7],
+          px: 3
         }}
         placeholder="Bidder Address"
         onChange={({ target: { value } }) => setFilterByBidderValue(value)}
@@ -143,7 +146,7 @@ const AuctionFilters = ({ title, text, action, forceExpanded }) => {
     [
       '',
       <Button
-        variant={filterByNotCompleted ? 'pill' : 'pillInactive'}
+        variant={filterByNotCompleted ? 'small' : 'smallOutline'}
         onClick={toggleFilterByNotCompleted}
       >
         Hide Completed Auctions
@@ -152,7 +155,7 @@ const AuctionFilters = ({ title, text, action, forceExpanded }) => {
     [
       '',
       <Button
-        variant={filterByCurrentBidder ? 'pill' : 'pillInactive'}
+        variant={filterByCurrentBidder ? 'small' : 'smallOutline'}
         onClick={() => toggleFilterByCurrentBidder(maker.currentAddress())}
       >
         Show Only Participating
@@ -164,24 +167,25 @@ const AuctionFilters = ({ title, text, action, forceExpanded }) => {
     <Box
       sx={{
         p: 0,
-        mb: 4
+        mb: 3
       }}
     >
       <Flex
         sx={{
-          // p: 6,
           py: 0,
           alignItems: ['flex-start', 'flex-end'],
           flexDirection: ['column', 'row'],
           width: '100%'
         }}
       >
-        <Flex sx={{
-          alignItems: 'flex-end'
-        }}>
+        <Flex
+          sx={{
+            alignItems: 'flex-end'
+          }}
+        >
           <Button
-            key={``}
-            variant={collapsed ? 'pillInactive' : 'pill'}
+            key={''}
+            variant={collapsed ? 'smallOutline' : 'small'}
             sx={{
               mr: 2
             }}
@@ -191,21 +195,19 @@ const AuctionFilters = ({ title, text, action, forceExpanded }) => {
           </Button>
           <Box>
             <Button
-              variant={collapsedGloss ? 'pillInactive' : 'pill'}
+              variant={collapsedGloss ? 'smallOutline' : 'small'}
               onClick={() => setCollapsedGloss(!collapsedGloss)}
             >
               Glossary
             </Button>
           </Box>
         </Flex>
-        <Box ml={[0, 'auto']} mt={[4, 0]}>
+        <Box ml={[0, 'auto']} mt={[3, 0]}>
           <Select
             sx={{
-              width: ['100%', '300px'],
-              // height: 7,
-              // fontSize: 0,
-              borderColor: 'border',
-              bg: 'white'
+              width: ['100%', 7],
+              bg: 'surface',
+              px: 3
             }}
             defaultValue="Sort By Id (Desc)"
             onChange={({ target: { value } }) => setSortBy(value)}
@@ -221,42 +223,25 @@ const AuctionFilters = ({ title, text, action, forceExpanded }) => {
       </Flex>
       {collapsedGloss ? null : (
         <Box>
-          <Box
-            px="6"
-            pb="4"
-            mt="4"
-            sx={{
-              variant: 'styles.roundedCard'
-            }}
-          >
-            <Grid gap={6} columns={[1, 2]}>
+          <Card px="3" pb="3" mt="3">
+            <Grid gap={3} columns={[1, 2]}>
               {gloss.map(([title, text]) => {
                 return (
                   <Box>
                     <Text mb="1" variant="boldBody">
                       {title}
                     </Text>
-                    <Text>
-                      {/* <Text mb="2" variant="boldBody" as="span">{title}{" "}</Text> */}
-                      {text}
-                    </Text>
+                    <Text>{text}</Text>
                   </Box>
                 );
               })}
             </Grid>
-          </Box>
+          </Card>
         </Box>
       )}
       {collapsed ? null : (
-        <Box
-          px="6"
-          pb="4"
-          mt="4"
-          sx={{
-            variant: 'styles.roundedCard'
-          }}
-        >
-          <Text variant="caps" mb="4">
+        <Card px="3" pb="3" mt="3">
+          <Text variant="caps" mb="3">
             Show or hide
           </Text>
           <Flex
@@ -268,8 +253,8 @@ const AuctionFilters = ({ title, text, action, forceExpanded }) => {
               return (
                 <Box
                   sx={{
-                    mr: [0, 4],
-                    mb: [4, 0]
+                    mr: [0, 3],
+                    mb: [3, 0]
                   }}
                   key={index}
                 >
@@ -279,7 +264,7 @@ const AuctionFilters = ({ title, text, action, forceExpanded }) => {
             })}
           </Flex>
           <Flex
-            mt="6"
+            mt="3"
             sx={{
               flexDirection: ['column', 'row']
             }}
@@ -288,8 +273,8 @@ const AuctionFilters = ({ title, text, action, forceExpanded }) => {
               return (
                 <Box
                   sx={{
-                    mr: [0, 4],
-                    mb: [4, 0]
+                    mr: [0, 3],
+                    mb: [3, 0]
                   }}
                   key={index}
                 >
@@ -306,7 +291,7 @@ const AuctionFilters = ({ title, text, action, forceExpanded }) => {
               );
             })}
           </Flex>
-        </Box>
+        </Card>
       )}
     </Box>
   );

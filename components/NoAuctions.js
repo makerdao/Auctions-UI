@@ -6,11 +6,11 @@ export default () => (
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: ' center',
-    mt: 6,
-    mb: 6
+    mt: 3,
+    mb: 3
   }}>
     <MakerCircleLogo />
-    <Box sx={{ mt: 6, textAlign: 'center' }}>
+    <Box sx={{ mt: 3, textAlign: 'center' }}>
       <Text variant="muted">
         {/* Calculate past <some period> based on the CUT_OFF_PERIOD constant */}
         There hasn't been any auctions in the past 15 days.

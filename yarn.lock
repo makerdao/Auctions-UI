@@ -1516,6 +1516,13 @@
     bignumber.js "^8.1.1"
     rxjs "^6.5.4"
 
+"@makerdao/dai-ui-theme-maker@^0.0.25":
+  version "0.0.25"
+  resolved "https://registry.yarnpkg.com/@makerdao/dai-ui-theme-maker/-/dai-ui-theme-maker-0.0.25.tgz#d3e5b093ca919c8576f1358c006adc464cb3a8da"
+  integrity sha512-7JRJujr5rs9d+9JzH+Bw2kqk6/6TLY4cUTTwVE5fQ0jrPoA6SqLA+uhQXsohk/dm36koRXXAuVCk1FM82/v4+g==
+  dependencies:
+    "@theme-ui/color" "^0.3.1"
+
 "@makerdao/dai@^0.23.0-rc.5":
   version "0.23.2"
   resolved "https://registry.yarnpkg.com/@makerdao/dai/-/dai-0.23.2.tgz#6c9dcf999ac2fd37904b666f9dd15038ebed46d2"
@@ -1770,6 +1777,14 @@
     "@theme-ui/core" "^0.3.1"
     "@theme-ui/css" "^0.3.1"
     deepmerge "^4.2.2"
+
+"@theme-ui/color@^0.3.1":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@theme-ui/color/-/color-0.3.1.tgz#fceffc0be305ad6ca6be9755ac9cafc955b1e6f5"
+  integrity sha512-Bgew6etspp087AdrKuMpcWjIQDQ8UTp28wtHCXgi1Ip5ClFn9i91DvaKgqXk9UwQJFL/IwydX8Bks/+u9tf0WA==
+  dependencies:
+    "@theme-ui/css" "^0.3.1"
+    polished "^3.4.1"
 
 "@theme-ui/components@^0.3.1":
   version "0.3.1"
@@ -10869,6 +10884,13 @@ pnp-webpack-plugin@1.5.0:
   integrity sha512-jd9olUr9D7do+RN8Wspzhpxhgp1n6Vd0NtQ4SFkmIACZoEL1nkyAdW9Ygrinjec0vgDcWjscFQQ1gDW8rsfKTg==
   dependencies:
     ts-pnp "^1.1.2"
+
+polished@^3.4.1:
+  version "3.5.2"
+  resolved "https://registry.yarnpkg.com/polished/-/polished-3.5.2.tgz#ca132b8cd68f7ffa95ae9d423f03e7a14fda1062"
+  integrity sha512-vWoRDg3gY5RQBtUfcj9MRN10VCIf4EkdUikGxyXItg2Hnwk+eIVtdBiLajN0ldFeT3Vq4r/QNbjrQdhqBKrTug==
+  dependencies:
+    "@babel/runtime" "^7.8.7"
 
 posix-character-classes@^0.1.0:
   version "0.1.1"

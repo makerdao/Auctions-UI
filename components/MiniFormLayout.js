@@ -109,13 +109,27 @@ const MiniFormLayout = ({
       >
         {!buttonOnly ? (
           <Flex
-            variant="flex.input"
             sx={{
-              mr: [0, 2]
+              maxWidth: ['100%', 7],
+              mr: [0, 2],
+              borderWidth: '1px',
+              borderStyle: 'solid',
+              borderColor: 'muted',
+              bg: 'surface',
+              borderRadius: 'small',
+              fontSize: 3,
+              px: 3
             }}
           >
             <Input
-              variant="primary"
+              sx={{
+                borderColor: 'transparent',
+                p: 0,
+                m: 0,
+                '&:focus': {
+                  borderColor: 'transparent'
+                }
+              }}
               id="big-amount"
               type={inputType}
               value={inputState ? inputState.toNumber() : inputState}
@@ -124,7 +138,7 @@ const MiniFormLayout = ({
               onChange={handleInputChange}
             />
             {inputUnit ? (
-              <Label sx={{ p: 0, width: 'auto' }} htmlFor="bid-amount">
+              <Label sx={{ width: 'auto' }} htmlFor="bid-amount">
                 {inputUnit}
               </Label>
             ) : null}
@@ -141,7 +155,7 @@ const MiniFormLayout = ({
       </Flex>
       {!errorMessages
         ? null
-        : errorMessages.map(err => <Text variant="smallDanger">{err}</Text>)}
+        : errorMessages.map(err => <Text variant="smallError">{err}</Text>)}
       <Text variant="small">
         {typeof small === 'function' ? small(inputState) : small}
       </Text>

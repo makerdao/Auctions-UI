@@ -8,6 +8,7 @@ import {
   Button,
   Grid,
   Box,
+  Card,
   Styled,
   Label,
   Input,
@@ -15,26 +16,26 @@ import {
 } from 'theme-ui';
 import CollapseToggle from './CollapseToggle';
 
-const IntroInfoCard = ({ title, text, action, forceExpanded, collapsed:isCollapsed }) => {
+const IntroInfoCard = ({
+  title,
+  text,
+  action,
+  forceExpanded,
+  collapsed: isCollapsed
+}) => {
   const [collapsed, setCollapsed] = useState(isCollapsed || false);
   return (
-    <Box
-      sx={{
-        variant: 'styles.roundedCard',
-        p: 0,
-        mb: 6
-      }}
-    >
+    <Card sx={{ p: 0, mb: 3 }}>
       <Flex
         sx={{
-          p:6,
-          py:5,
+          px: 3,
+          py: 3,
           borderBottom: collapsed ? null : '1px solid',
-          borderColor: 'border',
+          borderColor: 'muted',
           alignItems: 'center'
         }}
       >
-        <Heading variant="h2">{title}</Heading>
+        <Heading variant="h3">{title}</Heading>
         <Box
           sx={{
             ml: 'auto'
@@ -48,13 +49,13 @@ const IntroInfoCard = ({ title, text, action, forceExpanded, collapsed:isCollaps
       </Flex>
       {collapsed ? null : (
         <>
-          <Box px="6" pb="3">
+          <Box px="3" pb="3">
             {text}
           </Box>
           {action}
         </>
       )}
-    </Box>
+    </Card>
   );
 };
 

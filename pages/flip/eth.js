@@ -63,18 +63,18 @@ const Index = () => {
       <GuttedLayout>
         <>
           <Heading
-            variant="h1"
+            variant="h2"
             sx={{
-              py: 7
+              py: 3
             }}
           >
             Collateral Auctions
             <Text
               variant="caps"
               sx={{
-                color: 'orange',
+                color: 'warning',
                 display: 'inline-block',
-                ml: 4
+                ml: 3
               }}
             >
               BETA{' '}
@@ -96,7 +96,7 @@ const Index = () => {
         <Flex
           sx={{
             justifyContent: 'center',
-            p: 8
+            p: 3
           }}
         >
           <Spinner />
@@ -104,9 +104,9 @@ const Index = () => {
       ) : (
         <>
           <Heading
-            variant="h1"
+            variant="h2"
             sx={{
-              py: 7
+              py: 3
             }}
           >
             ETH Collateral Auctions
@@ -116,21 +116,22 @@ const Index = () => {
           {!web3Connected ? null : (
             <Flex
               sx={{
-                py: 6,
+                py: 3,
+                pt: 4,
                 alignItems: 'center'
               }}
             >
               <Text variant="h2">Active Auctions</Text>
               <Button
-                variant="pill"
-                sx={{ ml: 5 }}
+                variant="small"
+                sx={{ ml: 3 }}
                 disabled={!web3Connected}
                 onClick={() => fetchAuctions(true)}
               >
                 Sync
               </Button>
               {lastSynced && (
-                <Text title={lastSynced} sx={{ ml: 5, fontSize: 2 }}>
+                <Text title={lastSynced} sx={{ ml: 3, fontSize: 2 }}>
                   (Last synced: <Moment local>{lastSynced.getTime()}</Moment>)
                 </Text>
               )}

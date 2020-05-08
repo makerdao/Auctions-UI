@@ -28,7 +28,12 @@ const AuctionsLayout = ({ auctions, allowances, stepSize, type, ilk }) => {
   useEffect(() => {
     if (auctionsPage.length && blockHeight && blockHeight > localBlockHeight) {
       if (blockHeight - localBlockHeight > REFETCH_BLOCK_INTERVAL) {
-        console.log('block based set fetch', blockHeight, 'lastBlockFetch', localBlockHeight);
+        console.log(
+          'block based set fetch',
+          blockHeight,
+          'lastBlockFetch',
+          localBlockHeight
+        );
         const ids = auctionsPage.map(a => a.auctionId);
         fetchAuctionsSet(ids, ilk);
         setLocalBlockHeight(blockHeight);
@@ -44,7 +49,7 @@ const AuctionsLayout = ({ auctions, allowances, stepSize, type, ilk }) => {
   return (
     <>
       <AuctionFilters />
-      <Grid gap={5}>
+      <Grid gap={3}>
         {auctionsPage.map(({ events, end, tic, auctionId }) => {
           return (
             <AuctionBlockLayout
@@ -62,13 +67,13 @@ const AuctionsLayout = ({ auctions, allowances, stepSize, type, ilk }) => {
       <Flex
         sx={{
           justifyContent: 'center',
-          mt: 5,
-          mb: 5
+          mt: 3,
+          mb: 3
         }}
       >
         <Button
           variant="primary"
-          sx={{ mr: 5 }}
+          sx={{ mr: 3 }}
           disabled={!hasPrev}
           onClick={prev}
         >

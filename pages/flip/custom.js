@@ -14,7 +14,8 @@ import {
   Box,
   Input,
   Label,
-  Grid
+  Grid,
+  Card
 } from 'theme-ui';
 import useAuctionActions from '../../hooks/useAuctionActions';
 
@@ -97,9 +98,29 @@ const Form = ({ ilk }) => {
       <Flex sx={{ flexDirection: 'column' }}>
         <Flex sx={{ flexDirection: 'column' }}>
           <Text>Auction ID</Text>
-          <Flex variant="flex.input">
+          <Flex
+            sx={{
+              maxWidth: ['100%', 7],
+              mr: [0, 2],
+              borderWidth: '1px',
+              borderStyle: 'solid',
+              borderColor: 'muted',
+              bg: 'surface',
+              borderRadius: 'small',
+              fontSize: 3,
+              px: 3,
+              py: 1
+            }}
+          >
             <Input
-              variant="primary"
+              sx={{
+                borderColor: 'transparent',
+                p: 0,
+                m: 0,
+                '&:focus': {
+                  borderColor: 'transparent'
+                }
+              }}
               id="flip-auctionid"
               type="number"
               step="0.01"
@@ -113,9 +134,29 @@ const Form = ({ ilk }) => {
         </Flex>
         <Flex sx={{ flexDirection: 'column' }}>
           <Text>Lot Size</Text>
-          <Flex variant="flex.input">
+          <Flex
+            sx={{
+              maxWidth: ['100%', 7],
+              mr: [0, 2],
+              borderWidth: '1px',
+              borderStyle: 'solid',
+              borderColor: 'muted',
+              bg: 'surface',
+              borderRadius: 'small',
+              fontSize: 3,
+              px: 3,
+              py: 1
+            }}
+          >
             <Input
-              variant="primary"
+              sx={{
+                borderColor: 'transparent',
+                p: 0,
+                m: 0,
+                '&:focus': {
+                  borderColor: 'transparent'
+                }
+              }}
               id="flip-lotsize"
               type="number"
               step="0.01"
@@ -126,34 +167,59 @@ const Form = ({ ilk }) => {
               {ilk.slice(0, -2)}
             </Label>
           </Flex>
-          <Flex sx={{ flexDirection: 'column' }}>
-            <Text>Bid Amount</Text>
-            <Flex sx={{ flexDirection: 'row' }}>
-              <Flex variant="flex.input">
-                <Input
-                  variant="primary"
-                  id="flip-bidamount"
-                  type="number"
-                  step="0.01"
-                  placeholder="0"
-                  onChange={handleBidChange}
-                />
-                <Label sx={{ p: 0, width: 'auto' }} htmlFor="flip-bidamount">
-                  DAI
-                </Label>
-              </Flex>
-              <Button
-                sx={{ mx: 2 }}
-                variant="primary"
-                disabled={disabled}
-                onClick={onSubmit}
-              >
-                {txState === TX_PENDING ? 'Waiting for Transaction' : 'Submit'}
-              </Button>
-            </Flex>
+        </Flex>
+        <Flex sx={{ flexDirection: 'column' }}>
+          <Text>Bid Amount</Text>
+          <Flex
+            sx={{
+              maxWidth: ['100%', 7],
+              mr: [0, 2],
+              borderWidth: '1px',
+              borderStyle: 'solid',
+              borderColor: 'muted',
+              bg: 'surface',
+              borderRadius: 'small',
+              fontSize: 3,
+              px: 3,
+              py: 1
+            }}
+          >
+            <Input
+              sx={{
+                borderColor: 'transparent',
+                p: 0,
+                m: 0,
+                '&:focus': {
+                  borderColor: 'transparent'
+                }
+              }}
+              id="flip-bidamount"
+              type="number"
+              step="0.01"
+              placeholder="0"
+              onChange={handleBidChange}
+            />
+            <Label sx={{ p: 0, width: 'auto' }} htmlFor="flip-bidamount">
+              DAI
+            </Label>
           </Flex>
         </Flex>
+        <Flex
+          sx={{
+            py: 3
+          }}
+        >
+          <Button
+            sx={{}}
+            variant="primary"
+            disabled={disabled}
+            onClick={onSubmit}
+          >
+            {txState === TX_PENDING ? 'Waiting for Transaction' : 'Submit'}
+          </Button>
+        </Flex>
       </Flex>
+      {/* </Flex> */}
       {!errorMessages
         ? null
         : errorMessages.map((err, i) => (
@@ -177,18 +243,8 @@ const Form = ({ ilk }) => {
 
 const CustomAuction = () => {
   return (
-    <Box
-      gap={5}
-      sx={{
-        p: 0,
-        mt: 4
-      }}
-    >
-      <Grid
-        sx={{
-          variant: 'styles.roundedCard'
-        }}
-      >
+    <Card sx={{ my: 3 }}>
+      <Grid>
         <ActionTabs
           actions={[
             [
@@ -197,8 +253,8 @@ const CustomAuction = () => {
                 <Box
                   sx={{
                     bg: 'background',
-                    p: 4,
-                    borderRadius: 6
+                    p: 3,
+                    borderRadius: 'medium'
                   }}
                 >
                   <Form ilk={'ETH-A'} />
@@ -211,8 +267,8 @@ const CustomAuction = () => {
                 <Box
                   sx={{
                     bg: 'background',
-                    p: 4,
-                    borderRadius: 6
+                    p: 3,
+                    borderRadius: 'medium'
                   }}
                 >
                   <Form ilk={'BAT-A'} />
@@ -222,7 +278,7 @@ const CustomAuction = () => {
           ]}
         />
       </Grid>
-    </Box>
+    </Card>
   );
 };
 
@@ -244,16 +300,16 @@ const Index = () => {
           <Heading
             variant="h1"
             sx={{
-              py: 7
+              py: 3
             }}
           >
             Collateral Auctions
             <Text
               variant="caps"
               sx={{
-                color: 'orange',
+                color: 'warning',
                 display: 'inline-block',
-                ml: 4
+                ml: 3
               }}
             >
               BETA{' '}
@@ -275,7 +331,7 @@ const Index = () => {
         <Flex
           sx={{
             justifyContent: 'center',
-            p: 8
+            p: 3
           }}
         >
           <Spinner />
@@ -283,9 +339,9 @@ const Index = () => {
       ) : (
         <>
           <Heading
-            variant="h1"
+            variant="h2"
             sx={{
-              py: 7
+              py: 3
             }}
           >
             Collateral Auctions By ID

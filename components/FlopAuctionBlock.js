@@ -28,12 +28,12 @@ import ReactGA from 'react-ga';
 
 const UserBidStatusPills = {
   [TOP_BIDDER]: (
-    <InfoPill bg="yellow" color="orange">
+    <InfoPill bg="noticeAlt" color="onNotice">
       Current Winning Bidder
     </InfoPill>
   ),
   [WINNER]: (
-    <InfoPill bg="lightCyan" color="primaryActive">
+    <InfoPill bg="successAlt" color="onSuccess">
       You have won this auction
     </InfoPill>
   )
@@ -79,11 +79,11 @@ const AuctionEvent = ({
   return (
     <Grid
       gap={2}
-      columns={[2, 4, 7]}
+      columns={[2, 3, 4]}
       sx={{
         bg: 'background',
-        p: 5,
-        borderRadius: 5
+        p: 3,
+        borderRadius: 'medium'
       }}
     >
       {fields.map(([title, value, styling]) => {
@@ -92,7 +92,7 @@ const AuctionEvent = ({
             <Text
               variant="caps"
               sx={{
-                fontSize: '10px',
+                fontSize: 0,
                 mb: 2
               }}
             >
@@ -124,7 +124,11 @@ const OrderSummary = ({
   const fields = [
     ['Max lot amount', minMkrAsk, { fontWeight: 600 }],
     ['Requested lot amount', currentBid, { fontWeight: 600 }],
-    ['Bid price per MKR', calculatedBidPrice, { fontWeight: 600, color: hasSlippage ? 'red' : 'text' }]
+    [
+      'Bid price per MKR',
+      calculatedBidPrice,
+      { fontWeight: 600, color: hasSlippage ? 'red' : 'text' }
+    ]
   ];
 
   const SummaryLine = ({ title, value, styling }) => (
@@ -157,15 +161,15 @@ const OrderSummary = ({
 
   return (
     <Grid gap={2}>
-      <Text variant="caps">{'Order Summary'}</Text>
+      <Text variant="caps">Order Summary</Text>
       <Grid
-        maxWidth={'500px'}
+        maxWidth={11}
         gap={2}
-        rows={[2, 4, 7]}
+        rows={[2, 3, 4]}
         sx={{
           bg: 'background',
-          p: 5,
-          borderRadius: 5
+          p: 3,
+          borderRadius: 'medium'
         }}
       >
         {fields.map(([title, value, styling]) => {
@@ -181,11 +185,11 @@ const OrderSummary = ({
       </Grid>
       <Grid
         gap={2}
-        rows={[2, 4, 7]}
+        rows={[2, 3, 4]}
         sx={{
           bg: 'background',
-          p: 5,
-          borderRadius: 5
+          p: 3,
+          borderRadius: 'medium'
         }}
       >
         <SummaryLine
@@ -327,8 +331,8 @@ export default ({ events, id: auctionId, end, tic, stepSize, allowances }) => {
 
   const calculatedBidPrice = BigNumber(latestBid).div(currentLotBidAmount);
   const priceThreshold = new BigNumber(latestBid)
-                          .div(new BigNumber(latestLot))
-                          .times(new BigNumber(1.10)); // 10% up
+    .div(new BigNumber(latestLot))
+    .times(new BigNumber(1.1)); // 10% up
 
   const hasPriceSlippage = calculatedBidPrice.gt(priceThreshold);
 
@@ -354,7 +358,7 @@ export default ({ events, id: auctionId, end, tic, stepSize, allowances }) => {
       }}
       auctionStatus={auctionStatus}
       auctionId={auctionId}
-      pill={chickenDinner && UserBidStatusPills[chickenDinner]}
+      small={chickenDinner && UserBidStatusPills[chickenDinner]}
       winnerSummary={winnerSummary}
       hasDent={hasDent}
       end={end}

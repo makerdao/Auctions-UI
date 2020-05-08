@@ -60,16 +60,35 @@ const DentForm = ({ auctionId, lot, bid, ilk }) => {
           flexDirection: ['column', 'row']
         }}
       >
-        <Flex variant="flex.input">
+        <Flex
+          sx={{
+            maxWidth: ['100%', 7],
+            mr: [0, 2],
+            borderWidth: '1px',
+            borderStyle: 'solid',
+            borderColor: 'muted',
+            bg: 'surface',
+            borderRadius: 'small',
+            fontSize: 3,
+            px: 3
+          }}
+        >
           <Input
-            variant="primary"
+            sx={{
+              borderColor: 'transparent',
+              p: 0,
+              m: 0,
+              '&:focus': {
+                borderColor: 'transparent'
+              }
+            }}
             id="big-amount"
             type="number"
             step="0.01"
             placeholder="0"
             onChange={handleBidAmountInput}
           />
-          <Label sx={{ p: 0, width: 'auto' }} htmlFor="bid-amount">
+          <Label sx={{ width: 'auto' }} htmlFor="bid-amount">
             DAI
           </Label>
         </Flex>
@@ -82,7 +101,7 @@ const DentForm = ({ auctionId, lot, bid, ilk }) => {
           Bid Now
         </Button>
       </Flex>
-      {state.error && <Text variant="smallDanger">{state.error} </Text>}
+      {state.error && <Text variant="smallError">{state.error} </Text>}
       {/* <Text variant="small">Price 1 MKR = 300 DAI</Text> */}
     </Grid>
   );
@@ -122,11 +141,11 @@ const AuctionEvent = ({
   return (
     <Grid
       gap={2}
-      columns={[2, 4, 8]}
+      columns={[2, 3, 4]}
       sx={{
         bg: 'background',
-        p: 5,
-        borderRadius: 5
+        p: 3,
+        borderRadius: 'medium'
       }}
     >
       {fields.map(([title, value]) => {
@@ -135,8 +154,8 @@ const AuctionEvent = ({
             <Text
               variant="caps"
               sx={{
-                fontSize: '10px',
-                mb: 1
+                fontSize: 0,
+                mb: 2
               }}
             >
               {title}
@@ -190,13 +209,13 @@ export default ({ events: auctionEvents, id: auctionId }) => {
 
   return (
     <Grid
-      gap={5}
+      gap={3}
       sx={{
-        bg: '#fff',
-        p: 6,
-        borderRadius: 5,
+        bg: 'surface',
+        p: 3,
+        borderRadius: 'medium',
         border: '1px solid',
-        borderColor: 'border'
+        borderColor: 'muted'
       }}
     >
       <Flex
@@ -205,7 +224,7 @@ export default ({ events: auctionEvents, id: auctionId }) => {
           justifyContent: 'space-between'
         }}
       >
-        <Heading as="h5" variant="h2">
+        <Heading as="h5" variant="h3">
           Auction ID: {auctionId}
         </Heading>
         {/* <Heading

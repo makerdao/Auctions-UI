@@ -25,15 +25,15 @@ const TermsConfirm = ({ onConfirm, confirmed }) => {
   return (
     <Box
       sx={{
-        p: 6,
+        p: 3,
         pt: 0
       }}
     >
       <Box
         sx={{
-          p: 6,
+          p: 3,
           bg: 'background',
-          borderRadius: 6
+          borderRadius: 'medium'
         }}
       >
         <Text variant="boldBody" pb="2">
