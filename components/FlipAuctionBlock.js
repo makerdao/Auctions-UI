@@ -19,13 +19,13 @@ import useAuctionActions from '../hooks/useAuctionActions';
 import Moment from 'react-moment';
 import EventsList from './AuctionEventsList';
 
-const DentForm = ({ auctionId, lot, bid }) => {
+const DentForm = ({ auctionId, lot, bid, ilk }) => {
   const [state, setState] = useState({ amount: undefined, error: undefined });
-  const { callEthTend, callEthDent } = useAuctionActions();
+  const { callTend, callEthDent } = useAuctionActions();
 
   const handleTendCTA = event => {
     const bidAmount = state.amount;
-    callEthTend(auctionId, lot, bidAmount);
+    callTend(auctionId, lot, bidAmount, ilk);
   };
 
   const handleDentCTA = event => {
@@ -286,7 +286,14 @@ export default ({ events: auctionEvents, id: auctionId }) => {
           }
         )}
       />
-      {true && <DentForm auctionId={auctionId} lot={lot} bid={bid} />}
+      {true && (
+        <DentForm
+          auctionId={auctionId}
+          lot={lot}
+          bid={bid}
+          ilk={events[0].ilk}
+        />
+      )}
     </Grid>
   );
 };

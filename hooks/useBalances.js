@@ -9,9 +9,7 @@ const useBalances = () => {
   const [vatDaiBalance, setVatDaiBalance] = useState(null);
   const [daiBalance, setDaiBalance] = useState(null);
   const [mkrBalance, setMkrBalance] = useState(null);
-
-  const daiSymbol = 'MDAI';
-  const mkrSymbol = 'MKR';
+  const [batBalance, setBatBalance] = useState(null);
 
   const fetchVatDaiBalance = () => {
     return maker
@@ -20,28 +18,27 @@ const useBalances = () => {
       .dai(maker.currentAddress());
   };
 
-  const fetchDaiBalance = () => {
-    return maker.getToken(daiSymbol).balance();
+  const fetchTokenBalance = token => {
+    return maker.getToken(token).balance();
   };
 
   const fetchBalances = () => {
-    return Promise.all([fetchVatDaiBalance(), fetchDaiBalance()]);
+    return Promise.all([
+      fetchVatDaiBalance(),
+      fetchTokenBalance('MDAI'),
+      fetchTokenBalance('MKR'),
+      fetchTokenBalance('BAT')
+    ]);
   };
 
   useEffect(() => {
     if (!web3Connected) return;
     (async () => {
-      const [vatBal, daiBal] = await fetchBalances();
+      const [vatBal, daiBal, mkrBal, batBal] = await fetchBalances();
       setVatDaiBalance(fromRad(vatBal).toFixed());
       setDaiBalance(daiBal.toNumber());
-    })();
-  }, [maker, web3Connected]);
-
-  useEffect(() => {
-    if (!web3Connected) return;
-    (async () => {
-      const mkrBal = await maker.getToken(mkrSymbol).balance();
       setMkrBalance(mkrBal.toNumber());
+      setBatBalance(batBal.toNumber());
     })();
   }, [maker, web3Connected]);
 
@@ -82,6 +79,7 @@ const useBalances = () => {
     vatDaiBalance,
     daiBalance,
     mkrBalance,
+    batBalance,
     joinDaiToAdapter,
     exitDaiFromAdapter,
     updateDaiBalances

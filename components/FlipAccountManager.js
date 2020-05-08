@@ -11,15 +11,18 @@ import AccountManagerLayout from '../components/AccountManagerLayout';
 import ActionTabs from './ActionTabs';
 import MiniFormLayout from './MiniFormLayout';
 import { formatBalance } from '../utils';
+import { MCD_FLIP_BAT_A, MCD_JOIN_DAI, MCD_FLIP_ETH_A } from '../constants';
 
-export default () => {
+export default ({ ilk }) => {
   const { maker, web3Connected } = useMaker();
   let {
     vatDaiBalance,
     daiBalance,
     mkrBalance,
+    batBalance,
     joinDaiToAdapter,
-    exitDaiFromAdapter
+    exitDaiFromAdapter,
+    updateDaiBalances
   } = useBalances();
 
   daiBalance = formatBalance(daiBalance);
@@ -28,18 +31,10 @@ export default () => {
 
   const {
     hasDaiAllowance,
-    hasMkrAllowance,
-    hasEthFlipHope,
-    hasJoinDaiHope,
     giveDaiAllowance,
-    giveMkrAllowance,
-    giveFlipEthHope,
-    giveJoinDaiHope
+    giveHope,
+    hasHope
   } = useAllowances();
-
-  const [daiApprovePending, setDaiApprovePending] = useState(false);
-  const [mkrApprovePending, setMkrApprovePending] = useState(false);
-  const [hopeApprovePending, setHopeApprovePending] = useState(false);
 
   const [joinAddress, setJoinAddress] = useState('');
 
@@ -48,17 +43,17 @@ export default () => {
       (async () => {
         const joinDaiAdapterAddress = maker
           .service('smartContract')
-          .getContractByName('MCD_JOIN_DAI').address;
+          .getContractByName(MCD_JOIN_DAI).address;
         setJoinAddress(joinDaiAdapterAddress);
       })();
     }
   }, [maker, web3Connected]);
 
   const allowanceMissing =
-    !hasDaiAllowance || !hasEthFlipHope || !hasJoinDaiHope;
+    !hasDaiAllowance || !hasHope[MCD_FLIP_ETH_A] || !hasHope[MCD_JOIN_DAI];
 
   const hasNoAllowances =
-    !hasDaiAllowance && !hasEthFlipHope && !hasJoinDaiHope;
+    !hasDaiAllowance && !!hasHope[MCD_FLIP_ETH_A] && !hasHope[MCD_JOIN_DAI];
 
   return (
     <AccountManagerLayout
@@ -123,7 +118,7 @@ export default () => {
               <BalanceOf
                 type={'Dai in Adapter'}
                 balance={`${vatDaiBalance} DAI`}
-                shouldUnlock={!hasEthFlipHope}
+                shouldUnlock={!hasHope[MCD_JOIN_DAI]}
                 unlock={
                   <Card>
                     <Grid gap={3}>
@@ -133,13 +128,8 @@ export default () => {
 
                       <Button
                         variant="small"
-                        onClick={() => {
-                          const flipEthAddress = maker
-                            .service('smartContract')
-                            .getContractByName('MCD_FLIP_ETH_A').address;
-                          giveFlipEthHope(flipEthAddress);
-                        }}
-                        disabled={!web3Connected}
+                        onClick={() => giveHope(joinAddress, MCD_JOIN_DAI)}
+                        disabled={!web3Connected || hasHope[MCD_JOIN_DAI]}
                       >
                         Unlock Dai in the adapter
                       </Button>
@@ -159,20 +149,45 @@ export default () => {
                 }}
               />
 
-              {!hasJoinDaiHope ? (
+              {!ilk || ilk === 'BAT-A' ? (
                 <Card>
                   <Grid gap={2}>
-                    <Text variant="caps">DAI wallet balance</Text>
+                    <Text variant="caps">Enable BAT Auctions</Text>
                     <Button
                       variant="small"
-                      onClick={() => giveJoinDaiHope(joinAddress)}
-                      disabled={!web3Connected || hasJoinDaiHope}
+                      onClick={() => {
+                        const flipBatAddress = maker
+                          .service('smartContract')
+                          .getContractByName(MCD_FLIP_BAT_A).address;
+                        giveHope(flipBatAddress, MCD_FLIP_BAT_A);
+                      }}
+                      disabled={!web3Connected || hasHope[MCD_FLIP_BAT_A]}
                     >
-                      Unlock Dai in the VAT
+                      {hasHope[MCD_FLIP_BAT_A] ? 'BAT Unlocked' : 'Unlock BAT'}
                     </Button>
                   </Grid>
                 </Card>
               ) : null}
+              {!ilk || ilk === 'ETH-A' ? (
+                <Card>
+                  <Grid gap={2}>
+                    <Text variant="caps">Enable ETH Auctions</Text>
+                    <Button
+                      variant="small"
+                      onClick={() => {
+                        const flipEthAddress = maker
+                          .service('smartContract')
+                          .getContractByName(MCD_FLIP_ETH_A).address;
+                        giveHope(flipEthAddress, MCD_FLIP_ETH_A);
+                      }}
+                      disabled={!web3Connected || hasHope[MCD_FLIP_ETH_A]}
+                    >
+                      {hasHope[MCD_FLIP_ETH_A] ? 'ETH Unlocked' : 'Unlock ETH'}
+                    </Button>
+                  </Grid>
+                </Card>
+              ) : null}
+              {/* ) : null} */}
             </Grid>
           ) : null}
           {hasNoAllowances ? null : (
@@ -182,7 +197,7 @@ export default () => {
                   actions={[
                     [
                       'Deposit DAI to Adapter',
-                      <Grid>
+                      <Grid key="dai-adapter">
                         <Box
                           sx={{
                             bg: 'background',
@@ -195,6 +210,7 @@ export default () => {
                             disabled={false}
                             inputUnit="DAI"
                             onSubmit={joinDaiToAdapter}
+                            onTxFinished={updateDaiBalances}
                             small={''}
                             actionText={'Deposit'}
                           />
@@ -203,7 +219,7 @@ export default () => {
                     ],
                     [
                       'Withdraw DAI From Adapter',
-                      <Grid>
+                      <Grid key="dai-vat">
                         <Box
                           sx={{
                             bg: 'background',
@@ -216,6 +232,7 @@ export default () => {
                             disabled={false}
                             inputUnit="DAI"
                             onSubmit={exitDaiFromAdapter}
+                            onTxFinished={updateDaiBalances}
                             small={''}
                             actionText={'Withdraw'}
                           />

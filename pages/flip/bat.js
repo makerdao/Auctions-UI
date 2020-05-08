@@ -23,9 +23,9 @@ import NoAuctions from '../../components/NoAuctions';
 
 const Index = () => {
   const { maker, web3Connected } = useMaker();
-  const auctions = useAuctionsStore(state => state.auctions);
-  const fetchAuctions = useAuctionsStore(state => state.fetchAll);
-  const fetchAuctionsSet = useAuctionsStore(state => state.fetchSet);
+  const auctions = useAuctionsStore(state => state.flipAuctions);
+  const fetchAuctions = useAuctionsStore(state => state.fetchAllFlip);
+  // const fetchAuctionsSet = useAuctionsStore(state => state.fetchSet);
   const fetchFlopStepSize = useAuctionsStore(state => state.fetchFlopStepSize);
   const stepSize = useAuctionsStore(state => state.flopStepSize);
   const [TOCAccepted, setTOCAccepted] = useState(false);
@@ -33,6 +33,7 @@ const Index = () => {
   const [{ isSyncing, lastSynced }, sync] = useState({});
   const featureFlags = useSystemStore(state => state.featureFlags);
   const hasFlipFlag = featureFlags.includes('flip-ui');
+  const ILK = 'BAT-A';
 
   useEffect(() => {
     if (window !== undefined) {
@@ -43,7 +44,7 @@ const Index = () => {
   useEffect(() => {
     if (web3Connected) {
       if (!auctions) {
-        fetchAuctions(maker);
+        fetchAuctions(maker, ILK);
         fetchFlopStepSize(maker);
       }
     }
@@ -112,7 +113,7 @@ const Index = () => {
             BAT Collateral Auctions
           </Heading>
 
-          <FlipAccountManager web3Connected={web3Connected} />
+          <FlipAccountManager web3Connected={web3Connected} ilk={ILK} />
           {!web3Connected ? null : (
             <Flex
               sx={{
@@ -155,6 +156,7 @@ const Index = () => {
               stepSize={stepSize}
               auctions={auctions}
               type="flip"
+              ilk={'BAT-A'}
             />
           )}
         </>

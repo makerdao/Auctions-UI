@@ -8,16 +8,19 @@ import AuctionFilters from './AuctionFilters';
 import useMaker from '../hooks/useMaker';
 import { REFETCH_BLOCK_INTERVAL } from '../constants';
 
-const AuctionsLayout = ({ auctions, allowances, stepSize, type }) => {
+const AuctionsLayout = ({ auctions, allowances, stepSize, type, ilk }) => {
   // const { blockHeight } = useMaker();
   const { hasPrevPageSelector, hasNextPageSelector } = selectors;
   const blockHeight = useSystemStore(state => state.blockHeight);
   const [localBlockHeight, setLocalBlockHeight] = useState(0);
   const next = useAuctionsStore(state => state.nextPage);
   const prev = useAuctionsStore(state => state.prevPage);
-  const fetchAuctionsSet = useAuctionsStore(state => state.fetchSet);
 
-  const filteredAuctions = useAuctionsStore(selectors.filteredAuctions());
+  const fetchAuctionsSet = useAuctionsStore(state =>
+    type === 'flip' ? state.fetchFlipSet : state.fetchSet
+  );
+
+  const filteredAuctions = useAuctionsStore(selectors.filteredAuctions(type));
   const auctionsPage = useAuctionsStore(
     selectors.auctionsPage(filteredAuctions)
   );
@@ -25,9 +28,14 @@ const AuctionsLayout = ({ auctions, allowances, stepSize, type }) => {
   useEffect(() => {
     if (auctionsPage.length && blockHeight && blockHeight > localBlockHeight) {
       if (blockHeight - localBlockHeight > REFETCH_BLOCK_INTERVAL) {
-        console.log('block based set fetch', blockHeight, 'lastBlockFetch', localBlockHeight);
+        console.log(
+          'block based set fetch',
+          blockHeight,
+          'lastBlockFetch',
+          localBlockHeight
+        );
         const ids = auctionsPage.map(a => a.auctionId);
-        fetchAuctionsSet(ids);
+        fetchAuctionsSet(ids, ilk);
         setLocalBlockHeight(blockHeight);
       }
     }
@@ -40,7 +48,7 @@ const AuctionsLayout = ({ auctions, allowances, stepSize, type }) => {
 
   return (
     <>
-      <AuctionFilters/>
+      <AuctionFilters />
       <Grid gap={3}>
         {auctionsPage.map(({ events, end, tic, auctionId }) => {
           return (

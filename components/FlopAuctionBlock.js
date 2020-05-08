@@ -17,7 +17,9 @@ import {
   CAN_BE_DEALT,
   CAN_BE_RESTARTED,
   WINNER,
-  TOP_BIDDER
+  TOP_BIDDER,
+  MCD_FLOP,
+  MCD_JOIN_DAI
 } from '../constants';
 import useAuctionsStore, { selectors } from '../stores/auctionsStore';
 import InfoPill from './InfoPill';
@@ -115,12 +117,18 @@ const OrderSummary = ({
   currentBid,
   minMkrAsk,
   calculatedBidPrice,
+  hasSlippage,
   remainingBal
 }) => {
+  console.log(hasSlippage);
   const fields = [
     ['Max lot amount', minMkrAsk, { fontWeight: 600 }],
     ['Requested lot amount', currentBid, { fontWeight: 600 }],
-    ['Bid price per MKR', calculatedBidPrice, { fontWeight: 600 }]
+    [
+      'Bid price per MKR',
+      calculatedBidPrice,
+      { fontWeight: 600, color: hasSlippage ? 'red' : 'text' }
+    ]
   ];
 
   const SummaryLine = ({ title, value, styling }) => (
@@ -230,7 +238,7 @@ const checkUserBidStatus = (events, userAddress) => {
 export default ({ events, id: auctionId, end, tic, stepSize, allowances }) => {
   const { maker } = useMaker();
   const [currentLotBidAmount, setCurrentLotBidAmount] = useState(BigNumber(0));
-  const { hasDaiAllowance, hasFlopHope, hasJoinDaiHope } = allowances;
+  const { hasDaiAllowance, hasHope } = allowances;
   let { vatDaiBalance } = useBalances();
   const { callFlopDent, callFlopDeal } = useAuctionActions();
   const fetchAuctionsSet = useAuctionsStore(state => state.fetchSet);
@@ -298,7 +306,7 @@ export default ({ events, id: auctionId, end, tic, stepSize, allowances }) => {
   // const bidDisabled = state.error;
   const mainValidation = [];
 
-  const canBid = hasDaiAllowance && hasJoinDaiHope && hasFlopHope;
+  const canBid = hasDaiAllowance && hasHope[MCD_JOIN_DAI] && hasHope[MCD_FLOP];
 
   const bidValidationTests = [
     // [() => !web3Connected],
@@ -322,6 +330,11 @@ export default ({ events, id: auctionId, end, tic, stepSize, allowances }) => {
   ];
 
   const calculatedBidPrice = BigNumber(latestBid).div(currentLotBidAmount);
+  const priceThreshold = new BigNumber(latestBid)
+    .div(new BigNumber(latestLot))
+    .times(new BigNumber(1.1)); // 10% up
+
+  const hasPriceSlippage = calculatedBidPrice.gt(priceThreshold);
 
   const printedLot =
     !currentLotBidAmount ||
@@ -462,6 +475,7 @@ export default ({ events, id: auctionId, end, tic, stepSize, allowances }) => {
                           .minus(BigNumber(latestBid))
                           .toFormat(0, 4)} DAI`
                       }
+                      hasSlippage={hasPriceSlippage}
                       currentBid={`${printedLot} MKR`}
                       minMkrAsk={`${minMkrAsk.toFixed(2, 1)} MKR`}
                       calculatedBidPrice={`${printedPrice} DAI`}

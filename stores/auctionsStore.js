@@ -4,14 +4,14 @@ import { AUCTION_DATA_FETCHER } from '../constants';
 
 const initialPageState = { pageStart: 0, pageEnd: 10, pageStep: 10 };
 
-const transformEvents = async (auctions, service) => {
+const transformEvents = async (auctions, service, type, ilk) => {
   const groupedEvents = _.groupBy(auctions, auction => auction.auctionId);
   let auctionsData = {};
-  console.log('fetched events')
+  console.log('fetched events');
   await Promise.all(
     Object.keys(groupedEvents).map(async id => {
       try {
-        const { end, tic } = await service.getFlopDuration(id);
+        const { end, tic } = await service.getAuctionDuration(id, type, ilk);
         auctionsData[id.toString()] = {
           auctionId: id,
           end,
@@ -26,6 +26,17 @@ const transformEvents = async (auctions, service) => {
 
   return auctionsData;
 };
+
+const includeAuctionsWithFullHistoryOnly = (auctions) => {
+  const filteredAuctions = {};
+  Object.keys(auctions).map(auctionId => {
+    const hasKick = auctions[auctionId].events.find(event => event.type === 'Kick');
+    if (hasKick) {
+      filteredAuctions[auctionId.toString()] = auctions[auctionId];
+    }
+  });
+  return filteredAuctions;
+}
 
 const filters = {
   byPage: (state, ids) => {
@@ -146,14 +157,16 @@ const selectors = {
     return pageEnd - (auctions || []).length < 0;
   },
 
-  filteredAuctions: () => state => {
+  filteredAuctions: type => state => {
     const {
       filterByIdValue,
-      auctions,
+      auctions: flopAuctions,
+      flipAuctions,
       sortBy,
       filterByBidderValue,
       filterByNotCompleted
     } = state;
+    const auctions = type === 'flip' ? flipAuctions : flopAuctions;
     if (!auctions) return null;
     let ids = sorters[sortBy](auctions);
 
@@ -177,6 +190,7 @@ const selectors = {
 
 const [useAuctionsStore, updateState] = create((set, get) => ({
   auctions: null,
+  flipAuctions: null,
   flopStepSize: 0,
   pageStart: 0,
   pageEnd: 10,
@@ -247,7 +261,7 @@ const [useAuctionsStore, updateState] = create((set, get) => ({
     const service = maker.service(AUCTION_DATA_FETCHER);
     const auctions = await service.fetchFlopAuctions();
     const transformedAuctions = await transformEvents(auctions, service);
-    set({ auctions: transformedAuctions });
+    set({ auctions: includeAuctionsWithFullHistoryOnly(transformedAuctions) });
   },
 
   fetchSet: async ids => {
@@ -260,6 +274,42 @@ const [useAuctionsStore, updateState] = create((set, get) => ({
       const currentState = get().auctions || {};
       const updatedState = Object.assign({}, currentState, transformedAuctions);
       set({ auctions: updatedState });
+    }, 500);
+  },
+
+  fetchAllFlip: async (maker, ilk) => {
+    const service = maker.service(AUCTION_DATA_FETCHER);
+
+    // AuctionIDs will clash unless we filter by ilk
+    const auctions = (await service.fetchFlipAuctions()).filter(
+      x => x.ilk === ilk
+    );
+    const transformedAuctions = await transformEvents(
+      auctions,
+      service,
+      'flip',
+      ilk
+    );
+    set({ flipAuctions: transformedAuctions });
+  },
+
+  fetchFlipSet: async (ids, ilk) => {
+    setTimeout(async () => {
+      console.log('fetching set: ', ids);
+      const service = maker.service(AUCTION_DATA_FETCHER);
+      const auctions = (await service.fetchFlipAuctionsByIds(ids)).filter(
+        x => x.ilk === ilk
+      );
+      const transformedAuctions = await transformEvents(
+        auctions,
+        service,
+        'flip',
+        ilk
+      );
+
+      const currentState = get().flipAuctions || {};
+      const updatedState = Object.assign({}, currentState, transformedAuctions);
+      set({ flipAuctions: updatedState });
     }, 500);
   },
 
