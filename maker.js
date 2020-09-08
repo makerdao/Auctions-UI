@@ -1,5 +1,5 @@
 import Maker from '@makerdao/dai';
-import mcdPlugin, { MDAI } from '@makerdao/dai-plugin-mcd';
+import mcdPlugin from '@makerdao/dai-plugin-mcd';
 import validatorPlugin from './plugin/index';
 import { createCurrency } from '@makerdao/currency';
 
@@ -9,7 +9,6 @@ export const SAI = createCurrency('SAI');
 export const ETH = Maker.ETH;
 export const USD = Maker.USD;
 export const MKR = Maker.MKR;
-export const DAI = MDAI;
 
 let maker;
 

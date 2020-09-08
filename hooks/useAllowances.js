@@ -23,7 +23,7 @@ const useAllowances = () => {
       const joinDaiAdapterAddress = maker.service(AUCTION_DATA_FETCHER)
         .joinDaiAdapterAddress;
       const daiAllowance = await maker
-        .getToken('MDAI')
+        .getToken('DAI')
         .allowance(maker.currentAddress(), joinDaiAdapterAddress);
       setHasDaiAllowance(daiAllowance.gt(REQUIRED_ALLOWANCE) ? true : false);
     })();
@@ -36,7 +36,7 @@ const useAllowances = () => {
       const joinDaiAdapterAddress = maker.service(AUCTION_DATA_FETCHER)
         .joinDaiAdapterAddress;
       const mkrAllowance = await maker
-        .getToken('MDAI')
+        .getToken('DAI')
         .allowance(maker.currentAddress(), joinDaiAdapterAddress);
       setHasMkrAllowance(mkrAllowance.gt(REQUIRED_ALLOWANCE) ? true : false);
     })();
@@ -109,7 +109,7 @@ const useAllowances = () => {
 
   const giveDaiAllowance = async address => {
     try {
-      await maker.getToken('MDAI').approveUnlimited(address);
+      await maker.getToken('DAI').approveUnlimited(address);
       setHasDaiAllowance(true);
     } catch (err) {
       const message = err.message ? err.message : err;

@@ -25,7 +25,7 @@ const useBalances = () => {
   const fetchBalances = () => {
     return Promise.all([
       fetchVatDaiBalance(),
-      fetchTokenBalance('MDAI'),
+      fetchTokenBalance('DAI'),
       fetchTokenBalance('MKR'),
       fetchTokenBalance('BAT')
     ]);
