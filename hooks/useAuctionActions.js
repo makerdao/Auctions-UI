@@ -4,14 +4,11 @@ import { AUCTION_DATA_FETCHER } from '../constants';
 const useAuctionActions = () => {
   const { maker, web3Connected } = useMaker();
 
-  function callTend(auctionId, lotSize, bidAmount, type) {
+  function callTend(auctionId, lotSize, bidAmount, ilk) {
     try {
-      const methods = {
-        'ETH-A': 'flipEthTend',
-        'BAT-A': 'flipBatTend'
-      };
       return maker
-        .service(AUCTION_DATA_FETCHER)[methods[type]](auctionId, lotSize, bidAmount.toNumber());
+        .service(AUCTION_DATA_FETCHER)
+        .flipTend(auctionId, lotSize, bidAmount.toNumber(), ilk);
     } catch (err) {
       window.alert(err);
     }

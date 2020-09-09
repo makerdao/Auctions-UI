@@ -219,7 +219,6 @@ const Form = ({ ilk }) => {
           </Button>
         </Flex>
       </Flex>
-      {/* </Flex> */}
       {!errorMessages
         ? null
         : errorMessages.map((err, i) => (
@@ -241,15 +240,28 @@ const Form = ({ ilk }) => {
   );
 };
 
+const ENABLED_ILKS = [
+  'ETH-A',
+  'BAT-A',
+  'USDC-A',
+  'USDC-B',
+  'WBTC-A',
+  'KNC-A',
+  'ZRX-A',
+  'MANA-A',
+  'USDT-A',
+  'PAXUSD-A'
+];
+
 const CustomAuction = () => {
   return (
     <Card sx={{ my: 3 }}>
       <Grid>
         <ActionTabs
-          actions={[
-            [
-              'ETH Auction',
-              <Grid key="ETH">
+          actions={ENABLED_ILKS.map(ilk => {
+            return [
+              ilk,
+              <Grid key={ilk}>
                 <Box
                   sx={{
                     bg: 'background',
@@ -257,25 +269,11 @@ const CustomAuction = () => {
                     borderRadius: 'medium'
                   }}
                 >
-                  <Form ilk={'ETH-A'} />
+                  <Form ilk={ilk} />
                 </Box>
               </Grid>
-            ],
-            [
-              'BAT Auction',
-              <Grid key="BAT">
-                <Box
-                  sx={{
-                    bg: 'background',
-                    p: 3,
-                    borderRadius: 'medium'
-                  }}
-                >
-                  <Form ilk={'BAT-A'} />
-                </Box>
-              </Grid>
-            ]
-          ]}
+            ];
+          })}
         />
       </Grid>
     </Card>

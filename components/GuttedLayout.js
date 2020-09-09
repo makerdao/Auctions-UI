@@ -1,6 +1,6 @@
 import { Heading, Text, jsx, Box, Button, Styled, Input, Flex } from 'theme-ui';
 
-export default ({ children, maxWidth = '1140px' }) => {
+const GuttedLayout = ({ children, maxWidth = '1140px' }) => {
   return (
     <Flex
       sx={{
@@ -18,3 +18,5 @@ export default ({ children, maxWidth = '1140px' }) => {
     </Flex>
   );
 };
+
+export default GuttedLayout;

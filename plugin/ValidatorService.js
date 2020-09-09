@@ -170,6 +170,21 @@ export default class ValidatorService extends PublicService {
     );
   }
 
+  @tracksTransactions
+  async flipTend(id, size, amount, ilk, { promise }) {
+    const lotSizeInWei = this.get('web3')._web3.utils.toWei(size.toString());
+    const bidAmountRad = toRad(amount);
+
+    return this.getFlipAdapter(ilk).tend(
+      id,
+      lotSizeInWei,
+      bidAmountRad.toFixed(),
+      {
+        promise
+      }
+    );
+  }
+
   async flipEthDent(id, size, amount) {
     const lotSizeInWei = this.get('web3')._web3.utils.toWei(size.toString());
     const bidAmountRad = toRad(amount);
@@ -252,6 +267,11 @@ export default class ValidatorService extends PublicService {
 
   get joinDaiAdapterAddress() {
     return this._joinDaiAdapter().address;
+  }
+
+  getFlipAdapter(ilk) {
+    const suffix = ilk.replace('-', '_');
+    return this.get('smartContract').getContractByName(`MCD_FLIP_${suffix}`);
   }
 
   _flipIlkAdapter(ilk) {

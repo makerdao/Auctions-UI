@@ -11,7 +11,7 @@ import ReactGA from 'react-ga';
 import useSystemStore from '../stores/systemStore';
 import { formatAddress } from '../utils';
 
-export default () => {
+const Header = () => {
   const { maker, network, web3Connected, setWeb3Connected } = useMaker();
   const { pathname } = useRouter();
   const [showOtherUIs, setShow] = useState(false);
@@ -212,3 +212,5 @@ export default () => {
     </GuttedLayout>
   );
 };
+
+export default Header;

@@ -54,7 +54,7 @@ export const getBlockNumber = async rpcUrl => {
       id: 1
     })
   });
-  
+
   const { result } = await rawResponse.json();
   if (!result) throw new Error('Failed to fetch block number');
   return parseInt(result, 16);
@@ -63,3 +63,4 @@ export const getBlockNumber = async rpcUrl => {
 export const formatAddress = address =>
   address.slice(0, 7) + '...' + address.slice(-4);
 
+export const gemFromIlk = ilk => ilk.split('-')[0];

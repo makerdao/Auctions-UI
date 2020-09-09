@@ -13,7 +13,7 @@ import MiniFormLayout from './MiniFormLayout';
 import { formatBalance } from '../utils';
 import { MCD_FLIP_BAT_A, MCD_JOIN_DAI, MCD_FLIP_ETH_A } from '../constants';
 
-export default ({ ilk }) => {
+const FlipAccountManager = ({ ilk }) => {
   const { maker, web3Connected } = useMaker();
   let {
     vatDaiBalance,
@@ -249,3 +249,5 @@ export default ({ ilk }) => {
     />
   );
 };
+
+export default FlipAccountManager;
