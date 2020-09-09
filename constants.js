@@ -36,3 +36,16 @@ export const MCD_FLIP_ETH_A = 'MCD_FLIP_ETH_A';
 export const MCD_FLIP_BAT_A = 'MCD_FLIP_BAT_A';
 export const MCD_JOIN_DAI = 'MCD_JOIN_DAI';
 export const MCD_FLOP = 'MCD_FLOP';
+
+export const FLIP_ENABLED_ILKS = [
+  'ETH-A',
+  'BAT-A',
+  'USDC-A',
+  'USDC-B',
+  'WBTC-A',
+  'KNC-A',
+  'ZRX-A',
+  'MANA-A',
+  'USDT-A',
+  'PAXUSD-A'
+];

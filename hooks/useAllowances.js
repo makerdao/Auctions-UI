@@ -5,7 +5,8 @@ import {
   MCD_FLIP_BAT_A,
   MCD_JOIN_DAI,
   MCD_FLIP_ETH_A,
-  MCD_FLOP
+  MCD_FLOP,
+  FLIP_ENABLED_ILKS
 } from '../constants';
 
 const REQUIRED_ALLOWANCE = 0;
@@ -40,6 +41,31 @@ const useAllowances = () => {
         .allowance(maker.currentAddress(), joinDaiAdapterAddress);
       setHasMkrAllowance(mkrAllowance.gt(REQUIRED_ALLOWANCE) ? true : false);
     })();
+  }, [maker, web3Connected]);
+
+  const fetchFlipIlkHope = async ilk => {
+    const address = maker.service(AUCTION_DATA_FETCHER).getFlipAdapter(ilk)
+      .address;
+
+    const can = await maker
+      .service('smartContract')
+      .getContract('MCD_VAT')
+      .can(maker.currentAddress(), address);
+
+    setHasHope(state => ({
+      ...state,
+      [`MCD_FLIP_${ilk.replace('-', '_')}`]: can.toNumber() === 1
+    }));
+  };
+
+  const fetchFlipHopes = () => {
+    return Promise.all(FLIP_ENABLED_ILKS.map(ilk => fetchFlipIlkHope(ilk)));
+  };
+
+  // Ilk Hopes
+  useEffect(() => {
+    if (!web3Connected) return;
+    (async () => await fetchFlipHopes())();
   }, [maker, web3Connected]);
 
   // Flip ETH has Hope

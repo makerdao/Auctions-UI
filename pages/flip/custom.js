@@ -19,7 +19,12 @@ import {
 } from 'theme-ui';
 import useAuctionActions from '../../hooks/useAuctionActions';
 
-import { TX_PENDING, TX_SUCCESS, TX_ERROR } from '../../constants';
+import {
+  TX_PENDING,
+  TX_SUCCESS,
+  TX_ERROR,
+  FLIP_ENABLED_ILKS
+} from '../../constants';
 
 import useMaker from '../../hooks/useMaker';
 import useSystemStore from '../../stores/systemStore';
@@ -240,25 +245,14 @@ const Form = ({ ilk }) => {
   );
 };
 
-const ENABLED_ILKS = [
-  'ETH-A',
-  'BAT-A',
-  'USDC-A',
-  'USDC-B',
-  'WBTC-A',
-  'KNC-A',
-  'ZRX-A',
-  'MANA-A',
-  'USDT-A',
-  'PAXUSD-A'
-];
-
 const CustomAuction = () => {
+  const setSelectedIlk = useSystemStore(state => state.setSelectedIlk);
   return (
     <Card sx={{ my: 3 }}>
       <Grid>
         <ActionTabs
-          actions={ENABLED_ILKS.map(ilk => {
+          callback={idx => setSelectedIlk(FLIP_ENABLED_ILKS[idx])}
+          actions={FLIP_ENABLED_ILKS.map(ilk => {
             return [
               ilk,
               <Grid key={ilk}>
@@ -283,6 +277,7 @@ const CustomAuction = () => {
 const Index = () => {
   const { maker, web3Connected } = useMaker();
   const featureFlags = useSystemStore(state => state.featureFlags);
+  const selectedIlk = useSystemStore(state => state.selectedIlk);
   const hasFlipFlag = featureFlags.includes('flip-ui');
 
   useEffect(() => {
@@ -345,7 +340,10 @@ const Index = () => {
             Collateral Auctions By ID
           </Heading>
 
-          <FlipAccountManager web3Connected={web3Connected} />
+          <FlipAccountManager
+            ilk={selectedIlk || 'ETH-A'}
+            web3Connected={web3Connected}
+          />
           {!web3Connected ? null : <CustomAuction />}
         </>
       )}

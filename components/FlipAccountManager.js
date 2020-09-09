@@ -149,7 +149,36 @@ const FlipAccountManager = ({ ilk }) => {
                 }}
               />
 
-              {!ilk || ilk === 'BAT-A' ? (
+              {ilk ? (
+                <Card>
+                  <Grid gap={2}>
+                    <Text variant="caps">{`Enable ${ilk} Auctions`}</Text>
+                    <Button
+                      variant="small"
+                      onClick={() => {
+                        const flipAddress = maker
+                          .service('smartContract')
+                          .getContractByName(
+                            `MCD_FLIP_${ilk.replace('-', '_')}`
+                          ).address;
+                        giveHope(
+                          flipAddress,
+                          `MCD_FLIP_${ilk.replace('-', '_')}`
+                        );
+                      }}
+                      disabled={
+                        !web3Connected ||
+                        hasHope[`MCD_FLIP_${ilk.replace('-', '_')}`]
+                      }
+                    >
+                      {hasHope[`MCD_FLIP_${ilk.replace('-', '_')}`]
+                        ? `${ilk} Unlocked`
+                        : `Unlock ${ilk}`}
+                    </Button>
+                  </Grid>
+                </Card>
+              ) : null}
+              {/* {!ilk || ilk === 'BAT-A' ? (
                 <Card>
                   <Grid gap={2}>
                     <Text variant="caps">Enable BAT Auctions</Text>
@@ -167,8 +196,8 @@ const FlipAccountManager = ({ ilk }) => {
                     </Button>
                   </Grid>
                 </Card>
-              ) : null}
-              {!ilk || ilk === 'ETH-A' ? (
+              ) : null} */}
+              {/* {!ilk || ilk === 'ETH-A' ? (
                 <Card>
                   <Grid gap={2}>
                     <Text variant="caps">Enable ETH Auctions</Text>
@@ -186,8 +215,7 @@ const FlipAccountManager = ({ ilk }) => {
                     </Button>
                   </Grid>
                 </Card>
-              ) : null}
-              {/* ) : null} */}
+              ) : null} */}
             </Grid>
           ) : null}
           {hasNoAllowances ? null : (

@@ -13,7 +13,7 @@ import {
   Flex
 } from 'theme-ui';
 
-const ActionTabs = ({ actions }) => {
+const ActionTabs = ({ actions, callback }) => {
   const f = actions.filter(Boolean);
   const tabs = f.map(a => a[0]);
   const contents = f.map(a => a[1]);
@@ -37,6 +37,7 @@ const ActionTabs = ({ actions }) => {
                 return;
               }
               setActive(i);
+              if (callback && typeof callback === 'function') callback(i);
             }}
           >
             {t}

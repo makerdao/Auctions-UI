@@ -18,7 +18,7 @@ const Header = () => {
   const featureFlags = useSystemStore(state => state.featureFlags);
   const hasFlag = true;
   const hasFlipFlag = featureFlags.includes('flip-ui');
-  const hasSubNav = pathname.includes('/flip/');
+  // const hasSubNav = pathname.includes('/flip/');
 
   useEffect(() => {
     if (window) {
@@ -172,7 +172,7 @@ const Header = () => {
           </>
         )}
       </Flex>
-      {!hasSubNav ? null : (
+      {/* {!hasSubNav ? null : (
         <Flex>
           <Flex
             as="nav"
@@ -208,7 +208,7 @@ const Header = () => {
             </Link>
           </Flex>
         </Flex>
-      )}
+      )} */}
     </GuttedLayout>
   );
 };

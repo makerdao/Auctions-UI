@@ -3,26 +3,30 @@ import create from 'zustand';
 const [useAuctionsStore, sysAPI] = create((set, get) => ({
   blockHeight: 0,
   featureFlags: [],
+  selectedIlk: undefined,
 
- 
-  setBlockHeight: (val) => {
+  setBlockHeight: val => {
     set({ blockHeight: val });
   },
 
-  setFeatureFlag: (val) => {
-    const {featureFlags} = get();
-
-    set({featureFlags : [val, ...featureFlags]})
+  setSelectedIlk: selectedIlk => {
+    set({ selectedIlk });
   },
 
-  unsetFeatureFlag: (val) => {
-    const {featureFlags} = get();
+  setFeatureFlag: val => {
+    const { featureFlags } = get();
+
+    set({ featureFlags: [val, ...featureFlags] });
+  },
+
+  unsetFeatureFlag: val => {
+    const { featureFlags } = get();
 
     const filtered = featureFlags.filter(ff => ff !== val);
 
-    set({featureFlags :filtered });
+    set({ featureFlags: filtered });
   }
 }));
 
 export default useAuctionsStore;
-export {sysAPI};
+export { sysAPI };
