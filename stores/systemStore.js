@@ -3,7 +3,7 @@ import create from 'zustand';
 const [useAuctionsStore, sysAPI] = create((set, get) => ({
   blockHeight: 0,
   featureFlags: [],
-  selectedIlk: undefined,
+  selectedIlk: 'ETH-A',
 
   setBlockHeight: val => {
     set({ blockHeight: val });

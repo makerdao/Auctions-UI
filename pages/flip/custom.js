@@ -15,7 +15,8 @@ import {
   Input,
   Label,
   Grid,
-  Card
+  Card,
+  Select
 } from 'theme-ui';
 import useAuctionActions from '../../hooks/useAuctionActions';
 
@@ -31,6 +32,47 @@ import useSystemStore from '../../stores/systemStore';
 import FlipAccountManager from '../../components/FlipAccountManager';
 import GuttedLayout from '../../components/GuttedLayout';
 import ActionTabs from '../../components/ActionTabs';
+
+const CustomInput = ({ title, label, inputId, handleChange }) => {
+  return (
+    <Flex sx={{ flexDirection: 'column' }}>
+      <Text>{title}</Text>
+      <Flex
+        sx={{
+          width: 7,
+          mr: [0, 2],
+          borderWidth: '1px',
+          borderStyle: 'solid',
+          borderColor: 'muted',
+          bg: 'surface',
+          borderRadius: 'small',
+          fontSize: 3,
+          px: 3,
+          py: 1
+        }}
+      >
+        <Input
+          sx={{
+            borderColor: 'transparent',
+            p: 0,
+            m: 0,
+            '&:focus': {
+              borderColor: 'transparent'
+            }
+          }}
+          id={inputId}
+          type="number"
+          step="0.01"
+          placeholder="0"
+          onChange={handleChange}
+        />
+        <Label sx={{ p: 0, width: 'auto' }} htmlFor={inputId}>
+          {label}
+        </Label>
+      </Flex>
+    </Flex>
+  );
+};
 
 const Form = ({ ilk }) => {
   const initialValue = '';
@@ -53,6 +95,12 @@ const Form = ({ ilk }) => {
   const inputsValid = idState && bidState && lotState;
   const disabled =
     !inputsValid || !!errorMessages.length || txState === TX_PENDING;
+
+  const clearErrors = () => {
+    setTxState(undefined);
+    setTxMsg(null);
+    setTxErrorMsg(null);
+  };
 
   const onSubmit = () => {
     const txObject = callTend(idState, lotState, bidState, ilk);
@@ -100,129 +148,55 @@ const Form = ({ ilk }) => {
 
   return (
     <Grid>
-      <Flex sx={{ flexDirection: 'column' }}>
+      <Flex sx={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         <Flex sx={{ flexDirection: 'column' }}>
-          <Text>Auction ID</Text>
+          {[
+            {
+              title: 'Auction ID',
+              label: 'ID',
+              inputId: 'flip-auctionid',
+              handleChange: handleIdChange
+            },
+            {
+              title: 'Lot Size',
+              label: ilk.slice(0, -2),
+              inputId: 'flip-lotsize',
+              handleChange: handleLotChange
+            },
+            {
+              title: 'Bid Amount',
+              label: 'DAI',
+              inputId: 'flip-bidamount',
+              handleChange: handleBidChange
+            }
+          ].map(({ title, label, inputId, handleChange }) => (
+            <CustomInput
+              title={title}
+              label={label}
+              inputId={inputId}
+              handleChange={t => {
+                handleChange(t);
+                clearErrors();
+              }}
+              ilk={ilk}
+            />
+          ))}
           <Flex
             sx={{
-              maxWidth: ['100%', 7],
-              mr: [0, 2],
-              borderWidth: '1px',
-              borderStyle: 'solid',
-              borderColor: 'muted',
-              bg: 'surface',
-              borderRadius: 'small',
-              fontSize: 3,
-              px: 3,
-              py: 1
+              py: 3
             }}
           >
-            <Input
-              sx={{
-                borderColor: 'transparent',
-                p: 0,
-                m: 0,
-                '&:focus': {
-                  borderColor: 'transparent'
-                }
-              }}
-              id="flip-auctionid"
-              type="number"
-              step="0.01"
-              placeholder="0"
-              onChange={handleIdChange}
-            />
-            <Label sx={{ p: 0, width: 'auto' }} htmlFor="flip-auctionid">
-              ID
-            </Label>
+            <Button
+              sx={{}}
+              variant="primary"
+              disabled={disabled}
+              onClick={onSubmit}
+            >
+              {txState === TX_PENDING ? 'Waiting for Transaction' : 'Submit'}
+            </Button>
           </Flex>
         </Flex>
-        <Flex sx={{ flexDirection: 'column' }}>
-          <Text>Lot Size</Text>
-          <Flex
-            sx={{
-              maxWidth: ['100%', 7],
-              mr: [0, 2],
-              borderWidth: '1px',
-              borderStyle: 'solid',
-              borderColor: 'muted',
-              bg: 'surface',
-              borderRadius: 'small',
-              fontSize: 3,
-              px: 3,
-              py: 1
-            }}
-          >
-            <Input
-              sx={{
-                borderColor: 'transparent',
-                p: 0,
-                m: 0,
-                '&:focus': {
-                  borderColor: 'transparent'
-                }
-              }}
-              id="flip-lotsize"
-              type="number"
-              step="0.01"
-              placeholder="0"
-              onChange={handleLotChange}
-            />
-            <Label sx={{ p: 0, width: 'auto' }} htmlFor="flip-lotsize">
-              {ilk.slice(0, -2)}
-            </Label>
-          </Flex>
-        </Flex>
-        <Flex sx={{ flexDirection: 'column' }}>
-          <Text>Bid Amount</Text>
-          <Flex
-            sx={{
-              maxWidth: ['100%', 7],
-              mr: [0, 2],
-              borderWidth: '1px',
-              borderStyle: 'solid',
-              borderColor: 'muted',
-              bg: 'surface',
-              borderRadius: 'small',
-              fontSize: 3,
-              px: 3,
-              py: 1
-            }}
-          >
-            <Input
-              sx={{
-                borderColor: 'transparent',
-                p: 0,
-                m: 0,
-                '&:focus': {
-                  borderColor: 'transparent'
-                }
-              }}
-              id="flip-bidamount"
-              type="number"
-              step="0.01"
-              placeholder="0"
-              onChange={handleBidChange}
-            />
-            <Label sx={{ p: 0, width: 'auto' }} htmlFor="flip-bidamount">
-              DAI
-            </Label>
-          </Flex>
-        </Flex>
-        <Flex
-          sx={{
-            py: 3
-          }}
-        >
-          <Button
-            sx={{}}
-            variant="primary"
-            disabled={disabled}
-            onClick={onSubmit}
-          >
-            {txState === TX_PENDING ? 'Waiting for Transaction' : 'Submit'}
-          </Button>
-        </Flex>
+        <CollateralSelect selectedIlk={ilk} />
       </Flex>
       {!errorMessages
         ? null
@@ -245,32 +219,42 @@ const Form = ({ ilk }) => {
   );
 };
 
-const CustomAuction = () => {
-  const setSelectedIlk = useSystemStore(state => state.setSelectedIlk);
+const CustomAuction = ({ selectedIlk }) => {
   return (
     <Card sx={{ my: 3 }}>
       <Grid>
-        <ActionTabs
-          callback={idx => setSelectedIlk(FLIP_ENABLED_ILKS[idx])}
-          actions={FLIP_ENABLED_ILKS.map(ilk => {
-            return [
-              ilk,
-              <Grid key={ilk}>
-                <Box
-                  sx={{
-                    bg: 'background',
-                    p: 3,
-                    borderRadius: 'medium'
-                  }}
-                >
-                  <Form ilk={ilk} />
-                </Box>
-              </Grid>
-            ];
-          })}
-        />
+        <Grid>
+          <Box
+            sx={{
+              bg: 'background',
+              p: 3,
+              borderRadius: 'medium'
+            }}
+          >
+            <Form ilk={selectedIlk} />
+          </Box>
+        </Grid>
       </Grid>
     </Card>
+  );
+};
+
+const CollateralSelect = ({ selectedIlk }) => {
+  const setSelectedIlk = useSystemStore(state => state.setSelectedIlk);
+  return (
+    <Box ml={[0, 'auto']} mt={[3, 0]}>
+      <Text>Choose a Collateral Type</Text>
+      <Select
+        sx={{ width: 7, ml: 'auto', bg: 'surface' }}
+        defaultValue={selectedIlk}
+        value={selectedIlk}
+        onChange={e => setSelectedIlk(e.target.value)}
+      >
+        {FLIP_ENABLED_ILKS.map(ilk => {
+          return <option>{ilk}</option>;
+        })}
+      </Select>
+    </Box>
   );
 };
 
@@ -344,7 +328,7 @@ const Index = () => {
             ilk={selectedIlk || 'ETH-A'}
             web3Connected={web3Connected}
           />
-          {!web3Connected ? null : <CustomAuction />}
+          {!web3Connected ? null : <CustomAuction selectedIlk={selectedIlk} />}
         </>
       )}
     </GuttedLayout>

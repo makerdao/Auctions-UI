@@ -65,7 +65,7 @@ const FlipAccountManager = ({ ilk }) => {
             </Text>
           ) : allowanceMissing ? (
             <Text as="h2" variant="boldBody">
-              To participate in auctions you need to sign these 3 approval
+              To participate in auctions you need to sign the approvals
               transactions
             </Text>
           ) : null}
