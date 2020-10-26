@@ -27,16 +27,18 @@ const transformEvents = async (auctions, service, type, ilk) => {
   return auctionsData;
 };
 
-const includeAuctionsWithFullHistoryOnly = (auctions) => {
+const includeAuctionsWithFullHistoryOnly = auctions => {
   const filteredAuctions = {};
   Object.keys(auctions).map(auctionId => {
-    const hasKick = auctions[auctionId].events.find(event => event.type === 'Kick');
+    const hasKick = auctions[auctionId].events.find(
+      event => event.type === 'Kick'
+    );
     if (hasKick) {
       filteredAuctions[auctionId.toString()] = auctions[auctionId];
     }
   });
   return filteredAuctions;
-}
+};
 
 const filters = {
   byPage: (state, ids) => {
@@ -162,11 +164,17 @@ const selectors = {
       filterByIdValue,
       auctions: flopAuctions,
       flipAuctions,
+      flapAuctions,
       sortBy,
       filterByBidderValue,
       filterByNotCompleted
     } = state;
-    const auctions = type === 'flip' ? flipAuctions : flopAuctions;
+    const auctions =
+      type === 'flip'
+        ? flipAuctions
+        : type === 'flap'
+        ? flapAuctions
+        : flopAuctions;
     if (!auctions) return null;
     let ids = sorters[sortBy](auctions);
 
@@ -191,6 +199,7 @@ const selectors = {
 const [useAuctionsStore, updateState] = create((set, get) => ({
   auctions: null,
   flipAuctions: null,
+  flapAuctions: null,
   flopStepSize: 0,
   pageStart: 0,
   pageEnd: 10,
@@ -310,6 +319,30 @@ const [useAuctionsStore, updateState] = create((set, get) => ({
       const currentState = get().flipAuctions || {};
       const updatedState = Object.assign({}, currentState, transformedAuctions);
       set({ flipAuctions: updatedState });
+    }, 500);
+  },
+
+  fetchAllFlap: async maker => {
+    const service = maker.service(AUCTION_DATA_FETCHER);
+    // TODO update when service is ready
+    const auctions = await service.fetchFlopAuctions();
+    const transformedAuctions = await transformEvents(auctions, service);
+    set({
+      flapAuctions: includeAuctionsWithFullHistoryOnly(transformedAuctions)
+    });
+  },
+
+  fetchFlapSet: async ids => {
+    setTimeout(async () => {
+      console.log('fetching set: ', ids);
+      const service = maker.service(AUCTION_DATA_FETCHER);
+      // TODO update when service is ready
+      const auctions = await service.fetchFlopAuctionsByIds(ids);
+      const transformedAuctions = await transformEvents(auctions, service);
+
+      const currentState = get().auctions || {};
+      const updatedState = Object.assign({}, currentState, transformedAuctions);
+      set({ flapAuctions: updatedState });
     }, 500);
   },
 

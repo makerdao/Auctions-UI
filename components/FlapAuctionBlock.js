@@ -236,7 +236,7 @@ const FlapAuctionBlock = ({
   const { hasDaiAllowance, hasHope } = allowances;
   let { vatDaiBalance } = useBalances();
   const { callFlopDent, callFlopDeal } = useAuctionActions();
-  const fetchAuctionsSet = useAuctionsStore(state => state.fetchSet);
+  const fetchAuctionsSet = useAuctionsStore(state => state.fetchFlapSet);
   const sortedEvents = events.sort(byTimestamp); // DEAL , [...DENT] , KICK ->
 
   const winnerSummary = {};

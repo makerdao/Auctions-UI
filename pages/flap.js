@@ -20,8 +20,8 @@ import useSystemStore from '../stores/systemStore';
 
 const Index = () => {
   const { maker, web3Connected } = useMaker();
-  const auctions = useAuctionsStore(state => state.auctions);
-  const fetchAuctions = useAuctionsStore(state => state.fetchAll);
+  const auctions = useAuctionsStore(state => state.flapAuctions);
+  const fetchAuctions = useAuctionsStore(state => state.fetchAllFlap);
   const fetchFlopStepSize = useAuctionsStore(state => state.fetchFlopStepSize);
   const stepSize = useAuctionsStore(state => state.flopStepSize);
   const [TOCAccepted, setTOCAccepted] = useState(true);
