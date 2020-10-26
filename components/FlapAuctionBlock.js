@@ -39,25 +39,14 @@ const UserBidStatusPills = {
   )
 };
 
-const AuctionEvent = ({
-  type,
-  ilk,
-  price,
-  lot,
-  bid,
-  currentBid,
-  timestamp,
-  tx,
-  sender
-}) => {
+const AuctionEvent = ({ type, lot, bid, mkrPrice, timestamp, tx, sender }) => {
   const { maker, network } = useMaker();
 
   const fields = [
-    ['Totally Rad Event Type', type],
-    ['Bid Value', bid],
+    ['Event Type', type],
+    ['Bid Amount', bid],
     ['Lot Size', `${lot} DAI`, { color: 'primary' }],
-    ['MKR Price', currentBid, { fontWeight: 600 }],
-    // ['Price', price],
+    ['MKR Price', mkrPrice, { fontWeight: 600 }],
     ['Timestamp', timestamp],
 
     [
@@ -120,7 +109,6 @@ const OrderSummary = ({
   hasSlippage,
   remainingBal
 }) => {
-  console.log(hasSlippage);
   const fields = [
     ['Min bid amount', minMkrAsk, { fontWeight: 600 }],
     ['Requested bid amount', currentBid, { fontWeight: 600 }],
@@ -251,12 +239,10 @@ const FlapAuctionBlock = ({
   const fetchAuctionsSet = useAuctionsStore(state => state.fetchSet);
   const sortedEvents = events.sort(byTimestamp); // DEAL , [...DENT] , KICK ->
 
-  console.log('^^^soreted events', sortedEvents);
-
   const winnerSummary = {};
   const {
     bid: latestBid,
-    lot: latestLot,
+    lot,
     fromAddress: latestBidder,
     hash: latestHash
   } = sortedEvents.find(event => event.type != 'Deal');
@@ -273,8 +259,6 @@ const FlapAuctionBlock = ({
     ROUNDING_MODE: BigNumber.ROUND_DOWN
   });
   const minMkrAsk = new BNwad(latestBid).times(stepSize);
-
-  console.log('^^^', minMkrAsk);
 
   const hasDent = sortedEvents[0].type === 'Dent';
 
@@ -317,18 +301,19 @@ const FlapAuctionBlock = ({
   // const bidDisabled = state.error;
   const mainValidation = [];
 
+  // TODO what permissions are required now?
   const canBid = hasDaiAllowance && hasHope[MCD_JOIN_DAI] && hasHope[MCD_FLOP];
 
   const bidValidationTests = [
     // [() => !web3Connected],
     [
       val => {
-        return minMkrAsk.lt(val);
+        return minMkrAsk.gt(val);
       },
       `Must ask for at least ${new BigNumber(stepSize)
         .minus(1)
         .multipliedBy(100)
-        .toString()}% less MKR than the current lot`
+        .toString()}% more MKR than the current bid`
     ],
     [
       () => {
@@ -339,14 +324,13 @@ const FlapAuctionBlock = ({
       )} DAI in the Vat to bid`
     ]
   ];
-  const calculatedBidPrice = BigNumber(latestLot).div(currentLotBidAmount);
+  const calculatedBidPrice = BigNumber(lot).div(currentLotBidAmount);
+  const minMkrAskPrice = BigNumber(lot).div(minMkrAsk);
 
-  const calculatedBidPrice = BigNumber(latestBid).div(currentLotBidAmount);
-  const priceThreshold = new BigNumber(latestBid)
-    .div(new BigNumber(latestLot))
-    .times(new BigNumber(1.1)); // 10% up
+  const priceThreshold = minMkrAskPrice.div(new BigNumber(1.1)); // 10% less
 
-  const hasPriceSlippage = calculatedBidPrice.gt(priceThreshold);
+  // Warn that the MKR price in Dai of the user's bid seems too low
+  const hasPriceSlippage = calculatedBidPrice.lt(priceThreshold);
 
   const printedLot =
     !currentLotBidAmount ||
@@ -366,7 +350,7 @@ const FlapAuctionBlock = ({
       key={auctionId}
       latestEvent={{
         bid: new BigNumber(latestBid),
-        lot: new BigNumber(latestLot)
+        lot: new BigNumber(lot)
       }}
       auctionStatus={auctionStatus}
       auctionId={auctionId}
@@ -416,7 +400,7 @@ const FlapAuctionBlock = ({
                   </Box>
                   <Box ml="auto">
                     <OrderSummary
-                      key={`${latestLot}-${vatDaiBalance}`}
+                      key={`${lot}-${vatDaiBalance}`}
                       remainingBal={
                         vatDaiBalance &&
                         `${BigNumber(vatDaiBalance)
@@ -425,7 +409,7 @@ const FlapAuctionBlock = ({
                       }
                       currentBid={`${minMkrAsk.toFixed(2, 1)} MKR`}
                       minMkrAsk={`${minMkrAsk.toFixed(2, 1)} MKR`}
-                      calculatedBidPrice={`${BigNumber(latestBid)
+                      calculatedBidPrice={`${BigNumber(lot)
                         .div(minMkrAsk)
                         .toFixed(2)} DAI`}
                     />
@@ -526,37 +510,22 @@ const FlapAuctionBlock = ({
         )
       }
       auctionEvents={events.map(
-        (
-          { type, ilk, lot, bid, timestamp, hash, fromAddress, price },
-          index
-        ) => {
+        ({ type, lot, bid, timestamp, hash, fromAddress }, index) => {
           const eventBid = type === 'Deal' ? latestBid : bid;
-          const eventLot = type === 'Deal' ? latestLot : lot;
 
-          const currentBid = new BigNumber(eventLot).eq(new BigNumber(0))
-            ? new BigNumber(eventLot)
-            : new BigNumber(eventBid).div(new BigNumber(eventLot));
-
-          console.log(
-            'currentBid',
-            currentBid,
-            'event lot',
-            eventLot,
-            'event bid',
-            eventBid
-          );
+          const mkrPrice = new BigNumber(eventBid).eq(new BigNumber(0))
+            ? new BigNumber(0)
+            : new BigNumber(lot).div(new BigNumber(eventBid));
 
           return (
             <AuctionEvent
               key={`${timestamp}-${index}`}
               type={type}
-              ilk={ilk}
               tx={hash}
-              price={price}
               sender={fromAddress}
-              lot={new BigNumber(eventLot).toFormat(4, 6)}
+              lot={new BigNumber(lot).toFormat(4, 6)}
               bid={`${new BigNumber(eventBid).toFormat(2, 4)} MKR`}
-              currentBid={`${currentBid.toFormat(2, 4)} MKR`}
+              mkrPrice={`${mkrPrice.toFormat(2, 4)} DAI`}
               timestamp={
                 <Text>
                   <Moment format="HH:mm, DD MMM" withTitle>
