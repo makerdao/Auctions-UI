@@ -114,6 +114,18 @@ const Header = () => {
                   Debt auctions
                 </NavLink>
               </Link>
+              <Link href="/flap">
+                <NavLink
+                  p={2}
+                  sx={{
+                    fontWeight: pathname === '/flap' ? 500 : 'normal',
+                    cursor: 'default',
+                    px: [3, 4]
+                  }}
+                >
+                  Surplus auctions
+                </NavLink>
+              </Link>
             </Flex>
             <Flex
               sx={{

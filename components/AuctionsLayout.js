@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import FlipAuctionBlock from './FlipAuctionBlock';
 import FlopAuctionBlock from './FlopAuctionBlock';
+import FlapAuctionBlock from './FlapAuctionBlock';
 import { Button, Grid, Input, Flex, Select } from 'theme-ui';
 import useAuctionsStore, { selectors } from '../stores/auctionsStore';
 import useSystemStore from '../stores/systemStore';
@@ -17,7 +18,11 @@ const AuctionsLayout = ({ auctions, allowances, stepSize, type, ilk }) => {
   const prev = useAuctionsStore(state => state.prevPage);
 
   const fetchAuctionsSet = useAuctionsStore(state =>
-    type === 'flip' ? state.fetchFlipSet : state.fetchSet
+    type === 'flip'
+      ? state.fetchFlipSet
+      : 'flap'
+      ? state.fetchFlipSet
+      : state.fetchSet
   );
 
   const filteredAuctions = useAuctionsStore(selectors.filteredAuctions(type));
@@ -43,9 +48,13 @@ const AuctionsLayout = ({ auctions, allowances, stepSize, type, ilk }) => {
 
   const hasPrev = useAuctionsStore(hasPrevPageSelector());
   const hasNext = useAuctionsStore(hasNextPageSelector(filteredAuctions));
-  const AuctionBlockLayout =
-    type === 'flip' ? FlipAuctionBlock : FlopAuctionBlock;
 
+  const auctionBlocks = {
+    flip: FlipAuctionBlock,
+    flop: FlopAuctionBlock,
+    flap: FlapAuctionBlock
+  };
+  const AuctionBlockLayout = auctionBlocks[type];
   return (
     <>
       <AuctionFilters />

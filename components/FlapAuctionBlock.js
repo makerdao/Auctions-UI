@@ -53,9 +53,9 @@ const AuctionEvent = ({
   const { maker, network } = useMaker();
 
   const fields = [
-    ['Event Type', type],
+    ['Totally Rad Event Type', type],
     ['Bid Value', bid],
-    ['Lot Size', `${lot} MKR`, { color: 'primary' }],
+    ['Lot Size', `${lot} DAI`, { color: 'primary' }],
     ['MKR Price', currentBid, { fontWeight: 600 }],
     // ['Price', price],
     ['Timestamp', timestamp],
@@ -122,8 +122,8 @@ const OrderSummary = ({
 }) => {
   console.log(hasSlippage);
   const fields = [
-    ['Max lot amount', minMkrAsk, { fontWeight: 600 }],
-    ['Requested lot amount', currentBid, { fontWeight: 600 }],
+    ['Min bid amount', minMkrAsk, { fontWeight: 600 }],
+    ['Requested bid amount', currentBid, { fontWeight: 600 }],
     [
       'Bid price per MKR',
       calculatedBidPrice,
@@ -235,7 +235,7 @@ const checkUserBidStatus = (events, userAddress) => {
   return null;
 };
 
-const FlopAuctionBlock = ({
+const FlapAuctionBlock = ({
   events,
   id: auctionId,
   end,
@@ -250,6 +250,8 @@ const FlopAuctionBlock = ({
   const { callFlopDent, callFlopDeal } = useAuctionActions();
   const fetchAuctionsSet = useAuctionsStore(state => state.fetchSet);
   const sortedEvents = events.sort(byTimestamp); // DEAL , [...DENT] , KICK ->
+
+  console.log('^^^soreted events', sortedEvents);
 
   const winnerSummary = {};
   const {
@@ -270,7 +272,9 @@ const FlopAuctionBlock = ({
     DECIMAL_PLACES: 18,
     ROUNDING_MODE: BigNumber.ROUND_DOWN
   });
-  const minMkrAsk = new BNwad(latestLot).div(stepSize);
+  const minMkrAsk = new BNwad(latestBid).times(stepSize);
+
+  console.log('^^^', minMkrAsk);
 
   const hasDent = sortedEvents[0].type === 'Dent';
 
@@ -335,6 +339,7 @@ const FlopAuctionBlock = ({
       )} DAI in the Vat to bid`
     ]
   ];
+  const calculatedBidPrice = BigNumber(latestLot).div(currentLotBidAmount);
 
   const calculatedBidPrice = BigNumber(latestBid).div(currentLotBidAmount);
   const priceThreshold = new BigNumber(latestBid)
@@ -532,6 +537,15 @@ const FlopAuctionBlock = ({
             ? new BigNumber(eventLot)
             : new BigNumber(eventBid).div(new BigNumber(eventLot));
 
+          console.log(
+            'currentBid',
+            currentBid,
+            'event lot',
+            eventLot,
+            'event bid',
+            eventBid
+          );
+
           return (
             <AuctionEvent
               key={`${timestamp}-${index}`}
@@ -541,8 +555,8 @@ const FlopAuctionBlock = ({
               price={price}
               sender={fromAddress}
               lot={new BigNumber(eventLot).toFormat(4, 6)}
-              bid={`${new BigNumber(eventBid).toFormat(2, 4)} DAI`}
-              currentBid={`${currentBid.toFormat(2, 4)} DAI`}
+              bid={`${new BigNumber(eventBid).toFormat(2, 4)} MKR`}
+              currentBid={`${currentBid.toFormat(2, 4)} MKR`}
               timestamp={
                 <Text>
                   <Moment format="HH:mm, DD MMM" withTitle>
@@ -558,4 +572,4 @@ const FlopAuctionBlock = ({
   );
 };
 
-export default FlopAuctionBlock;
+export default FlapAuctionBlock;
