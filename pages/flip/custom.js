@@ -85,7 +85,7 @@ const Form = ({ ilk }) => {
   const [txErrorMsg, setTxErrorMsg] = useState(undefined);
 
   const { maker } = useMaker();
-  const { callTend } = useAuctionActions();
+  const { callFlipTend } = useAuctionActions();
 
   const errorMessages = [];
   if (txErrorMsg) {
@@ -103,7 +103,7 @@ const Form = ({ ilk }) => {
   };
 
   const onSubmit = () => {
-    const txObject = callTend(idState, lotState, bidState, ilk);
+    const txObject = callFlipTend(idState, lotState, bidState, ilk);
     setTxErrorMsg(undefined);
     maker.service('transactionManager').listen(txObject, {
       initialized: () => {

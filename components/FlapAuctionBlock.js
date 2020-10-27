@@ -235,7 +235,7 @@ const FlapAuctionBlock = ({
   const [currentLotBidAmount, setCurrentLotBidAmount] = useState(BigNumber(0));
   const { hasDaiAllowance, hasHope } = allowances;
   let { vatDaiBalance } = useBalances();
-  const { callFlopDent, callFlopDeal } = useAuctionActions();
+  const { callFlapTend, callFlapDeal } = useAuctionActions();
   const fetchAuctionsSet = useAuctionsStore(state => state.fetchFlapSet);
   const sortedEvents = events.sort(byTimestamp); // DEAL , [...DENT] , KICK ->
 
@@ -280,18 +280,18 @@ const FlapAuctionBlock = ({
   }
 
   const handleTendCTA = value => {
-    return callFlopDent(auctionId, value, latestBid);
+    return callFlapTend(auctionId, value, latestBid);
   };
 
   const handleInstantBid = () => {
-    return callFlopDent(auctionId, minMkrAsk, latestBid);
+    return callFlapTend(auctionId, minMkrAsk, latestBid);
   };
 
   useEffect(() => {
     const timerID = setTimeout(async () => {
       const newEvents = await maker
         .service(AUCTION_DATA_FETCHER)
-        .fetchFlopAuctionsByIds([auctionId]);
+        .fetchFlapAuctionsByIds([auctionId]);
     }, 1000);
     return () => {
       clearInterval(timerID);
@@ -500,7 +500,7 @@ const FlapAuctionBlock = ({
 
                     fetchAuctionsSet([auctionId]);
                   }}
-                  onSubmit={() => callFlopDeal(auctionId)}
+                  onSubmit={() => callFlapDeal(auctionId)}
                   small={''}
                   actionText={'Call deal'}
                 />

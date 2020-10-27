@@ -21,11 +21,11 @@ import EventsList from './AuctionEventsList';
 
 const DentForm = ({ auctionId, lot, bid, ilk }) => {
   const [state, setState] = useState({ amount: undefined, error: undefined });
-  const { callTend, callEthDent } = useAuctionActions();
+  const { callFlipTend, callEthDent } = useAuctionActions();
 
   const handleTendCTA = event => {
     const bidAmount = state.amount;
-    callTend(auctionId, lot, bidAmount, ilk);
+    callFlipTend(auctionId, lot, bidAmount, ilk);
   };
 
   const handleDentCTA = event => {

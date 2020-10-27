@@ -4,7 +4,7 @@ import { AUCTION_DATA_FETCHER } from '../constants';
 const useAuctionActions = () => {
   const { maker, web3Connected } = useMaker();
 
-  function callTend(auctionId, lotSize, bidAmount, ilk) {
+  function callFlipTend(auctionId, lotSize, bidAmount, ilk) {
     try {
       return maker
         .service(AUCTION_DATA_FETCHER)
@@ -43,11 +43,31 @@ const useAuctionActions = () => {
     }
   }
 
+  function callFlapTend(auctionId, lotSize, bidAmount) {
+    try {
+      return maker
+        .service(AUCTION_DATA_FETCHER)
+        .flapTend(auctionId, lotSize, bidAmount);
+    } catch (err) {
+      window.alert(err);
+    }
+  }
+
+  function callFlapDeal(auctionId) {
+    try {
+      return maker.service(AUCTION_DATA_FETCHER).flapDeal(auctionId);
+    } catch (err) {
+      window.alert(err);
+    }
+  }
+
   return {
-    callTend,
+    callFlipTend,
     callFlopDent,
     callFlopDeal,
-    callEthDent
+    callEthDent,
+    callFlapTend,
+    callFlapDeal
   };
 };
 
