@@ -218,6 +218,20 @@ export default class ValidatorService extends PublicService {
     return this._flop().deal(id, { promise });
   }
 
+  // FLAP
+  @tracksTransactions
+  async flapTend(id, lotSize, bidAmount, { promise }) {
+    const lotSizeInWei = toWei(lotSize).toFixed();
+    const bidAmountRad = toRad(bidAmount).toFixed();
+
+    return this._flap().tend(id, lotSizeInWei, bidAmountRad, { promise });
+  }
+
+  @tracksTransactions
+  async flapDeal(id, { promise }) {
+    return this._flap().deal(id, { promise });
+  }
+
   async getAuction(id) {
     console.log('fetching', id);
     try {
@@ -243,6 +257,11 @@ export default class ValidatorService extends PublicService {
     return fromWad(beg);
   }
 
+  async getFlapStepSize() {
+    const beg = await this._flap().beg();
+    return fromWad(beg);
+  }
+
   @tracksTransactions
   async joinDaiToAdapter(address, amount, { promise }) {
     await this._joinDaiAdapter().join(address, amount, { promise });
@@ -263,6 +282,10 @@ export default class ValidatorService extends PublicService {
 
   get flopAddress() {
     return this._flop().address;
+  }
+
+  get flapAddress() {
+    return this._flap().address;
   }
 
   get joinDaiAdapterAddress() {
@@ -291,6 +314,10 @@ export default class ValidatorService extends PublicService {
 
   _flop() {
     return this.get('smartContract').getContractByName('MCD_FLOP');
+  }
+
+  _flap() {
+    return this.get('smartContract').getContractByName('MCD_FLAP');
   }
 
   _joinDaiAdapter() {
