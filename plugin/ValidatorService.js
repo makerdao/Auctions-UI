@@ -8,6 +8,7 @@ import { CUT_OFF_PERIOD } from '../constants';
 export default class ValidatorService extends PublicService {
   flipAuctionsLastSynced = 0;
   flopAuctionsLastSynced = 0;
+  flapAuctionsLastSynced = 0;
   backInTime = CUT_OFF_PERIOD;
 
   constructor(name = 'validator') {
@@ -105,6 +106,45 @@ export default class ValidatorService extends PublicService {
 
     const variables = {
       sources: [this.flopAddress],
+      auctionIds: ids,
+      fromDate: queryDate
+    };
+
+    const response = await this.getQueryResponse(
+      this._cacheAPI,
+      gqlQueries.specificAuctionEvents,
+      'setAuctionsEvents',
+      variables
+    );
+
+    // console.log('GraphQL response', response);
+    return response.allLeveragedEvents.nodes;
+  }
+
+  async fetchFlapAuctions(shouldSync = false) {
+    let currentTime = new Date().getTime();
+    const timePassed = currentTime - this.flapAuctionsLastSynced;
+    let queryDate = new Date();
+
+    if (shouldSync) {
+      queryDate = new Date(currentTime - timePassed);
+    } else {
+      queryDate = new Date(currentTime - this.backInTime);
+    }
+
+    this.flapAuctionsLastSynced = currentTime;
+    return this.getAllAuctions({
+      sources: [this.flapAddress],
+      fromDate: queryDate
+    });
+  }
+
+  async fetchFlapAuctionsByIds(ids) {
+    let currentTime = new Date().getTime();
+    const queryDate = new Date(currentTime - this.backInTime);
+
+    const variables = {
+      sources: [this.flapAddress],
       auctionIds: ids,
       fromDate: queryDate
     };
