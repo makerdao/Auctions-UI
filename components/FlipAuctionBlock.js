@@ -189,7 +189,7 @@ const byTimestamp = (prev, next) => {
   return 0;
 };
 
-export default ({ events: auctionEvents, id: auctionId }) => {
+const FlipAuctionBlock = ({ events: auctionEvents, id: auctionId }) => {
   const events = auctionEvents.sort(byTimestamp);
 
   const lot = events.sort(byTimestamp).map(a => a.lot)[0];
@@ -297,3 +297,5 @@ export default ({ events: auctionEvents, id: auctionId }) => {
     </Grid>
   );
 };
+
+export default FlipAuctionBlock;
