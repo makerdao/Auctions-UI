@@ -20,7 +20,18 @@ import DownSVG from '../assets/chevron_down.svg';
 
 const CollapseToggle = ({ active, onClick }) => {
   return (
-    <Button variant="clear" onClick={onClick}>
+    <Button
+      sx={{
+        bg: 'surface',
+        '&:hover': {
+          bg: 'surface'
+        },
+        '&:active': {
+          bg: 'surface'
+        }
+      }}
+      onClick={onClick}
+    >
       <Flex
         sx={{
           justifyContent: 'center',
