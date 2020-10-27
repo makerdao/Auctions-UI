@@ -201,6 +201,7 @@ const [useAuctionsStore, updateState] = create((set, get) => ({
   flipAuctions: null,
   flapAuctions: null,
   flopStepSize: 0,
+  flapStepSize: 0,
   pageStart: 0,
   pageEnd: 10,
   pageStep: 10,
@@ -349,6 +350,11 @@ const [useAuctionsStore, updateState] = create((set, get) => ({
   fetchFlopStepSize: async maker => {
     const service = maker.service(AUCTION_DATA_FETCHER);
     set({ flopStepSize: await service.getFlopStepSize() });
+  },
+
+  fetchFlapStepSize: async maker => {
+    const service = maker.service(AUCTION_DATA_FETCHER);
+    set({ flapStepSize: await service.getFlapStepSize() });
   }
 }));
 

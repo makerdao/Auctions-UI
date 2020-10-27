@@ -22,8 +22,8 @@ const Index = () => {
   const { maker, web3Connected } = useMaker();
   const auctions = useAuctionsStore(state => state.flapAuctions);
   const fetchAuctions = useAuctionsStore(state => state.fetchAllFlap);
-  const fetchFlopStepSize = useAuctionsStore(state => state.fetchFlopStepSize);
-  const stepSize = useAuctionsStore(state => state.flopStepSize);
+  const fetchFlapStepSize = useAuctionsStore(state => state.fetchFlapStepSize);
+  const stepSize = useAuctionsStore(state => state.flapStepSize);
   const [TOCAccepted, setTOCAccepted] = useState(true);
   const allowances = useAllowances();
   const [{ isSyncing, lastSynced }, sync] = useState({});
@@ -41,7 +41,7 @@ const Index = () => {
     if (web3Connected) {
       if (!auctions) {
         fetchAuctions(maker);
-        fetchFlopStepSize(maker);
+        fetchFlapStepSize(maker);
       }
     }
   }, [web3Connected]);
