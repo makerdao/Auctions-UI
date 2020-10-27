@@ -325,9 +325,12 @@ const [useAuctionsStore, updateState] = create((set, get) => ({
 
   fetchAllFlap: async maker => {
     const service = maker.service(AUCTION_DATA_FETCHER);
-    // TODO update when service is ready
-    const auctions = await service.fetchFlopAuctions();
-    const transformedAuctions = await transformEvents(auctions, service);
+    const auctions = await service.fetchFlapAuctions();
+    const transformedAuctions = await transformEvents(
+      auctions,
+      service,
+      'flap'
+    );
     set({
       flapAuctions: includeAuctionsWithFullHistoryOnly(transformedAuctions)
     });
@@ -337,9 +340,12 @@ const [useAuctionsStore, updateState] = create((set, get) => ({
     setTimeout(async () => {
       console.log('fetching set: ', ids);
       const service = maker.service(AUCTION_DATA_FETCHER);
-      // TODO update when service is ready
-      const auctions = await service.fetchFlopAuctionsByIds(ids);
-      const transformedAuctions = await transformEvents(auctions, service);
+      const auctions = await service.fetchFlapAuctionsByIds(ids);
+      const transformedAuctions = await transformEvents(
+        auctions,
+        service,
+        'flap'
+      );
 
       const currentState = get().auctions || {};
       const updatedState = Object.assign({}, currentState, transformedAuctions);

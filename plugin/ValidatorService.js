@@ -5,6 +5,87 @@ import { toRad, fromWei, toWei, fromWad } from './utils';
 import * as gqlQueries from '../queries';
 import { CUT_OFF_PERIOD } from '../constants';
 
+const mockData = [
+  {
+    auctionId: 138,
+    id: '11',
+    type: 'Kick',
+    hash: '0x90ec0b38e0296ccb109cc0f0ab8068540e2a1496daa94d810a3c7c516746773d',
+    fromAddress: '0xdeaddeaddeaddeaddeaddeaddeaddeaddeaddead',
+    amount: 'amount',
+    lot: 10000.0,
+    bid: 1.0,
+    tab: 2.0,
+    timestamp: 1603841400000,
+    price: 9999999.0
+  },
+  {
+    auctionId: 138,
+    id: '12',
+    type: 'Tend',
+    hash: '0x90ec0b38e0296ccb109cc0f0ab8068540e2a1496daa94d810a3c7c516746773d',
+    fromAddress: '0xdeaddeaddeaddeaddeaddeaddeaddeaddeaddead',
+    amount: 'amount',
+    lot: 10000.0,
+    bid: 7,
+    tab: 3.0,
+    timestamp: 1603841400001,
+    price: 999999.0
+  },
+  {
+    auctionId: 138,
+    id: '13',
+    type: 'Tend',
+    hash: '0x90ec0b38e0296ccb109cc0f0ab8068540e2a1496daa94d810a3c7c516746773d',
+    fromAddress: '0xdeaddeaddeaddeaddeaddeaddeaddeaddeaddead',
+    amount: 'amount',
+    lot: 10000.0,
+    bid: 15,
+    tab: 4.0,
+    timestamp: 1603841400002,
+    price: 999999.0
+  },
+  {
+    auctionId: 139,
+    id: '11',
+    type: 'Kick',
+    hash: '0x90ec0b38e0296ccb109cc0f0ab8068540e2a1496daa94d810a3c7c516746773d',
+    fromAddress: '0xdeaddeaddeaddeaddeaddeaddeaddeaddeaddead',
+    amount: 'amount',
+    lot: 10000.0,
+    bid: 1.0,
+    tab: 2.0,
+    timestamp: 1603841400000,
+    price: 9999999.0
+  },
+  {
+    auctionId: 139,
+    id: '12',
+    type: 'Tend',
+    hash: '0x90ec0b38e0296ccb109cc0f0ab8068540e2a1496daa94d810a3c7c516746773d',
+    fromAddress: '0xdeaddeaddeaddeaddeaddeaddeaddeaddeaddead',
+    amount: 'amount',
+    lot: 10000.0,
+    bid: 7,
+    tab: 3.0,
+    timestamp: 1603841400001,
+    price: 999999.0
+  },
+  {
+    auctionId: 139,
+    id: '13',
+    type: 'Tend',
+    hash: '0x90ec0b38e0296ccb109cc0f0ab8068540e2a1496daa94d810a3c7c516746773d',
+    fromAddress: '0xdeaddeaddeaddeaddeaddeaddeaddeaddeaddead',
+    amount: 'amount',
+    lot: 10000.0,
+    bid: 15,
+    tab: 4.0,
+    timestamp: 1603841400002,
+    price: 999999.0
+  }
+];
+
 export default class ValidatorService extends PublicService {
   flipAuctionsLastSynced = 0;
   flopAuctionsLastSynced = 0;
@@ -41,6 +122,13 @@ export default class ValidatorService extends PublicService {
     if (this.queryPromises[cacheKey]) return this.queryPromises[cacheKey];
     this.queryPromises[cacheKey] = this.getQueryResponse(serverUrl, query);
     return this.queryPromises[cacheKey];
+  }
+
+  async getApiResponse(url) {
+    // const resp = await fetch(url);
+    // const data = await resp.json();
+    // return data;
+    return mockData;
   }
 
   async fetchFlipAuctions(shouldSync = false) {
@@ -121,22 +209,11 @@ export default class ValidatorService extends PublicService {
     return response.allLeveragedEvents.nodes;
   }
 
-  async fetchFlapAuctions(shouldSync = false) {
-    let currentTime = new Date().getTime();
-    const timePassed = currentTime - this.flapAuctionsLastSynced;
-    let queryDate = new Date();
+  async fetchFlapAuctions() {
+    const url = 'http://localhost:7777/api/flaps/?status=all';
+    const data = await this.getApiResponse(url);
 
-    if (shouldSync) {
-      queryDate = new Date(currentTime - timePassed);
-    } else {
-      queryDate = new Date(currentTime - this.backInTime);
-    }
-
-    this.flapAuctionsLastSynced = currentTime;
-    return this.getAllAuctions({
-      sources: [this.flapAddress],
-      fromDate: queryDate
-    });
+    return data;
   }
 
   async fetchFlapAuctionsByIds(ids) {
@@ -284,12 +361,16 @@ export default class ValidatorService extends PublicService {
       const bid =
         type === 'flip'
           ? await this._flipIlkAdapter(ilk).bids(id)
+          : type === 'flap'
+          ? await this._flap().bids(id)
           : await this._flop().bids(id);
       return {
         end: new BigNumber(bid.end).times(1000),
         tic: bid.tic ? new BigNumber(bid.tic).times(1000) : new BigNumber(0)
       };
-    } catch (err) {}
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   async getFlopStepSize() {
