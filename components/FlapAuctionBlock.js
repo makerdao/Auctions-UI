@@ -242,7 +242,7 @@ const FlapAuctionBlock = ({
   const winnerSummary = {};
   const {
     bid: latestBid,
-    lot,
+    lot: latestLot,
     fromAddress: latestBidder,
     hash: latestHash
   } = sortedEvents.find(event => event.type != 'Deal');
@@ -324,8 +324,8 @@ const FlapAuctionBlock = ({
       )} DAI in the Vat to bid`
     ]
   ];
-  const calculatedBidPrice = BigNumber(lot).div(currentLotBidAmount);
-  const minMkrAskPrice = BigNumber(lot).div(minMkrAsk);
+  const calculatedBidPrice = BigNumber(latestLot).div(currentLotBidAmount);
+  const minMkrAskPrice = BigNumber(latestLot).div(minMkrAsk);
 
   const priceThreshold = minMkrAskPrice.div(new BigNumber(1.1)); // 10% less
 
@@ -350,7 +350,7 @@ const FlapAuctionBlock = ({
       key={auctionId}
       latestEvent={{
         bid: new BigNumber(latestBid),
-        lot: new BigNumber(lot)
+        lot: new BigNumber(latestLot)
       }}
       auctionStatus={auctionStatus}
       auctionId={auctionId}
@@ -400,7 +400,7 @@ const FlapAuctionBlock = ({
                   </Box>
                   <Box ml="auto">
                     <OrderSummary
-                      key={`${lot}-${vatDaiBalance}`}
+                      key={`${latestLot}-${vatDaiBalance}`}
                       remainingBal={
                         vatDaiBalance &&
                         `${BigNumber(vatDaiBalance)
@@ -409,7 +409,7 @@ const FlapAuctionBlock = ({
                       }
                       currentBid={`${minMkrAsk.toFixed(2, 1)} MKR`}
                       minMkrAsk={`${minMkrAsk.toFixed(2, 1)} MKR`}
-                      calculatedBidPrice={`${BigNumber(lot)
+                      calculatedBidPrice={`${BigNumber(latestLot)
                         .div(minMkrAsk)
                         .toFixed(2)} DAI`}
                     />
@@ -510,12 +510,16 @@ const FlapAuctionBlock = ({
         )
       }
       auctionEvents={events.map(
-        ({ type, lot, bid, timestamp, hash, fromAddress }, index) => {
+        (
+          { auctionId, type, lot, bid, timestamp, hash, fromAddress },
+          index
+        ) => {
           const eventBid = type === 'Deal' ? latestBid : bid;
+          const eventLot = type === 'Deal' ? latestLot : lot;
 
           const mkrPrice = new BigNumber(eventBid).eq(new BigNumber(0))
             ? new BigNumber(0)
-            : new BigNumber(lot).div(new BigNumber(eventBid));
+            : new BigNumber(eventLot).div(new BigNumber(eventBid));
 
           return (
             <AuctionEvent
@@ -523,7 +527,7 @@ const FlapAuctionBlock = ({
               type={type}
               tx={hash}
               sender={fromAddress}
-              lot={new BigNumber(lot).toFormat(4, 6)}
+              lot={new BigNumber(eventLot).toFormat(4, 6)}
               bid={`${new BigNumber(eventBid).toFormat(2, 4)} MKR`}
               mkrPrice={`${mkrPrice.toFormat(2, 4)} DAI`}
               timestamp={

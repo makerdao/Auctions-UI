@@ -67,7 +67,15 @@ const CookieNotice = () => {
           </Text>
           <Button
             sx={{ cursor: 'pointer' }}
-            variant="clear"
+            sx={{
+              bg: 'surface',
+              '&:hover': {
+                bg: 'surface'
+              },
+              '&:active': {
+                bg: 'surface'
+              }
+            }}
             onClick={handleClose}
           >
             <Flex

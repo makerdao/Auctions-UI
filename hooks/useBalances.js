@@ -7,9 +7,9 @@ import { AUCTION_DATA_FETCHER } from '../constants';
 const useBalances = () => {
   const { maker, web3Connected } = useMaker();
   const [vatDaiBalance, setVatDaiBalance] = useState(null);
-  const [daiBalance, setDaiBalance] = useState(null);
-  const [mkrBalance, setMkrBalance] = useState(null);
-  const [batBalance, setBatBalance] = useState(null);
+  const [daiBalance, setDaiBalance] = useState(0);
+  const [mkrBalance, setMkrBalance] = useState(0);
+  const [batBalance, setBatBalance] = useState(0);
 
   const fetchVatDaiBalance = () => {
     return maker

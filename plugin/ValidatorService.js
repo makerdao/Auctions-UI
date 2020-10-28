@@ -4,87 +4,7 @@ import BigNumber from 'bignumber.js';
 import { toRad, fromWei, toWei, fromWad } from './utils';
 import * as gqlQueries from '../queries';
 import { CUT_OFF_PERIOD } from '../constants';
-
-const mockData = [
-  {
-    auctionId: 138,
-    id: '11',
-    type: 'Kick',
-    hash: '0x90ec0b38e0296ccb109cc0f0ab8068540e2a1496daa94d810a3c7c516746773d',
-    fromAddress: '0xdeaddeaddeaddeaddeaddeaddeaddeaddeaddead',
-    amount: 'amount',
-    lot: 10000.0,
-    bid: 1.0,
-    tab: 2.0,
-    timestamp: 1603841400000,
-    price: 9999999.0
-  },
-  {
-    auctionId: 138,
-    id: '12',
-    type: 'Tend',
-    hash: '0x90ec0b38e0296ccb109cc0f0ab8068540e2a1496daa94d810a3c7c516746773d',
-    fromAddress: '0xdeaddeaddeaddeaddeaddeaddeaddeaddeaddead',
-    amount: 'amount',
-    lot: 10000.0,
-    bid: 7,
-    tab: 3.0,
-    timestamp: 1603841400001,
-    price: 999999.0
-  },
-  {
-    auctionId: 138,
-    id: '13',
-    type: 'Tend',
-    hash: '0x90ec0b38e0296ccb109cc0f0ab8068540e2a1496daa94d810a3c7c516746773d',
-    fromAddress: '0xdeaddeaddeaddeaddeaddeaddeaddeaddeaddead',
-    amount: 'amount',
-    lot: 10000.0,
-    bid: 15,
-    tab: 4.0,
-    timestamp: 1603841400002,
-    price: 999999.0
-  },
-  {
-    auctionId: 139,
-    id: '11',
-    type: 'Kick',
-    hash: '0x90ec0b38e0296ccb109cc0f0ab8068540e2a1496daa94d810a3c7c516746773d',
-    fromAddress: '0xdeaddeaddeaddeaddeaddeaddeaddeaddeaddead',
-    amount: 'amount',
-    lot: 10000.0,
-    bid: 1.0,
-    tab: 2.0,
-    timestamp: 1603841400000,
-    price: 9999999.0
-  },
-  {
-    auctionId: 139,
-    id: '12',
-    type: 'Tend',
-    hash: '0x90ec0b38e0296ccb109cc0f0ab8068540e2a1496daa94d810a3c7c516746773d',
-    fromAddress: '0xdeaddeaddeaddeaddeaddeaddeaddeaddeaddead',
-    amount: 'amount',
-    lot: 10000.0,
-    bid: 7,
-    tab: 3.0,
-    timestamp: 1603841400001,
-    price: 999999.0
-  },
-  {
-    auctionId: 139,
-    id: '13',
-    type: 'Tend',
-    hash: '0x90ec0b38e0296ccb109cc0f0ab8068540e2a1496daa94d810a3c7c516746773d',
-    fromAddress: '0xdeaddeaddeaddeaddeaddeaddeaddeaddeaddead',
-    amount: 'amount',
-    lot: 10000.0,
-    bid: 15,
-    tab: 4.0,
-    timestamp: 1603841400002,
-    price: 999999.0
-  }
-];
+import mockResponse from './mockFlapResponse.json';
 
 export default class ValidatorService extends PublicService {
   flipAuctionsLastSynced = 0;
@@ -125,10 +45,16 @@ export default class ValidatorService extends PublicService {
   }
 
   async getApiResponse(url) {
-    // const resp = await fetch(url);
-    // const data = await resp.json();
-    // return data;
-    return mockData;
+    let data = [];
+    try {
+      const resp = await fetch(url);
+      data = await resp.json();
+      console.log('data', data);
+    } catch (e) {
+      console.error(e);
+    }
+    return data;
+    // return mockResponse;
   }
 
   async fetchFlipAuctions(shouldSync = false) {
@@ -210,10 +136,12 @@ export default class ValidatorService extends PublicService {
   }
 
   async fetchFlapAuctions() {
-    const url = 'http://localhost:7777/api/flaps/?status=all';
+    // const url = 'http://localhost:7777/api/flaps/?status=all';
+    const url = 'http://localhost:7777/api/flaps/events?daysAgo=10';
     const data = await this.getApiResponse(url);
-
+    console.log('data from server', data);
     return data;
+    // return mockResponse;
   }
 
   async fetchFlapAuctionsByIds(ids) {

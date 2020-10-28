@@ -4,7 +4,7 @@ import Head from 'next/head';
 import useMaker from '../hooks/useMaker';
 import * as _ from 'lodash';
 import { Text, jsx, Flex, Heading, Box, Spinner, Button } from 'theme-ui';
-import AccountManager from '../components/FlopAccountManager';
+import AccountManager from '../components/FlapAccountManager';
 import GuttedLayout from '../components/GuttedLayout';
 import AuctionsLayout from '../components/AuctionsLayout';
 import IntroInfoCard from '../components/IntroInfoCard';
