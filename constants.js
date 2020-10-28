@@ -36,6 +36,7 @@ export const MCD_FLIP_ETH_A = 'MCD_FLIP_ETH_A';
 export const MCD_FLIP_BAT_A = 'MCD_FLIP_BAT_A';
 export const MCD_JOIN_DAI = 'MCD_JOIN_DAI';
 export const MCD_FLOP = 'MCD_FLOP';
+export const MCD_FLAP = 'MCD_FLAP';
 
 export const FLIP_ENABLED_ILKS = [
   'ETH-A',

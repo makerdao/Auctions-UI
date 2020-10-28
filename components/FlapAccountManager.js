@@ -14,7 +14,8 @@ import {
   AUCTION_DATA_FETCHER,
   MCD_FLIP_ETH_A,
   MCD_JOIN_DAI,
-  MCD_FLOP
+  MCD_FLOP,
+  MCD_FLAP
 } from '../constants';
 
 const FlapAccountManager = ({ allowances }) => {
@@ -23,6 +24,7 @@ const FlapAccountManager = ({ allowances }) => {
     vatDaiBalance,
     daiBalance,
     mkrBalance,
+    flapMkrBalance,
     joinDaiToAdapter,
     exitDaiFromAdapter,
     updateDaiBalances
@@ -31,8 +33,16 @@ const FlapAccountManager = ({ allowances }) => {
   daiBalance = formatBalance(daiBalance);
   vatDaiBalance = formatBalance(vatDaiBalance);
   mkrBalance = formatBalance(mkrBalance);
+  flapMkrBalance = formatBalance(flapMkrBalance);
 
-  const { hasDaiAllowance, giveDaiAllowance, hasHope, giveHope } = allowances;
+  const {
+    hasDaiAllowance,
+    giveDaiAllowance,
+    hasMkrAllowance,
+    giveMkrAllowance,
+    hasHope,
+    giveHope
+  } = allowances;
 
   const [joinAddress, setJoinAddress] = useState('');
 
@@ -90,7 +100,7 @@ const FlapAccountManager = ({ allowances }) => {
               <BalanceOf
                 type={'MKR in your Wallet'}
                 balance={`${mkrBalance} MKR`}
-                shouldUnlock={!hasDaiAllowance} //what should go here?
+                shouldUnlock={!hasMkrAllowance}
                 unlock={
                   <Card>
                     <Grid gap={3}>
@@ -100,18 +110,23 @@ const FlapAccountManager = ({ allowances }) => {
 
                       <Button
                         variant="small"
-                        onClick={() => giveDaiAllowance(joinAddress)}
+                        onClick={() => {
+                          const flapAddress = maker
+                            .service('smartContract')
+                            .getContractByName('MCD_FLAP').address;
+                          giveMkrAllowance(flapAddress);
+                        }}
                         disabled={!web3Connected}
                       >
-                        {hasDaiAllowance
-                          ? 'Dai Unlocked'
-                          : 'Unlock Dai in your wallet'}
+                        {hasMkrAllowance
+                          ? 'MKR Unlocked'
+                          : 'Unlock MKR for the auction'}
                       </Button>
                     </Grid>
                   </Card>
                 }
               />
-              {/* <BalanceOf
+              <BalanceOf
                 type={'Dai locked in the Vat '}
                 balance={`${vatDaiBalance} DAI`}
                 shouldUnlock={!hasHope[MCD_JOIN_DAI]}
@@ -136,26 +151,26 @@ const FlapAccountManager = ({ allowances }) => {
                   borderRight: '1px solid',
                   borderColor: 'muted'
                 }}
-              /> */}
+              />
               <BalanceOf
-                type={'MKR in your wallet'}
-                balance={`${mkrBalance} MKR`}
-                shouldUnlock={!hasHope[MCD_FLOP]}
+                type={'MKR in the surplus auction contract'}
+                balance={`${flapMkrBalance} MKR`}
+                shouldUnlock={!hasHope[MCD_FLAP]}
                 unlock={
                   <Card>
                     <Grid gap={3}>
-                      <Text variant="caps">Enable Debt Auctions</Text>
+                      <Text variant="caps">Enable Surplus Auctions</Text>
                       <Button
                         variant="small"
                         onClick={() => {
-                          const flopAddress = maker
+                          const flapAddress = maker
                             .service('smartContract')
-                            .getContractByName('MCD_FLOP').address;
-                          giveHope(flopAddress, MCD_FLOP);
+                            .getContractByName('MCD_FLAP').address;
+                          giveHope(flapAddress, MCD_FLAP);
                         }}
                         disabled={!web3Connected}
                       >
-                        Unlock DAI in the Debt Auction
+                        Enable the Surplus Auction
                       </Button>
                     </Grid>
                   </Card>

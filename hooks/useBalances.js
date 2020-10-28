@@ -10,6 +10,7 @@ const useBalances = () => {
   const [daiBalance, setDaiBalance] = useState(0);
   const [mkrBalance, setMkrBalance] = useState(0);
   const [batBalance, setBatBalance] = useState(0);
+  const [flapMkrBalance, setFlapMkrBalance] = useState(0);
 
   const fetchVatDaiBalance = () => {
     return maker
@@ -22,23 +23,36 @@ const useBalances = () => {
     return maker.getToken(token).balance();
   };
 
+  const fetchFlapMkrBalance = () => {
+    const flapAddress = maker.service(AUCTION_DATA_FETCHER).flapAddress;
+    return maker.getToken('MKR').balanceOf(flapAddress);
+  };
+
   const fetchBalances = () => {
     return Promise.all([
       fetchVatDaiBalance(),
       fetchTokenBalance('DAI'),
       fetchTokenBalance('MKR'),
-      fetchTokenBalance('BAT')
+      fetchTokenBalance('BAT'),
+      fetchFlapMkrBalance()
     ]);
   };
 
   useEffect(() => {
     if (!web3Connected) return;
     (async () => {
-      const [vatBal, daiBal, mkrBal, batBal] = await fetchBalances();
+      const [
+        vatBal,
+        daiBal,
+        mkrBal,
+        batBal,
+        flapMkrBal
+      ] = await fetchBalances();
       setVatDaiBalance(fromRad(vatBal).toFixed());
       setDaiBalance(daiBal.toNumber());
       setMkrBalance(mkrBal.toNumber());
       setBatBalance(batBal.toNumber());
+      setFlapMkrBalance(flapMkrBal.toNumber());
     })();
   }, [maker, web3Connected]);
 
@@ -80,6 +94,7 @@ const useBalances = () => {
     daiBalance,
     mkrBalance,
     batBalance,
+    flapMkrBalance,
     joinDaiToAdapter,
     exitDaiFromAdapter,
     updateDaiBalances

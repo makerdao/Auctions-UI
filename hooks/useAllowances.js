@@ -6,6 +6,7 @@ import {
   MCD_JOIN_DAI,
   MCD_FLIP_ETH_A,
   MCD_FLOP,
+  MCD_FLAP,
   FLIP_ENABLED_ILKS
 } from '../constants';
 
@@ -16,6 +17,8 @@ const useAllowances = () => {
   const [hasDaiAllowance, setHasDaiAllowance] = useState(false);
   const [hasMkrAllowance, setHasMkrAllowance] = useState(false);
   const [hasHope, setHasHope] = useState({});
+
+  /* Token Allowances */
 
   // DAI Allowance
   useEffect(() => {
@@ -34,14 +37,37 @@ const useAllowances = () => {
   useEffect(() => {
     if (!web3Connected) return;
     (async () => {
-      const joinDaiAdapterAddress = maker.service(AUCTION_DATA_FETCHER)
-        .joinDaiAdapterAddress;
+      const flapAddress = maker.service(AUCTION_DATA_FETCHER).flapAddress;
       const mkrAllowance = await maker
-        .getToken('DAI')
-        .allowance(maker.currentAddress(), joinDaiAdapterAddress);
+        .getToken('MKR')
+        .allowance(maker.currentAddress(), flapAddress);
       setHasMkrAllowance(mkrAllowance.gt(REQUIRED_ALLOWANCE) ? true : false);
     })();
   }, [maker, web3Connected]);
+
+  const giveDaiAllowance = async address => {
+    try {
+      await maker.getToken('DAI').approveUnlimited(address);
+      setHasDaiAllowance(true);
+    } catch (err) {
+      const message = err.message ? err.message : err;
+      const errMsg = `unlock dai tx failed ${message}`;
+      console.error(errMsg);
+    }
+  };
+
+  const giveMkrAllowance = async address => {
+    try {
+      await maker.getToken('MKR').approveUnlimited(address);
+      setHasMkrAllowance(true);
+    } catch (err) {
+      const message = err.message ? err.message : err;
+      const errMsg = `unlock mkr tx failed ${message}`;
+      console.error(errMsg);
+    }
+  };
+
+  /* Hopes */
 
   const fetchFlipIlkHope = async ilk => {
     const address = maker.service(AUCTION_DATA_FETCHER).getFlipAdapter(ilk)
@@ -68,7 +94,7 @@ const useAllowances = () => {
     (async () => await fetchFlipHopes())();
   }, [maker, web3Connected]);
 
-  // Flip ETH has Hope
+  // Check Flip ETH has Hope
   useEffect(() => {
     if (!web3Connected) return;
     (async () => {
@@ -84,7 +110,7 @@ const useAllowances = () => {
     })();
   }, [maker, web3Connected]);
 
-  // Flip BAT has Hope
+  // Check Flip BAT has Hope
   useEffect(() => {
     if (!web3Connected) return;
     (async () => {
@@ -100,7 +126,7 @@ const useAllowances = () => {
     })();
   }, [maker, web3Connected]);
 
-  // Join DAI has Hope
+  // Check Join DAI has Hope
   useEffect(() => {
     if (!web3Connected) return;
     (async () => {
@@ -117,7 +143,7 @@ const useAllowances = () => {
     })();
   }, [maker, web3Connected]);
 
-  // Flop has Hope
+  // Check Flop has Hope
   useEffect(() => {
     if (!web3Connected) return;
     (async () => {
@@ -133,27 +159,21 @@ const useAllowances = () => {
     })();
   }, [maker, web3Connected]);
 
-  const giveDaiAllowance = async address => {
-    try {
-      await maker.getToken('DAI').approveUnlimited(address);
-      setHasDaiAllowance(true);
-    } catch (err) {
-      const message = err.message ? err.message : err;
-      const errMsg = `unlock dai tx failed ${message}`;
-      console.error(errMsg);
-    }
-  };
-
-  const giveMkrAllowance = async address => {
-    try {
-      await maker.getToken('MKR').approveUnlimited(address);
-      setHasMkrAllowance(true);
-    } catch (err) {
-      const message = err.message ? err.message : err;
-      const errMsg = `unlock mkr tx failed ${message}`;
-      console.error(errMsg);
-    }
-  };
+  // Check Flap has Hope
+  useEffect(() => {
+    if (!web3Connected) return;
+    (async () => {
+      const flapAddress = maker.service(AUCTION_DATA_FETCHER).flapAddress;
+      const can = await maker
+        .service('smartContract')
+        .getContract('MCD_VAT')
+        .can(maker.currentAddress(), flapAddress);
+      setHasHope(state => ({
+        ...state,
+        [MCD_FLAP]: can.toNumber() === 1
+      }));
+    })();
+  }, [maker, web3Connected]);
 
   // Give contract hope
   const giveHope = async (address, name) => {
