@@ -71,8 +71,7 @@ const FlapAccountManager = ({ allowances }) => {
           ) : allowanceMissing ? (
             <Text as="h2" variant="boldBody">
               To participate in auctions you need to sign the approval
-              transactions below and move Dai that will be used for bidding to
-              the Vat.
+              transactions below.
             </Text>
           ) : null}
           <Grid

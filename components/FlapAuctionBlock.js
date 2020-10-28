@@ -8,7 +8,6 @@ import Moment from 'react-moment';
 import { etherscanLink, formatAddress } from '../utils';
 import MiniFormLayout from './MiniFormLayout';
 import useAuctionActions from '../hooks/useAuctionActions';
-import useBalances from '../hooks/useBalances';
 import ActionTabs from './ActionTabs';
 import AuctionBlockLayout from './AuctionBlockLayout';
 import {
@@ -106,8 +105,7 @@ const OrderSummary = ({
   currentBid,
   minMkrAsk,
   calculatedBidPrice,
-  hasSlippage,
-  remainingBal
+  hasSlippage
 }) => {
   const fields = [
     ['Min bid amount', minMkrAsk, { fontWeight: 600 }],
@@ -171,22 +169,6 @@ const OrderSummary = ({
           );
         })}
       </Grid>
-      <Grid
-        gap={2}
-        rows={[2, 3, 4]}
-        sx={{
-          bg: 'background',
-          p: 3,
-          borderRadius: 'medium'
-        }}
-      >
-        <SummaryLine
-          key={'VAT balance after bid'}
-          title={'VAT balance after bid'}
-          value={remainingBal}
-          styling={{ fontWeight: 600 }}
-        />
-      </Grid>
     </Grid>
   );
 };
@@ -234,7 +216,6 @@ const FlapAuctionBlock = ({
   const { maker } = useMaker();
   const [currentLotBidAmount, setCurrentLotBidAmount] = useState(BigNumber(0));
   const { hasDaiAllowance, hasHope } = allowances;
-  let { vatDaiBalance } = useBalances();
   const { callFlapTend, callFlapDeal } = useAuctionActions();
   const fetchAuctionsSet = useAuctionsStore(state => state.fetchFlapSet);
   const sortedEvents = events.sort(byTimestamp); // DEAL , [...DENT] , KICK ->
@@ -298,14 +279,10 @@ const FlapAuctionBlock = ({
     };
   }, []);
 
-  // const bidDisabled = state.error;
-  const mainValidation = [];
-
   // TODO what permissions are required now?
   const canBid = hasDaiAllowance && hasHope[MCD_JOIN_DAI] && hasHope[MCD_FLOP];
 
   const bidValidationTests = [
-    // [() => !web3Connected],
     [
       val => {
         return minMkrAsk.gt(val);
@@ -314,14 +291,6 @@ const FlapAuctionBlock = ({
         .minus(1)
         .multipliedBy(100)
         .toString()}% more MKR than the current bid`
-    ],
-    [
-      () => {
-        return new BigNumber(latestBid).gt(vatDaiBalance);
-      },
-      `Must have at least ${new BigNumber(latestBid).toFixed(
-        2
-      )} DAI in the Vat to bid`
     ]
   ];
   const calculatedBidPrice = BigNumber(latestLot).div(currentLotBidAmount);
@@ -400,13 +369,7 @@ const FlapAuctionBlock = ({
                   </Box>
                   <Box ml="auto">
                     <OrderSummary
-                      key={`${latestLot}-${vatDaiBalance}`}
-                      remainingBal={
-                        vatDaiBalance &&
-                        `${BigNumber(vatDaiBalance)
-                          .minus(BigNumber(latestBid))
-                          .toFormat(0, 4)} DAI`
-                      }
+                      key={`${latestLot}`}
                       currentBid={`${minMkrAsk.toFixed(2, 1)} MKR`}
                       minMkrAsk={`${minMkrAsk.toFixed(2, 1)} MKR`}
                       calculatedBidPrice={`${BigNumber(latestLot)
@@ -464,13 +427,7 @@ const FlapAuctionBlock = ({
                   </Box>
                   <Box ml="auto">
                     <OrderSummary
-                      key={`${currentLotBidAmount}-${vatDaiBalance}`}
-                      remainingBal={
-                        vatDaiBalance &&
-                        `${BigNumber(vatDaiBalance)
-                          .minus(BigNumber(latestBid))
-                          .toFormat(0, 4)} DAI`
-                      }
+                      key={`${currentLotBidAmount}`}
                       hasSlippage={hasPriceSlippage}
                       currentBid={`${printedLot} MKR`}
                       minMkrAsk={`${minMkrAsk.toFixed(2, 1)} MKR`}
@@ -510,10 +467,7 @@ const FlapAuctionBlock = ({
         )
       }
       auctionEvents={events.map(
-        (
-          { auctionId, type, lot, bid, timestamp, hash, fromAddress },
-          index
-        ) => {
+        ({ type, lot, bid, timestamp, hash, fromAddress }, index) => {
           const eventBid = type === 'Deal' ? latestBid : bid;
           const eventLot = type === 'Deal' ? latestLot : lot;
 

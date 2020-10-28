@@ -7,16 +7,12 @@ import { Text, jsx, Flex, Heading, Box, Spinner, Button } from 'theme-ui';
 import AccountManager from '../components/FlapAccountManager';
 import GuttedLayout from '../components/GuttedLayout';
 import AuctionsLayout from '../components/AuctionsLayout';
-import IntroInfoCard from '../components/IntroInfoCard';
-import IntroMDX from '../text/flopIntro.mdx';
 import Footer from '../components/Footer';
-import TermsConfirm from '../components/TermsConfirm';
 import NoAuctions from '../components/NoAuctions';
 import useAllowances from '../hooks/useAllowances';
 import Moment from 'react-moment';
 import useAuctionsStore from '../stores/auctionsStore';
 import ReactGA from 'react-ga';
-import useSystemStore from '../stores/systemStore';
 
 const Index = () => {
   const { maker, web3Connected } = useMaker();
@@ -59,7 +55,7 @@ const Index = () => {
   return (
     <GuttedLayout>
       <Head>
-        <title>Debt Auctions (Beta) - Maker Auctions</title>
+        <title>Surplus Auctions (Beta) - Maker Auctions</title>
       </Head>
       {!maker ? (
         <Flex
@@ -78,7 +74,7 @@ const Index = () => {
               py: 4
             }}
           >
-            Debt Auctions
+            Surplus Auctions
             <Text
               variant="caps"
               sx={{
@@ -90,21 +86,6 @@ const Index = () => {
               BETA{' '}
             </Text>
           </Heading>
-
-          {/* <IntroInfoCard
-            title={'How do debt auctions work?'}
-            text={<IntroMDX />}
-            forceExpanded={!TOCAccepted}
-            action={
-              TOCAccepted ? null : (
-                <TermsConfirm
-                  onConfirm={() => {
-                    setTOCAccepted(true);
-                  }}
-                />
-              )
-            }
-          /> */}
           <Box
             sx={{
               opacity: TOCAccepted ? 1 : 0.2,
