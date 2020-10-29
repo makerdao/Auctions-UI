@@ -27,6 +27,28 @@ const transformEvents = async (auctions, service, type, ilk) => {
   return auctionsData;
 };
 
+const transformFlapEvents = async (auctions, service, type, ilk) => {
+  const groupedEvents = _.groupBy(auctions, auction => auction.auctionId);
+  let auctionsData = {};
+  await Promise.all(
+    Object.keys(groupedEvents).map(async id => {
+      try {
+        const { end, tic } = await service.getAuctionDuration(id, type, ilk);
+        auctionsData[id.toString()] = {
+          auctionId: id,
+          end,
+          tic,
+          events: groupedEvents[id]
+        };
+      } catch (error) {
+        console.log('failed to load onchain data, please refresh.', error);
+      }
+    })
+  );
+
+  return auctionsData;
+};
+
 const includeAuctionsWithFullHistoryOnly = auctions => {
   const filteredAuctions = {};
   Object.keys(auctions).map(auctionId => {
@@ -326,7 +348,7 @@ const [useAuctionsStore, updateState] = create((set, get) => ({
   fetchAllFlap: async maker => {
     const service = maker.service(AUCTION_DATA_FETCHER);
     const auctions = await service.fetchFlapAuctions();
-    const transformedAuctions = await transformEvents(
+    const transformedAuctions = await transformFlapEvents(
       auctions,
       service,
       'flap'
@@ -341,7 +363,7 @@ const [useAuctionsStore, updateState] = create((set, get) => ({
       console.log('fetching set: ', ids);
       const service = maker.service(AUCTION_DATA_FETCHER);
       const auctions = await service.fetchFlapAuctionsByIds(ids);
-      const transformedAuctions = await transformEvents(
+      const transformedAuctions = await transformFlapEvents(
         auctions,
         service,
         'flap'

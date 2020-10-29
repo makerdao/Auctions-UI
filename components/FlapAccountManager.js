@@ -55,10 +55,10 @@ const FlapAccountManager = ({ allowances }) => {
   }, [maker, web3Connected]);
 
   const allowanceMissing =
-    !hasDaiAllowance || !hasHope[MCD_FLIP_ETH_A] || !hasHope[MCD_JOIN_DAI];
+    !hasDaiAllowance || !hasMkrAllowance || !hasHope[MCD_JOIN_DAI];
 
   const hasNoAllowances =
-    !hasDaiAllowance && !hasHope[MCD_FLIP_ETH_A] && !hasHope[MCD_JOIN_DAI];
+    !hasDaiAllowance && !hasMkrAllowance && !hasHope[MCD_JOIN_DAI];
 
   return (
     <AccountManagerLayout
@@ -126,21 +126,21 @@ const FlapAccountManager = ({ allowances }) => {
                 }
               />
               <BalanceOf
-                type={'Dai locked in the Vat '}
-                balance={`${vatDaiBalance} DAI`}
+                type={'Auction Contract Balance'}
+                balance={`${flapMkrBalance} MKR`}
                 shouldUnlock={!hasHope[MCD_JOIN_DAI]}
                 unlock={
                   <Card>
                     <Grid gap={3}>
                       <Text variant="caps">
-                        DAI Adapter Balance - {vatDaiBalance}
+                        Auction Contract Balance - {flapMkrBalance}
                       </Text>
                       <Button
                         variant="small"
                         onClick={() => giveHope(joinAddress, MCD_JOIN_DAI)}
                         disabled={!web3Connected || hasHope[MCD_JOIN_DAI]}
                       >
-                        Unlock Dai in the VAT
+                        Enable the adapter
                       </Button>
                     </Grid>
                   </Card>
@@ -152,7 +152,40 @@ const FlapAccountManager = ({ allowances }) => {
                 }}
               />
               <BalanceOf
-                type={'MKR in the surplus auction contract'}
+                type={'DAI in your Wallet'}
+                balance={`${daiBalance} DAI`}
+                shouldUnlock={!hasDaiAllowance}
+                unlock={
+                  <Card>
+                    <Grid gap={3}>
+                      <Text variant="caps">
+                        DAI Wallet Balance - {daiBalance}
+                      </Text>
+                      <Button
+                        variant="small"
+                        onClick={() => {
+                          const flapAddress = maker
+                            .service('smartContract')
+                            .getContractByName('MCD_FLAP').address;
+                          giveDaiAllowance(flapAddress);
+                        }}
+                        disabled={!web3Connected}
+                      >
+                        {hasDaiAllowance
+                          ? 'DAI Unlocked'
+                          : 'Unlock DAI for the auction'}
+                      </Button>
+                    </Grid>
+                  </Card>
+                }
+                sx={{
+                  borderLeft: '1px solid',
+                  borderRight: '1px solid',
+                  borderColor: 'muted'
+                }}
+              />
+              {/* <BalanceOf
+                type={'Enable Surplus Auction'}
                 balance={`${flapMkrBalance} MKR`}
                 shouldUnlock={!hasHope[MCD_FLAP]}
                 unlock={
@@ -174,7 +207,7 @@ const FlapAccountManager = ({ allowances }) => {
                     </Grid>
                   </Card>
                 }
-              />
+              /> */}
             </Grid>
           ) : null}
           {hasNoAllowances ? null : (
