@@ -25,7 +25,7 @@ export default class ValidatorService extends PublicService {
       this.get('web3').networkName === 'kovan'
         ? 'https://kovan-auctions.oasis.app/api/v1'
         : 'https://auctions.oasis.app/api/v1';
-    this._flapApi = 'http://localhost:7777/api/flaps/events';
+    this._flapApi = 'http://localhost:7777/api/flaps';
   }
 
   async getQueryResponse(serverUrl, query, operationName, variables = {}) {
@@ -142,30 +142,22 @@ export default class ValidatorService extends PublicService {
   }
 
   async fetchFlapAuctions() {
-    const url = `${this._flapApi}?daysAgo=15`;
+    const url = `${this._flapApi}/events?daysAgo=15`;
+    const data = await this.getApiResponse(url);
+    return data;
+  }
+
+  async fetchFlapAuctionsById(id) {
+    const url = `${this._flapApi}/${id}`;
     const data = await this.getApiResponse(url);
     return data;
   }
 
   async fetchFlapAuctionsByIds(ids) {
-    let currentTime = new Date().getTime();
-    const queryDate = new Date(currentTime - this.backInTime);
-
-    const variables = {
-      sources: [this.flapAddress],
-      auctionIds: ids,
-      fromDate: queryDate
-    };
-
-    const response = await this.getQueryResponse(
-      this._cacheAPI,
-      gqlQueries.specificAuctionEvents,
-      'setAuctionsEvents',
-      variables
+    const auctions = await Promise.all(
+      ids.map(id => this.fetchFlapAuctionsById(id))
     );
-
-    // console.log('GraphQL response', response);
-    return response.allLeveragedEvents.nodes;
+    return auctions;
   }
 
   async getAllAuctions(variables) {

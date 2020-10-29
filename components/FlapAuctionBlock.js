@@ -409,12 +409,6 @@ const FlapAuctionBlock = ({
                         fetchAuctionsSet([auctionId]);
                       }}
                       onChange={inputState => {
-                        // console.log(
-                        //   currentLotBidAmount,
-                        //   inputState,
-                        //   currentLotBidAmount.eq(inputState)
-                        // );
-                        // if (inputState) {
                         const val = new BigNumber(inputState);
 
                         if (!currentLotBidAmount.eq(val)) {
