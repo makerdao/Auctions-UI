@@ -17,7 +17,6 @@ import {
   CAN_BE_RESTARTED,
   WINNER,
   TOP_BIDDER,
-  MCD_FLOP,
   MCD_JOIN_DAI
 } from '../constants';
 import useAuctionsStore, { selectors } from '../stores/auctionsStore';
@@ -215,7 +214,7 @@ const FlapAuctionBlock = ({
 }) => {
   const { maker } = useMaker();
   const [currentLotBidAmount, setCurrentLotBidAmount] = useState(BigNumber(0));
-  const { hasDaiAllowance, hasHope } = allowances;
+  const { hasDaiJoinDaiAllowance, hasHope, hasMkrFlapAllowance } = allowances;
   const { callFlapTend, callFlapDeal } = useAuctionActions();
   const fetchAuctionsSet = useAuctionsStore(state => state.fetchFlapSet);
   const sortedEvents = events.sort(byTimestamp); // DEAL , [...DENT] , KICK ->
@@ -279,8 +278,8 @@ const FlapAuctionBlock = ({
     };
   }, []);
 
-  // TODO what permissions are required now?
-  const canBid = hasDaiAllowance && hasHope[MCD_JOIN_DAI] && hasHope[MCD_FLOP];
+  const canBid =
+    hasDaiJoinDaiAllowance && hasHope[MCD_JOIN_DAI] && hasMkrFlapAllowance;
 
   const bidValidationTests = [
     [
@@ -481,7 +480,7 @@ const FlapAuctionBlock = ({
               timestamp={
                 <Text>
                   <Moment format="HH:mm, DD MMM" withTitle>
-                    {timestamp}
+                    {timestamp * 1000}
                   </Moment>
                 </Text>
               }

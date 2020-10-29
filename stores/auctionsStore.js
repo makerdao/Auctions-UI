@@ -72,8 +72,7 @@ const filters = {
   byId: (ids, id) => {
     return ids.filter(auctionId => (id ? auctionId === id : auctionId));
   },
-  byBidderAddr: (ids, value, state) => {
-    const { auctions } = state;
+  byBidderAddr: (ids, value, auctions) => {
     const filteredIds = ids.reduce((p, n) => {
       const auction = auctions[n];
       if (!auction) return p;
@@ -94,8 +93,7 @@ const filters = {
 
     return filteredIds;
   },
-  byNotCompleted: (ids, state) => {
-    const { auctions } = state;
+  byNotCompleted: (ids, auctions) => {
     const filteredIds = ids
       .map(id => {
         const auction = auctions[id];
@@ -201,13 +199,13 @@ const selectors = {
     let ids = sorters[sortBy](auctions);
 
     if (filterByBidderValue) {
-      ids = filters.byBidderAddr(ids, filterByBidderValue, state);
+      ids = filters.byBidderAddr(ids, filterByBidderValue, auctions);
     }
 
     ids = filters.byId(ids, filterByIdValue);
 
     if (filterByNotCompleted) {
-      ids = filters.byNotCompleted(ids, state);
+      ids = filters.byNotCompleted(ids, auctions);
     }
     return ids.map(id => auctions[id]);
   },
