@@ -10,18 +10,11 @@ import ActionTabs from './ActionTabs';
 import MiniFormLayout from './MiniFormLayout';
 import { formatBalance } from '../utils';
 import ReactGA from 'react-ga';
-import {
-  AUCTION_DATA_FETCHER,
-  MCD_FLIP_ETH_A,
-  MCD_JOIN_DAI,
-  MCD_FLOP,
-  MCD_FLAP
-} from '../constants';
+import { AUCTION_DATA_FETCHER, MCD_JOIN_DAI, MCD_FLAP } from '../constants';
 
 const FlapAccountManager = ({ allowances }) => {
   const { maker, web3Connected } = useMaker();
   let {
-    vatDaiBalance,
     daiBalance,
     mkrBalance,
     flapMkrBalance,
@@ -31,34 +24,23 @@ const FlapAccountManager = ({ allowances }) => {
   } = useBalances();
 
   daiBalance = formatBalance(daiBalance);
-  vatDaiBalance = formatBalance(vatDaiBalance);
   mkrBalance = formatBalance(mkrBalance);
   flapMkrBalance = formatBalance(flapMkrBalance);
 
   const {
-    hasDaiAllowance,
-    giveDaiAllowance,
-    hasMkrAllowance,
-    giveMkrAllowance,
+    hasDaiJoinDaiAllowance,
+    giveDaiJoinDaiAllowance,
+    hasMkrFlapAllowance,
+    giveMkrFlapAllowance,
     hasHope,
     giveHope
   } = allowances;
 
-  const [joinAddress, setJoinAddress] = useState('');
-
-  useEffect(() => {
-    if (web3Connected) {
-      const joinDaiAdapterAddress = maker.service(AUCTION_DATA_FETCHER)
-        .joinDaiAdapterAddress;
-      setJoinAddress(joinDaiAdapterAddress);
-    }
-  }, [maker, web3Connected]);
-
   const allowanceMissing =
-    !hasDaiAllowance || !hasMkrAllowance || !hasHope[MCD_JOIN_DAI];
+    !hasDaiJoinDaiAllowance || !hasMkrFlapAllowance || !hasHope[MCD_JOIN_DAI];
 
   const hasNoAllowances =
-    !hasDaiAllowance && !hasMkrAllowance && !hasHope[MCD_JOIN_DAI];
+    !hasDaiJoinDaiAllowance && !hasMkrFlapAllowance && !hasHope[MCD_JOIN_DAI];
 
   return (
     <AccountManagerLayout
@@ -99,7 +81,7 @@ const FlapAccountManager = ({ allowances }) => {
               <BalanceOf
                 type={'MKR in your Wallet'}
                 balance={`${mkrBalance} MKR`}
-                shouldUnlock={!hasMkrAllowance}
+                shouldUnlock={!hasMkrFlapAllowance}
                 unlock={
                   <Card>
                     <Grid gap={3}>
@@ -109,15 +91,10 @@ const FlapAccountManager = ({ allowances }) => {
 
                       <Button
                         variant="small"
-                        onClick={() => {
-                          const flapAddress = maker
-                            .service('smartContract')
-                            .getContractByName('MCD_FLAP').address;
-                          giveMkrAllowance(flapAddress);
-                        }}
+                        onClick={() => giveMkrFlapAllowance()}
                         disabled={!web3Connected}
                       >
-                        {hasMkrAllowance
+                        {hasMkrFlapAllowance
                           ? 'MKR Unlocked'
                           : 'Unlock MKR for the auction'}
                       </Button>
@@ -137,7 +114,12 @@ const FlapAccountManager = ({ allowances }) => {
                       </Text>
                       <Button
                         variant="small"
-                        onClick={() => giveHope(joinAddress, MCD_JOIN_DAI)}
+                        onClick={() => {
+                          const joinAddress = maker.service(
+                            AUCTION_DATA_FETCHER
+                          ).joinDaiAdapterAddress;
+                          giveHope(joinAddress, MCD_JOIN_DAI);
+                        }}
                         disabled={!web3Connected || hasHope[MCD_JOIN_DAI]}
                       >
                         Enable the adapter
@@ -154,7 +136,7 @@ const FlapAccountManager = ({ allowances }) => {
               <BalanceOf
                 type={'DAI in your Wallet'}
                 balance={`${daiBalance} DAI`}
-                shouldUnlock={!hasDaiAllowance}
+                shouldUnlock={!hasDaiJoinDaiAllowance}
                 unlock={
                   <Card>
                     <Grid gap={3}>
@@ -163,15 +145,10 @@ const FlapAccountManager = ({ allowances }) => {
                       </Text>
                       <Button
                         variant="small"
-                        onClick={() => {
-                          const flapAddress = maker
-                            .service('smartContract')
-                            .getContractByName('MCD_FLAP').address;
-                          giveDaiAllowance(flapAddress);
-                        }}
+                        onClick={() => giveDaiJoinDaiAllowance()}
                         disabled={!web3Connected}
                       >
-                        {hasDaiAllowance
+                        {hasDaiJoinDaiAllowance
                           ? 'DAI Unlocked'
                           : 'Unlock DAI for the auction'}
                       </Button>

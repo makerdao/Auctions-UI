@@ -15,7 +15,8 @@ const REQUIRED_ALLOWANCE = 0;
 const useAllowances = () => {
   const { maker, web3Connected } = useMaker();
   const [hasDaiAllowance, setHasDaiAllowance] = useState(false);
-  const [hasMkrAllowance, setHasMkrAllowance] = useState(false);
+  const [hasDaiJoinDaiAllowance, setHasDaiJoinDaiAllowance] = useState(false);
+  const [hasMkrFlapAllowance, setHasMkrFlapAllowance] = useState(false);
   const [hasHope, setHasHope] = useState({});
 
   /* Token Allowances */
@@ -33,6 +34,19 @@ const useAllowances = () => {
     })();
   }, [maker, web3Connected]);
 
+  // DAI Join Dai Allowance
+  useEffect(() => {
+    if (!web3Connected) return;
+    (async () => {
+      const joinDaiAddress = maker.service(AUCTION_DATA_FETCHER)
+        .joinDaiAdapterAddress;
+      const daiAllowance = await maker
+        .getToken('DAI')
+        .allowance(maker.currentAddress(), joinDaiAddress);
+      setHasDaiJoinDaiAllowance(daiAllowance.gt(REQUIRED_ALLOWANCE));
+    })();
+  }, [maker, web3Connected]);
+
   // MKR Allowance
   useEffect(() => {
     if (!web3Connected) return;
@@ -41,7 +55,7 @@ const useAllowances = () => {
       const mkrAllowance = await maker
         .getToken('MKR')
         .allowance(maker.currentAddress(), flapAddress);
-      setHasMkrAllowance(mkrAllowance.gt(REQUIRED_ALLOWANCE) ? true : false);
+      setHasMkrFlapAllowance(mkrAllowance.gt(REQUIRED_ALLOWANCE));
     })();
   }, [maker, web3Connected]);
 
@@ -56,10 +70,24 @@ const useAllowances = () => {
     }
   };
 
-  const giveMkrAllowance = async address => {
+  const giveDaiJoinDaiAllowance = async () => {
     try {
-      await maker.getToken('MKR').approveUnlimited(address);
-      setHasMkrAllowance(true);
+      const joinAddress = maker.service(AUCTION_DATA_FETCHER)
+        .joinDaiAdapterAddress;
+      await maker.getToken('DAI').approveUnlimited(joinAddress);
+      setHasDaiJoinDaiAllowance(true);
+    } catch (err) {
+      const message = err.message ? err.message : err;
+      const errMsg = `unlock dai tx failed ${message}`;
+      console.error(errMsg);
+    }
+  };
+
+  const giveMkrFlapAllowance = async () => {
+    try {
+      const flapAddress = maker.service(AUCTION_DATA_FETCHER).flapAddress;
+      await maker.getToken('MKR').approveUnlimited(flapAddress);
+      setHasMkrFlapAllowance(true);
     } catch (err) {
       const message = err.message ? err.message : err;
       const errMsg = `unlock mkr tx failed ${message}`;
@@ -192,9 +220,12 @@ const useAllowances = () => {
 
   return {
     hasDaiAllowance,
-    hasMkrAllowance,
+    hasDaiJoinDaiAllowance,
+    setHasDaiJoinDaiAllowance,
+    hasMkrFlapAllowance,
     giveDaiAllowance,
-    giveMkrAllowance,
+    giveDaiJoinDaiAllowance,
+    giveMkrFlapAllowance,
     giveHope,
     hasHope
   };

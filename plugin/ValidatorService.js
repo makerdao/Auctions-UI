@@ -20,6 +20,14 @@ export default class ValidatorService extends PublicService {
     this.id = 123;
   }
 
+  connect() {
+    this._cacheAPI =
+      this.get('web3').networkName === 'kovan'
+        ? 'https://kovan-auctions.oasis.app/api/v1'
+        : 'https://auctions.oasis.app/api/v1';
+    this._flapApi = 'http://localhost:7777/api/flaps/events';
+  }
+
   async getQueryResponse(serverUrl, query, operationName, variables = {}) {
     const resp = await fetch(serverUrl, {
       method: 'POST',
@@ -49,12 +57,10 @@ export default class ValidatorService extends PublicService {
     try {
       const resp = await fetch(url);
       data = await resp.json();
-      console.log('data', data);
     } catch (e) {
       console.error(e);
     }
     return data;
-    // return mockResponse;
   }
 
   async fetchFlipAuctions(shouldSync = false) {
@@ -136,12 +142,9 @@ export default class ValidatorService extends PublicService {
   }
 
   async fetchFlapAuctions() {
-    // const url = 'http://localhost:7777/api/flaps/?status=all';
-    const url = 'http://localhost:7777/api/flaps/events?daysAgo=10';
+    const url = `${this._flapApi}?daysAgo=15`;
     const data = await this.getApiResponse(url);
-    console.log('data from server', data);
     return data;
-    // return mockResponse;
   }
 
   async fetchFlapAuctionsByIds(ids) {
@@ -174,13 +177,6 @@ export default class ValidatorService extends PublicService {
     );
     // console.log('GraphQL response', response);
     return response.allLeveragedEvents.nodes;
-  }
-
-  connect() {
-    this._cacheAPI =
-      this.get('web3').networkName === 'kovan'
-        ? 'https://kovan-auctions.oasis.app/api/v1'
-        : 'https://auctions.oasis.app/api/v1';
   }
 
   async getLots(id) {
