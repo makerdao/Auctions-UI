@@ -260,11 +260,11 @@ const FlapAuctionBlock = ({
   }
 
   const handleTendCTA = value => {
-    return callFlapTend(auctionId, value, latestBid);
+    return callFlapTend(auctionId, latestLot, value);
   };
 
   const handleInstantBid = () => {
-    return callFlapTend(auctionId, minMkrAsk, latestBid);
+    return callFlapTend(auctionId, latestLot, minMkrAsk);
   };
 
   useEffect(() => {
@@ -371,9 +371,10 @@ const FlapAuctionBlock = ({
                       key={`${latestLot}`}
                       currentBid={`${minMkrAsk.toFixed(2, 1)} MKR`}
                       minMkrAsk={`${minMkrAsk.toFixed(2, 1)} MKR`}
-                      calculatedBidPrice={`${BigNumber(latestLot)
-                        .div(minMkrAsk)
-                        .toFixed(2)} DAI`}
+                      calculatedBidPrice={`${printedPrice} DAI`} // use this?
+                      // calculatedBidPrice={`${BigNumber(latestLot)
+                      //   .div(minMkrAsk)
+                      //   .toFixed(2)} DAI`}
                     />
                   </Box>
                 </Flex>,
@@ -436,7 +437,7 @@ const FlapAuctionBlock = ({
 
                 <MiniFormLayout
                   disabled={auctionStatus !== CAN_BE_DEALT}
-                  text={'Call deal to end auction and mint MKR'}
+                  text={'Call deal to end auction and transfer DAI'}
                   buttonOnly
                   onTxFinished={status => {
                     if (status === TX_SUCCESS) {

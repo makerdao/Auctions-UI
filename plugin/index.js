@@ -8,7 +8,8 @@ export default {
   addConfig: function(config, { network = 'mainnet', staging = false }) {
     const contractAddresses = {
       mainnet: require('../contracts/addresses/mainnet.json'),
-      kovan: require('../contracts/addresses/kovan.json')
+      kovan: require('../contracts/addresses/kovan.json'),
+      testchain: require('../contracts/addresses/testchain.json')
     };
 
     const addContracts = {
