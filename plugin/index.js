@@ -12,18 +12,10 @@ export default {
       testchain: require('../contracts/addresses/testchain.json')
     };
 
-    const addContracts = {
-      [FLIPPER]: {
-        address: map(prop('MCD_FLIP_ETH_A'), contractAddresses),
-        abi: require('../contracts/abis/Flipper.json')
-      }
-    };
-
     const makerConfig = {
       ...config,
       additionalServices: ['validator', { network }],
-      validator: [ValidatorService],
-      smartContract: { addContracts }
+      validator: [ValidatorService]
     };
 
     return makerConfig;

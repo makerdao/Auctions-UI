@@ -18,7 +18,11 @@ class MyApp extends App {
     const setFeatureFlag = sysAPI.getState().setFeatureFlag;
 
     this.setState({
-      network: window.location.search.includes('kovan') ? 'kovan' : 'mainnet'
+      network: window.location.search.includes('kovan')
+        ? 'kovan'
+        : window.location.search.includes('testchain')
+        ? 'testchain'
+        : 'mainnet'
     });
 
     if (window !== undefined) {

@@ -154,7 +154,8 @@ export default class ValidatorService extends PublicService {
   }
 
   async fetchFlapAuctionsByIds(ids) {
-    const auctions = await Promise.all(
+    // TODO fix this array issue lower down the stack:
+    const [auctions] = await Promise.all(
       ids.map(id => this.fetchFlapAuctionsById(id))
     );
     return auctions;
@@ -254,10 +255,13 @@ export default class ValidatorService extends PublicService {
   // FLAP
   @tracksTransactions
   async flapTend(id, lotSize, bidAmount, { promise }) {
-    const lotSizeInWei = toWei(lotSize).toFixed();
-    const bidAmountRad = toRad(bidAmount).toFixed();
+    const lotSizeInWei = toRad(lotSize).toFixed();
+    const bidAmountRad = toWei(bidAmount).toString();
 
-    return this._flap().tend(id, lotSizeInWei, bidAmountRad, { promise });
+    const result = this._flap().tend(id, lotSizeInWei, bidAmountRad, {
+      promise
+    });
+    return result;
   }
 
   @tracksTransactions
@@ -266,7 +270,6 @@ export default class ValidatorService extends PublicService {
   }
 
   async getAuction(id) {
-    console.log('fetching', id);
     try {
       return await this._flipEthAdapter().bids(id);
     } catch (err) {}

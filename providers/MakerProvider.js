@@ -10,6 +10,7 @@ function MakerProvider({ children, network }) {
   const [web3Connected, setWeb3Connected] = useState(null);
   const setBlockHeight = useSystemStore(state => state.setBlockHeight);
   const blockHeight = useSystemStore(state => state.blockHeight);
+  const isTestchain = network === 'testchain';
 
   useEffect(() => {
     if (!network) return;
@@ -20,11 +21,13 @@ function MakerProvider({ children, network }) {
 
   useEffect(() => {
     if (maker && web3Connected && process.env.INFURA_KEY) {
-      const rpcUrl = `https://${network}.infura.io/v3/${process.env.INFURA_KEY}`;
+      const rpcUrl = isTestchain
+        ? 'http://localhost:8545'
+        : `https://${network}.infura.io/v3/${process.env.INFURA_KEY}`;
 
       const interval = setInterval(async () => {
         const _blockHeight = await getBlockNumber(rpcUrl);
-        
+
         if (_blockHeight !== blockHeight) setBlockHeight(_blockHeight);
       }, 5000);
 
@@ -32,10 +35,9 @@ function MakerProvider({ children, network }) {
     }
   }, [blockHeight, maker, web3Connected]);
 
-
   return (
     <MakerObjectContext.Provider
-      value={{ maker, network, web3Connected, setWeb3Connected }}
+      value={{ maker, network, web3Connected, setWeb3Connected, isTestchain }}
     >
       {children}
     </MakerObjectContext.Provider>

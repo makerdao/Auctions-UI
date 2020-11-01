@@ -42,7 +42,6 @@ const Index = () => {
     }
   }, [web3Connected]);
 
-  useEffect(() => {}, [auctions]); //what is this?
   useEffect(() => {
     if (isSyncing) {
       sync({
