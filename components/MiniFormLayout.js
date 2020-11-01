@@ -155,7 +155,11 @@ const MiniFormLayout = ({
       </Flex>
       {!errorMessages
         ? null
-        : errorMessages.map(err => <Text variant="smallError">{err}</Text>)}
+        : errorMessages.map(err => (
+            <Text key={err.toString()} variant="smallError">
+              {err}
+            </Text>
+          ))}
       <Text variant="small">
         {typeof small === 'function' ? small(inputState) : small}
       </Text>

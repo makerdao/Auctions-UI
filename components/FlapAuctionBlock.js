@@ -344,7 +344,11 @@ const FlapAuctionBlock = ({
                 >
                   <Box>
                     <MiniFormLayout
-                      disabled={auctionStatus !== IN_PROGRESS || !canBid}
+                      disabled={
+                        auctionStatus !== IN_PROGRESS ||
+                        !canBid ||
+                        latestBid === 0
+                      }
                       text={'Bid for the next minimum increment'}
                       buttonOnly
                       onSubmit={handleInstantBid}
@@ -369,12 +373,9 @@ const FlapAuctionBlock = ({
                   <Box ml="auto">
                     <OrderSummary
                       key={`${latestLot}`}
-                      currentBid={`${minMkrAsk.toFixed(2, 1)} MKR`}
+                      currentBid={`${printedLot} MKR`}
                       minMkrAsk={`${minMkrAsk.toFixed(2, 1)} MKR`}
-                      calculatedBidPrice={`${printedPrice} DAI`} // use this?
-                      // calculatedBidPrice={`${BigNumber(latestLot)
-                      //   .div(minMkrAsk)
-                      //   .toFixed(2)} DAI`}
+                      calculatedBidPrice={`${printedPrice} DAI`}
                     />
                   </Box>
                 </Flex>,
