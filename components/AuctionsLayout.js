@@ -21,7 +21,7 @@ const AuctionsLayout = ({ auctions, allowances, stepSize, type, ilk }) => {
     type === 'flip'
       ? state.fetchFlipSet
       : 'flap'
-      ? state.fetchFlipSet
+      ? state.fetchFlapSet
       : state.fetchSet
   );
 

@@ -29,21 +29,18 @@ const Footer = () => {
         // mr: [null, 6]
       }}
     >
-      <ExternalLink
+      <NavLink
         href="https://chat.makerdao.com/channel/help"
         target="_blank"
+        p={2}
+        variant="footer"
+        sx={{
+          // px: [4, 6],
+          pr: 0
+        }}
       >
-        <NavLink
-          p={2}
-          variant="footer"
-          sx={{
-            // px: [4, 6],
-            pr: 0
-          }}
-        >
-          Chat
-        </NavLink>
-      </ExternalLink>
+        Chat
+      </NavLink>
 
       <Link href="/terms">
         <NavLink

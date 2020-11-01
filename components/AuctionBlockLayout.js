@@ -16,7 +16,7 @@ import {
 } from '../constants';
 import { formatAddress, etherscanLink } from '../utils';
 
-export default ({
+const AuctionBlockLayout = ({
   latestEvent,
   auctionId,
   end,
@@ -210,13 +210,13 @@ export default ({
               <Box variant="styles.statusBox.warning">
                 {' '}
                 {auctionStatusHeadings[COMPLETED]}. The winner is{' '}
-                <a
+                <Link
                   href={etherscanLink(winnerSummary.address, network)}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <Link>{`${formatAddress(winnerSummary.address)}`}</Link>
-                </a>
+                  {`${formatAddress(winnerSummary.address)}`}
+                </Link>
               </Box>
             ) : (
               <Grid columns={1}>
@@ -230,3 +230,5 @@ export default ({
     </Card>
   );
 };
+
+export default AuctionBlockLayout;

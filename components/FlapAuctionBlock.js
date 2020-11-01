@@ -49,18 +49,18 @@ const AuctionEvent = ({ type, lot, bid, mkrPrice, timestamp, tx, sender }) => {
 
     [
       'Sender',
-      <a href={etherscanLink(sender, network)} target="_blank">
-        <SLink> {formatAddress(sender)}</SLink>
-      </a>,
+      <SLink href={etherscanLink(sender, network)} target="_blank">
+        {formatAddress(sender)}
+      </SLink>,
       {
         fontWeight: maker.currentAddress() === sender ? 500 : 400
       }
     ],
     [
       'Tx',
-      <a href={etherscanLink(tx, network)} target="_blank">
-        <SLink> {formatAddress(tx)}</SLink>
-      </a>
+      <SLink href={etherscanLink(tx, network)} target="_blank">
+        {formatAddress(tx)}
+      </SLink>
     ]
   ];
   return (

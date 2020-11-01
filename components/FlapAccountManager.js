@@ -1,27 +1,15 @@
 /** @jsx jsx */
-
-import React, { useState, useEffect } from 'react';
 import useMaker from '../hooks/useMaker';
 import useBalances from '../hooks/useBalances';
 import { Text, jsx, Box, Button, Grid, Card } from 'theme-ui';
 import BalanceOf from './BalanceOf';
 import AccountManagerLayout from './AccountManagerLayout';
-import ActionTabs from './ActionTabs';
-import MiniFormLayout from './MiniFormLayout';
 import { formatBalance } from '../utils';
-import ReactGA from 'react-ga';
 import { AUCTION_DATA_FETCHER, MCD_JOIN_DAI, MCD_FLAP } from '../constants';
 
 const FlapAccountManager = ({ allowances }) => {
   const { maker, web3Connected } = useMaker();
-  let {
-    daiBalance,
-    mkrBalance,
-    flapMkrBalance,
-    joinDaiToAdapter,
-    exitDaiFromAdapter,
-    updateDaiBalances
-  } = useBalances();
+  let { daiBalance, mkrBalance, flapMkrBalance } = useBalances();
 
   daiBalance = formatBalance(daiBalance);
   mkrBalance = formatBalance(mkrBalance);
@@ -38,9 +26,6 @@ const FlapAccountManager = ({ allowances }) => {
 
   const allowanceMissing =
     !hasDaiJoinDaiAllowance || !hasMkrFlapAllowance || !hasHope[MCD_JOIN_DAI];
-
-  const hasNoAllowances =
-    !hasDaiJoinDaiAllowance && !hasMkrFlapAllowance && !hasHope[MCD_JOIN_DAI];
 
   return (
     <AccountManagerLayout
@@ -187,74 +172,6 @@ const FlapAccountManager = ({ allowances }) => {
               /> */}
             </Grid>
           ) : null}
-          {hasNoAllowances ? null : (
-            <Card>
-              <Grid>
-                <ActionTabs
-                  actions={[
-                    [
-                      'Deposit DAI into the VAT',
-                      <Grid>
-                        <Box
-                          sx={{
-                            bg: 'background',
-                            p: 3,
-                            borderRadius: 'medium'
-                          }}
-                        >
-                          <MiniFormLayout
-                            text={'Deposit DAI into the VAT'}
-                            disabled={false}
-                            inputUnit="DAI"
-                            onSubmit={joinDaiToAdapter}
-                            onTxFinished={() => {
-                              ReactGA.event({
-                                category: 'account',
-                                action: 'deposited'
-                                // label: maker.currentAddress()
-                              });
-                              updateDaiBalances();
-                            }}
-                            small={''}
-                            actionText={'Deposit'}
-                          />
-                        </Box>
-                      </Grid>
-                    ],
-                    [
-                      'Withdraw DAI From VAT',
-                      <Grid>
-                        <Box
-                          sx={{
-                            bg: 'background',
-                            p: 3,
-                            borderRadius: 'medium'
-                          }}
-                        >
-                          <MiniFormLayout
-                            text={'Withdraw DAI from the VAT'}
-                            disabled={false}
-                            inputUnit="DAI"
-                            onSubmit={exitDaiFromAdapter}
-                            onTxFinished={() => {
-                              ReactGA.event({
-                                category: 'account',
-                                action: 'withdraw'
-                                // label: maker.currentAddress()
-                              });
-                              updateDaiBalances();
-                            }}
-                            small={''}
-                            actionText={'Withdraw'}
-                          />
-                        </Box>
-                      </Grid>
-                    ]
-                  ]}
-                />
-              </Grid>
-            </Card>
-          )}
         </Box>
       }
     />
