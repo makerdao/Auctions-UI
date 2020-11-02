@@ -345,7 +345,7 @@ const [useAuctionsStore, updateState] = create((set, get) => ({
         'flap'
       );
 
-      const currentState = get().auctions || {};
+      const currentState = get().flapAuctions || {};
       const updatedState = Object.assign({}, currentState, transformedAuctions);
       set({ flapAuctions: updatedState });
     }, 500);
