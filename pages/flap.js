@@ -13,6 +13,9 @@ import useAllowances from '../hooks/useAllowances';
 import Moment from 'react-moment';
 import useAuctionsStore from '../stores/auctionsStore';
 import ReactGA from 'react-ga';
+import IntroInfoCard from '../components/IntroInfoCard';
+import IntroMDX from '../text/flapIntro.mdx';
+import TermsConfirm from '../components/TermsConfirm';
 
 const Index = () => {
   const { maker, web3Connected } = useMaker();
@@ -20,7 +23,7 @@ const Index = () => {
   const fetchAuctions = useAuctionsStore(state => state.fetchAllFlap);
   const fetchFlapStepSize = useAuctionsStore(state => state.fetchFlapStepSize);
   const stepSize = useAuctionsStore(state => state.flapStepSize);
-  const [TOCAccepted, setTOCAccepted] = useState(true);
+  const [TOCAccepted, setTOCAccepted] = useState(false);
   const allowances = useAllowances();
   const [{ isSyncing, lastSynced }, sync] = useState({});
   // const featureFlags = useSystemStore(state => state.featureFlags);
@@ -85,6 +88,20 @@ const Index = () => {
               BETA{' '}
             </Text>
           </Heading>
+          <IntroInfoCard
+            title={'How do surplus auctions work?'}
+            text={<IntroMDX />}
+            forceExpanded={!TOCAccepted}
+            action={
+              TOCAccepted ? null : (
+                <TermsConfirm
+                  onConfirm={() => {
+                    setTOCAccepted(true);
+                  }}
+                />
+              )
+            }
+          />
           <Box
             sx={{
               opacity: TOCAccepted ? 1 : 0.2,
