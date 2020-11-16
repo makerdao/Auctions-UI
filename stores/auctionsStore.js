@@ -335,20 +335,20 @@ const [useAuctionsStore, updateState] = create((set, get) => ({
   },
 
   fetchFlapSet: async ids => {
-    setTimeout(async () => {
-      console.log('fetching set: ', ids);
-      const service = maker.service(AUCTION_DATA_FETCHER);
-      const auctions = await service.fetchFlapAuctionsByIds(ids);
-      const transformedAuctions = await transformEvents(
-        auctions,
-        service,
-        'flap'
-      );
-
-      const currentState = get().auctions || {};
-      const updatedState = Object.assign({}, currentState, transformedAuctions);
-      set({ flapAuctions: updatedState });
-    }, 500);
+    // TODO - re implemented batched updates
+    // setTimeout(async () => {
+    //   console.log('fetching set: ', ids);
+    //   const service = maker.service(AUCTION_DATA_FETCHER);
+    //   const auctions = await service.fetchFlapAuctionsByIds(ids);
+    //   const transformedAuctions = await transformEvents(
+    //     auctions,
+    //     service,
+    //     'flap'
+    //   );
+    //   const currentState = get().auctions || {};
+    //   const updatedState = Object.assign({}, currentState, transformedAuctions);
+    //   set({ flapAuctions: updatedState });
+    // }, 500);
   },
 
   fetchFlopStepSize: async maker => {
