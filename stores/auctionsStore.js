@@ -336,7 +336,7 @@ const [useAuctionsStore, updateState] = create((set, get) => ({
 
   fetchFlapSet: async ids => {
     setTimeout(async () => {
-      console.log('fetching set: ', ids);
+      console.log('fetching flap set: ', ids);
       const service = maker.service(AUCTION_DATA_FETCHER);
       const auctions = await service.fetchFlapAuctionsByIds(ids);
       const transformedAuctions = await transformEvents(

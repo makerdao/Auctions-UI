@@ -114,6 +114,7 @@ const Header = () => {
                   Debt auctions
                 </NavLink>
               </Link>
+{/* 
               <Link href="/flap">
                 <NavLink
                   p={2}
@@ -126,6 +127,7 @@ const Header = () => {
                   Surplus auctions
                 </NavLink>
               </Link>
+*/}
             </Flex>
             <Flex
               sx={{

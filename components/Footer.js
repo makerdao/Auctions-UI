@@ -30,7 +30,7 @@ const Footer = () => {
       }}
     >
       <NavLink
-        href="https://chat.makerdao.com/channel/help"
+        href="https://github.com/makerdao/auctions-ui"
         target="_blank"
         p={2}
         variant="footer"
@@ -39,9 +39,21 @@ const Footer = () => {
           pr: 0
         }}
       >
+        Github
+      </NavLink>
+      <NavLink
+        href="https://chat.makerdao.com/channel/help"
+        target="_blank"
+        p={2}
+        variant="footer"
+        sx={{
+          // px: [4, 6],
+          ml: [0, 3],
+          pr: 0
+        }}
+      >
         Chat
       </NavLink>
-
       <Link href="/terms">
         <NavLink
           p={2}
@@ -55,7 +67,7 @@ const Footer = () => {
           Terms of Service
         </NavLink>
       </Link>
-      <Link href="/faq">
+      {/* <Link href="/faq">
         <NavLink
           p={2}
           variant="footer"
@@ -67,7 +79,7 @@ const Footer = () => {
         >
           FAQ
         </NavLink>
-      </Link>
+      </Link> */}
     </Flex>
   );
 };

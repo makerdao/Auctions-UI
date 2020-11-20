@@ -25,7 +25,9 @@ export default class ValidatorService extends PublicService {
       this.get('web3').networkName === 'kovan'
         ? 'https://kovan-auctions.oasis.app/api/v1'
         : 'https://auctions.oasis.app/api/v1';
-    this._flapApi = 'http://localhost:7777/api/flaps';
+
+    // this._flapApi = 'http://localhost:7777/api/flaps';
+    this._flapApi = 'https://flaps-api.maker-auctions.com/api/flaps';
   }
 
   async getQueryResponse(serverUrl, query, operationName, variables = {}) {
@@ -142,7 +144,7 @@ export default class ValidatorService extends PublicService {
   }
 
   async fetchFlapAuctions() {
-    const url = `${this._flapApi}/events?daysAgo=15`;
+    const url = `${this._flapApi}/events?daysAgo=60`;
     const data = await this.getApiResponse(url);
     return data;
   }
