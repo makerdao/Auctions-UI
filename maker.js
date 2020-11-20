@@ -3,6 +3,7 @@ import mcdPlugin from '@makerdao/dai-plugin-mcd';
 import validatorPlugin from './plugin/index';
 import { createCurrency } from '@makerdao/currency';
 
+const mainnetAddresses = require('./contracts/addresses/mainnet.json');
 const kovanAddresses = require('./contracts/addresses/kovan.json');
 const testchainAddresses = require('./contracts/addresses/testchain.json');
 
@@ -15,6 +16,7 @@ let maker;
 
 export async function instantiateMaker(network) {
   const mcdPluginConfig = {};
+  mcdPluginConfig.addressOverrides = mainnetAddresses;
   if (network === 'kovan') {
     mcdPluginConfig.addressOverrides = kovanAddresses;
   }
