@@ -2,6 +2,11 @@
 
 [auctions.makerdao.com](https://auctions.makerdao.com/)
 
+Example UI for participating in Maker Auctions with support for Debt, Surplus and Collateral auctions (Flop, Flap, Flip), powered by Next.js, Dai.js and Dai UI
+
+For an example implementation of a indexing and caching layer service as an API you can host yourself check out https://github.com/makerdao/flap-auctions-api
+
+
 
 ## How to run locally
 
@@ -14,4 +19,8 @@ npm run dev
 yarn
 yarn dev
 ```
+
+## How to contribute
+- Submit a PR!
+- Any questions can be asked on [chat.makerdao.com #dev](https://chat.makerdao.com/channel/dev)
 
