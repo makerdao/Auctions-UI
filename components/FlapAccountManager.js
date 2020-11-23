@@ -6,12 +6,21 @@ import BalanceOf from './BalanceOf';
 import AccountManagerLayout from './AccountManagerLayout';
 import { formatBalance } from '../utils';
 import { AUCTION_DATA_FETCHER, MCD_JOIN_DAI, MCD_FLAP } from '../constants';
+import ActionTabs from './ActionTabs';
+import MiniFormLayout from './MiniFormLayout';
+import ReactGA from 'react-ga';
 
 const FlapAccountManager = ({ allowances }) => {
   const { maker, web3Connected } = useMaker();
-  let { daiBalance, mkrBalance, flapMkrBalance } = useBalances();
+  let {
+    vatDaiBalance,
+    mkrBalance,
+    flapMkrBalance,
+    exitDaiFromAdapter,
+    updateDaiBalances
+  } = useBalances();
 
-  daiBalance = formatBalance(daiBalance);
+  const daiBalance = formatBalance(vatDaiBalance);
   mkrBalance = formatBalance(mkrBalance);
   flapMkrBalance = formatBalance(flapMkrBalance);
 
@@ -119,7 +128,7 @@ const FlapAccountManager = ({ allowances }) => {
                 }}
               />
               <BalanceOf
-                type={'DAI in your Wallet'}
+                type={'DAI in the VAT'}
                 balance={`${daiBalance} DAI`}
                 shouldUnlock={!hasDaiJoinDaiAllowance}
                 unlock={
@@ -172,6 +181,45 @@ const FlapAccountManager = ({ allowances }) => {
               /> */}
             </Grid>
           ) : null}
+          {!vatDaiBalance ? null : (
+            <Card>
+              <Grid>
+                <ActionTabs
+                  actions={[
+                    [
+                      'Withdraw DAI From VAT',
+                      <Grid>
+                        <Box
+                          sx={{
+                            bg: 'background',
+                            p: 3,
+                            borderRadius: 'medium'
+                          }}
+                        >
+                          <MiniFormLayout
+                            text={'Withdraw DAI from the VAT'}
+                            disabled={false}
+                            inputUnit="DAI"
+                            onSubmit={exitDaiFromAdapter}
+                            onTxFinished={() => {
+                              ReactGA.event({
+                                category: 'account',
+                                action: 'withdraw'
+                                // label: maker.currentAddress()
+                              });
+                              updateDaiBalances();
+                            }}
+                            small={''}
+                            actionText={'Withdraw'}
+                          />
+                        </Box>
+                      </Grid>
+                    ]
+                  ]}
+                />
+              </Grid>
+            </Card>
+          )}
         </Box>
       }
     />
