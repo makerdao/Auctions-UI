@@ -25,7 +25,7 @@ const AuctionBlockLayout = ({
   auctionEvents,
   actions,
   forceExpanded,
-  hasDent,
+  hasDentOrTend,
   small,
   orderSummary,
   winnerSummary
@@ -95,16 +95,20 @@ const AuctionBlockLayout = ({
     // If there is Deal first will be Deal
     // If first is Dent it's an ongoing auction
 
-    var countDownDate = new Date((hasDent ? tic : end).toNumber()).getTime();
+    var countDownDate = new Date(
+      (hasDentOrTend ? tic : end).toNumber()
+    ).getTime();
     var overallDownDate = new Date(end.toNumber()).getTime();
 
     var timerId = setInterval(function() {
       var now = new Date().getTime();
-      const distance = hasDent ? countDownDate - now : overallDownDate - now;
+      const distance = hasDentOrTend
+        ? countDownDate - now
+        : overallDownDate - now;
 
       setTimer({
         end: formatRemainingTime(parseRemainingTime(overallDownDate - now)),
-        tic: hasDent
+        tic: hasDentOrTend
           ? formatRemainingTime(parseRemainingTime(distance))
           : undefined
       });

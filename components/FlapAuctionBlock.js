@@ -240,7 +240,7 @@ const FlapAuctionBlock = ({
   });
   const minMkrAsk = new BNwad(latestBid).times(stepSize);
 
-  const hasDent = sortedEvents[0].type === 'Dent';
+  const hasDentOrTend = sortedEvents[0].type === 'Tend';
 
   const now = new Date().getTime();
   let auctionStatus = IN_PROGRESS;
@@ -324,7 +324,7 @@ const FlapAuctionBlock = ({
       auctionId={auctionId}
       small={chickenDinner && UserBidStatusPills[chickenDinner]}
       winnerSummary={winnerSummary}
-      hasDent={hasDent}
+      hasDentOrTend={hasDentOrTend}
       end={end}
       tic={tic}
       actions={
