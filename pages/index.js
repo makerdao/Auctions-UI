@@ -10,6 +10,7 @@ import {
   Text,
   jsx,
   Box,
+  Grid,
   Link as StyledLink,
   Button,
   Styled,
@@ -54,11 +55,19 @@ const Index = () => {
             <StyledLink variant="nav">Collateral Auctions →</StyledLink>
           </Link>
         </Box> */}
-        <Box pt="3">
+        <Grid
+          pt="3"
+          sx={{
+            rowGap: 2
+          }}
+        >
           <Link href="/flop">
             <StyledLink variant="nav">Debt Auctions →</StyledLink>
           </Link>
-        </Box>
+          <Link href="/flap">
+            <StyledLink variant="nav">Surplus Auctions →</StyledLink>
+          </Link>
+        </Grid>
       </Box>
     </GuttedLayout>
   );
