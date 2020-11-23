@@ -144,7 +144,7 @@ export default class ValidatorService extends PublicService {
   }
 
   async fetchFlapAuctions() {
-    const url = `${this._flapApi}/events?daysAgo=60`;
+    const url = `${this._flapApi}/events?daysAgo=15`;
     const data = await this.getApiResponse(url);
     return data;
   }
