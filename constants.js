@@ -40,6 +40,7 @@ export const MCD_FLAP = 'MCD_FLAP';
 
 export const FLIP_ENABLED_ILKS = [
   'ETH-A',
+  'ETH-B',
   'BAT-A',
   'USDC-A',
   'USDC-B',
