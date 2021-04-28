@@ -32,7 +32,7 @@ const Index = () => {
   const [{ isSyncing, lastSynced }, sync] = useState({});
   const featureFlags = useSystemStore(state => state.featureFlags);
   const hasFlipFlag = featureFlags.includes('flip-ui');
-  const ILK = 'ETH-B';
+  const ILK = 'ETH-A';
 
   useEffect(() => {
     if (window !== undefined) {
