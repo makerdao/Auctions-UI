@@ -105,6 +105,7 @@ const FlipAccountManager = ({ ilk }) => {
                       <Button
                         variant="small"
                         onClick={() => giveDaiAllowance(joinAddress)}
+                        //approve dai token for the join dai address
                         disabled={!web3Connected}
                       >
                         {hasDaiAllowance
@@ -129,6 +130,8 @@ const FlipAccountManager = ({ ilk }) => {
                       <Button
                         variant="small"
                         onClick={() => giveHope(joinAddress, MCD_JOIN_DAI)}
+                        //cal vat.hope with the join dai address
+                        //only necessary for .exit
                         disabled={!web3Connected || hasHope[MCD_JOIN_DAI]}
                       >
                         Unlock Dai in the adapter
@@ -166,6 +169,7 @@ const FlipAccountManager = ({ ilk }) => {
                           `MCD_FLIP_${ilk.replace('-', '_')}`
                         );
                       }}
+                      //call vat.hope with the flip address
                       disabled={
                         !web3Connected ||
                         hasHope[`MCD_FLIP_${ilk.replace('-', '_')}`]
