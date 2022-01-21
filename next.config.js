@@ -8,6 +8,6 @@ module.exports = withMDX({
 
   env: {
     IPFS: process.env.IPFS,
-    INFURA_KEY: '6ba7a95268bf4ccda9bf1373fe582b43'
+    INFURA_KEY: 'da1c15fe072d4617b5808ea623df4660'
   }
 });
