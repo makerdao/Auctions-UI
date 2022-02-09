@@ -10,11 +10,14 @@ import { useRouter } from 'next/router';
 import ReactGA from 'react-ga';
 import useSystemStore from '../stores/systemStore';
 import { formatAddress } from '../utils';
+import useENS from '../hooks/useENS';
 
 const Header = () => {
   const { maker, network, web3Connected, setWeb3Connected } = useMaker();
   const { pathname } = useRouter();
   const [showOtherUIs, setShow] = useState(false);
+  const [address, setAddress] = useState();
+  const { ensName, ensAvatar } = useENS(address);
   const featureFlags = useSystemStore(state => state.featureFlags);
   const hasFlag = true;
   const hasFlipFlag = featureFlags.includes('flip-ui');
@@ -37,6 +40,7 @@ const Header = () => {
           );
 
         setWeb3Connected(true);
+        setAddress(maker.currentAddress());
         ReactGA.event({
           category: 'account',
           action: 'connected',
@@ -178,7 +182,22 @@ const Header = () => {
                     </span>
                     <Text>Metamask</Text>
                   </Flex>
-                  <Text>{formatAddress(maker.currentAddress())}</Text>
+                  <Flex>
+                    {ensAvatar && (
+                      <img
+                        src={ensAvatar}
+                        style={{
+                          marginRight: '10px',
+                          borderRadius: '100px',
+                          height: '25px',
+                          width: '25px'
+                        }}
+                      />
+                    )}
+                    <Text>
+                      {ensName || formatAddress(maker.currentAddress())}
+                    </Text>
+                  </Flex>
                 </Flex>
               )}
             </Flex>
