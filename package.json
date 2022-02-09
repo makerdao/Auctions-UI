@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@babel/plugin-proposal-decorators": "^7.8.3",
+    "@ethersproject/providers": "^5.5.3",
     "@makerdao/currency": "^0.9.6",
     "@makerdao/dai": "^0.32.6",
     "@makerdao/dai-plugin-mcd": "^1.6.9",
